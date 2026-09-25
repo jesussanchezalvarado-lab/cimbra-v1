@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>De la idea al problema</title>
+<link rel="stylesheet" href="../comun/fuentes.css">
+<script src="../comun/lib/docx.umd.js"></script>
+<style>
+  :root{
+    --azul:#0055B7;--azul-osc:#003d85;--azul-claro:#e9f2fb;--celeste:#8FC6E8;
+    --morado:#9F26B4;--morado-claro:#f3e8f7;
+    --verde:#3FAE29;--verde-texto:#2E7D1F;--verde-claro:#eafbe6;--verde-borde:#ACDA90;
+    --rojo:#b0392b;--rojo-claro:#fdeeee;
+    --ambar-texto:#7a5d12;--ambar-claro:#fff8e6;--ambar-borde:#f0dca0;
+    --tinta:#0d1b2a;--texto:#1a232b;--texto-2:#3a4551;--texto-3:#55606b;
+    --borde:#e2e6ea;--gris-claro:#f4f6f8;--fondo-alt:#f9fafb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:0;background:#fff;font-family:'Open Sans',sans-serif;color:var(--texto);line-height:1.6;overflow-x:hidden}
+  a{color:var(--azul)}
+  a:hover{color:var(--azul-osc)}
+  h1,h2,h3,h4{font-family:'Roboto Condensed',sans-serif;margin:0;line-height:1.15}
+  img{display:block;max-width:100%;height:auto}
+  button{font-family:inherit}
+  textarea,input[type=text]{font-family:'Open Sans',sans-serif}
+  html{scroll-behavior:smooth}
+  section[id]{scroll-margin-top:110px}
+  .skip-link{position:absolute;left:-999px;top:0;background:var(--azul);color:#fff;padding:10px 18px;z-index:200;border-radius:0 0 6px 0}
+  .skip-link:focus{left:0}
+  :focus-visible{outline:3px solid var(--azul);outline-offset:2px}
+  ::selection{background:var(--celeste)}
+  .sec{padding:60px clamp(20px,6vw,56px)}
+  .sec-alt{background:var(--fondo-alt)}
+  .wrap{max-width:1100px;margin:0 auto}
+  .badge{display:inline-block;font:700 12px 'Open Sans',sans-serif;letter-spacing:.07em;text-transform:uppercase;padding:6px 12px;border-radius:20px;margin:0 0 16px}
+  .b-azul{background:var(--azul-claro);color:var(--azul)}
+  .b-verde{background:var(--verde-claro);color:var(--verde-texto)}
+  .b-morado{background:var(--morado-claro);color:var(--morado)}
+  .b-ambar{background:#fff1c2;color:var(--ambar-texto)}
+  .h2{font-size:clamp(26px,3.2vw,36px);margin-bottom:10px;color:var(--tinta)}
+  .h3{font-size:20px;margin:30px 0 8px;color:var(--tinta)}
+  .lead{font-size:15.5px;line-height:1.7;color:var(--texto-3);margin:0 0 24px;max-width:100%;text-align:justify}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+  .card{background:#fff;border:1px solid var(--borde);border-radius:10px;padding:18px 20px;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+  .card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(13,27,42,.09)}
+  .quiz{transition:box-shadow .18s ease}
+  .quiz:hover{box-shadow:0 8px 20px rgba(13,27,42,.06)}
+  .par-caja{transition:transform .18s ease,box-shadow .18s ease}
+  .par-caja:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(13,27,42,.09)}
+  .btn{transition:transform .15s ease,box-shadow .15s ease,background .15s ease,border-color .15s ease}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(13,27,42,.12)}
+  .card-t{font:700 15px 'Roboto Condensed',sans-serif;margin:0 0 6px;color:var(--tinta)}
+  .card p.txt{font-size:14px;line-height:1.6;color:var(--texto-3);margin:0}
+  .aviso{display:flex;gap:10px;align-items:flex-start;background:var(--azul-claro);border-radius:10px;padding:14px 16px;margin:0 0 22px;font-size:14px;line-height:1.6;color:#1a3a5c}
+  .aviso-ambar{background:var(--ambar-claro);border:1px solid var(--ambar-borde);color:#5c4a14}
+  .aviso p{margin:0}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:11px 22px;border-radius:9px;font:700 13.5px 'Open Sans',sans-serif;line-height:1.2;white-space:nowrap;cursor:pointer;border:1.5px solid transparent;vertical-align:middle}
+  .btn-pri{background:var(--azul);color:#fff}
+  .btn-pri:hover{background:var(--azul-osc)}
+  .btn-sec{background:#fff;color:var(--azul);border-color:var(--azul)}
+  .btn-sec:hover{background:var(--azul-claro)}
+  .btn-ghost{background:var(--gris-claro);color:var(--texto-2);border-color:var(--gris-claro)}
+  .btn-ghost:hover{background:#ebeef1;border-color:#ebeef1;color:var(--texto)}
+  .btn-danger{background:var(--rojo-claro);color:var(--rojo);border-color:#f3c9c2}
+  .btn-danger:hover{background:#fbe0dd;border-color:var(--rojo)}
+  .btn-sm{min-height:38px;padding:8px 16px;font-size:12.5px;border-radius:8px}
+  .campo{margin-bottom:16px}
+  .campo label{display:block;font:700 12px 'Open Sans',sans-serif;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;color:var(--azul)}
+  .campo .ayuda{font-size:12.5px;color:#6b7682;margin:0 0 8px;line-height:1.55}
+  .campo textarea,.campo input[type=text]{width:100%;border-radius:8px;border:1.5px solid #d7dee5;padding:12px 14px;font-size:14.5px;line-height:1.55;color:var(--texto);resize:vertical}
+  .campo textarea{min-height:82px}
+  .campo input[type=text]{min-height:46px}
+  .campo textarea:focus,.campo input[type=text]:focus{outline:none;border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,85,183,.15)}
+  textarea::placeholder,input::placeholder{color:#6b7682;opacity:1}
+  .quiz{background:#fff;border:1px solid var(--borde);border-radius:10px;padding:20px 22px}
+  .quiz-p{font:700 15px 'Roboto Condensed',sans-serif;color:var(--tinta);margin:0 0 14px;line-height:1.35}
+  .quiz-ops{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:stretch}
+  .quiz-ops--fila3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .opcion{min-height:72px;padding:12px 14px;border-radius:12px;font:600 13.5px 'Open Sans',sans-serif;cursor:pointer;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;border:1.5px solid #d7dee5;color:var(--texto);width:100%;white-space:normal;line-height:1.3;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background-color .16s ease}
+  .opcion > span{display:inline-flex;align-items:center;justify-content:center}
+  .opcion > span:last-child{flex:1 1 auto;text-align:center}
+  @media (max-width:640px){.quiz-ops--fila3{grid-template-columns:1fr}}
+  .opcion:hover:not([disabled]){border-color:var(--azul);transform:translateY(-1px);box-shadow:0 6px 14px rgba(13,27,42,.08)}
+  .marca{flex:none;font-weight:700;min-width:1em;line-height:1;display:inline-flex;align-items:center;justify-content:center}
+  @media (max-width: 640px){.quiz-ops{grid-template-columns:1fr}}
+  .fb{margin-top:14px;padding:14px 16px;border-radius:8px}
+  .fb p{margin:0;font-size:13.5px;line-height:1.6;color:var(--texto-2)}
+  .fb p.fb-t{font:700 13px 'Open Sans',sans-serif;margin-bottom:4px}
+  .ejemplo{background:var(--gris-claro);border-left:4px solid #c9d3db;border-radius:0 8px 8px 0;padding:13px 15px;font-size:14px;line-height:1.6;color:var(--texto-2);margin:0 0 12px}
+  .par{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:780px){.par{grid-template-columns:1fr 1fr}}
+  .par-caja{border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.6}
+  .par-mal{background:var(--rojo-claro);border:1px solid #f3c9c2;color:var(--texto-2)}
+  .par-bien{background:var(--verde-claro);border:1px solid var(--verde-borde);color:var(--texto-2)}
+  .par-rot{font:700 11.5px 'Open Sans',sans-serif;text-transform:uppercase;letter-spacing:.05em;margin:0 0 6px}
+  .vista{background:var(--fondo-alt);border:1px solid var(--borde);border-radius:8px;padding:16px 18px;font-size:15px;line-height:1.7;color:var(--texto-2)}
+  .navLink{flex:none;padding:14px 13px;font:600 13px 'Open Sans',sans-serif;color:var(--texto);text-decoration:none;border-bottom:3px solid transparent;white-space:nowrap}
+  .navLink:hover{color:var(--azul)}
+  .navLink[aria-current="true"]{color:var(--azul);border-bottom-color:var(--azul)}
+  .barra{background:var(--gris-claro);border-radius:100px;height:9px;overflow:hidden}
+  .barra > div{height:9px;background:var(--verde-texto);border-radius:100px;width:0;transition:width .4s ease}
+  .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  details.plegable{background:#fff;border:1px dashed #b6c6d6;border-radius:10px;padding:0 18px;margin:16px 0}
+  details.plegable > summary{cursor:pointer;padding:14px 0;font:700 13.5px 'Open Sans',sans-serif;color:var(--azul);min-height:44px}
+  details.plegable[open]{padding-bottom:16px}
+  details.plegable p{font-size:14px;line-height:1.65;color:var(--texto-2);margin:0 0 10px}
+  .asistente-slot{display:none}
+  #arriba{position:fixed;bottom:24px;right:24px;width:48px;height:48px;border-radius:50%;background:var(--azul);color:#fff;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:150}
+  #arriba.ver{opacity:1;pointer-events:auto}
+  #anotar{position:fixed;bottom:24px;right:82px;min-height:48px;padding:0 18px;border-radius:24px;background:#fff;color:var(--azul);border:1.5px solid var(--azul);display:flex;align-items:center;gap:8px;cursor:pointer;box-shadow:0 4px 14px rgba(13,27,42,.18);font:700 13px 'Open Sans',sans-serif;z-index:150}
+  #anotar:hover{background:var(--azul-claro)}
+  #panelPreguntas{position:fixed;bottom:84px;right:24px;width:min(360px,calc(100vw - 32px));background:#fff;border:1px solid var(--borde);border-radius:12px;box-shadow:0 14px 40px rgba(13,27,42,.22);padding:16px 18px;z-index:160;display:none}
+  #panelPreguntas.abierto{display:block}
+  .pregunta-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #eef1f4}
+  .pregunta-item:last-child{border-bottom:none}
+  .pregunta-item input[type=checkbox]{width:18px;height:18px;flex:none;margin-top:3px;accent-color:var(--verde-texto)}
+  .pregunta-item p{margin:0;font-size:14px;line-height:1.55;color:var(--texto-2);flex:1}
+  .pregunta-item.resuelta p{text-decoration:line-through;color:#6b7682}
+  .pregunta-borrar{background:none;border:none;color:#6b7682;cursor:pointer;font:700 15px 'Open Sans',sans-serif;line-height:1;padding:6px 8px;border-radius:6px;min-height:32px}
+  .pregunta-borrar:hover{color:var(--rojo);background:var(--rojo-claro)}
+  #areaImpresion{display:none}
+  @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    .card:hover,.par-caja:hover,.opcion:hover,.btn:hover{transform:none!important}}
+  @media print{
+    body *{visibility:hidden}
+    #areaImpresion,#areaImpresion *{visibility:visible}
+    #areaImpresion{display:block;position:absolute;top:0;left:0;width:100%;padding:24px}
+    #arriba{display:none}
+  }
+</style>
+<link rel="stylesheet" href="../comun/cimbra.css">
+</head>
+<body>
+<a href="../index.html" class="cimbra-volver" aria-label="Volver al inicio de Cimbra"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Volver al inicio</a>
+
+<a href="#principal" class="skip-link">Saltar al contenido principal</a>
+
+<header id="cabecera" style="background:#0055B7;color:#fff;padding:36px clamp(20px,6vw,56px) 30px"></header>
+
+<nav aria-label="Etapas" style="position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #e2e6ea;box-shadow:0 2px 8px rgba(0,0,0,.04)">
+  <div style="display:flex;gap:4px;overflow-x:auto;padding:0 clamp(20px,6vw,56px);scrollbar-width:thin;max-width:1200px;margin:0 auto" id="navFila"></div>
+</nav>
+
+<main id="principal">
+
+<!-- ETAPA 1 -->
+<section id="que-es" class="sec" data-vista="que-es">
+  <div class="wrap">
+    <p class="badge b-azul">Punto de partida</p>
+    <h2 class="h2">Qué cuenta como investigación educativa</h2>
+    <p class="lead">Investigar no es opinar con más palabras. Es un proceso que se puede seguir paso a paso, que se apoya en datos y que otra persona podría revisar. Antes de buscar tu tema, conviene tener claro qué hace que algo sea investigación y qué no.</p>
+
+    <div class="grid" style="margin-bottom:24px">
+      <div class="card" style="border-left:4px solid var(--azul)">
+        <h3 class="card-t" style="color:var(--azul)">Sistemático</h3>
+        <p class="txt">Sigues un orden que decidiste antes de empezar. No recoges datos según se te vaya ocurriendo.</p>
+      </div>
+      <div class="card" style="border-left:4px solid var(--morado)">
+        <h3 class="card-t" style="color:var(--morado)">Crítico</h3>
+        <p class="txt">Revisas tus propias conclusiones y aceptas que los datos te contradigan. Si los datos dicen otra cosa, cambias la explicación.</p>
+      </div>
+      <div class="card" style="border-left:4px solid var(--verde-borde)">
+        <h3 class="card-t" style="color:var(--verde-texto)">Empírico</h3>
+        <p class="txt">Te apoyas en evidencia que se puede observar, preguntar o registrar. No basta con lo que crees o con lo que siempre se ha dicho.</p>
+      </div>
+    </div>
+    <p class="lead" style="margin-bottom:26px">Las tres condiciones se cumplen juntas (Hernández et al., 2014). Si falta una, lo que tienes es una buena idea, todavía no una investigación.</p>
+
+    <h3 class="h3">Reconócelo en casos concretos</h3>
+    <p class="lead" style="margin-bottom:18px">Cuatro situaciones de escuela. Decide en cada una si es investigación educativa. Si te equivocas recibirás una pista y podrás intentarlo otra vez.</p>
+    <div style="display:flex;flex-direction:column;gap:16px" id="casosWrap"></div>
+    <div id="casosAviso" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+    <div class="asistente-slot" data-asistente="que-es"></div>
+  
+    <h3 class="h3">El camino, y dónde estás</h3>
+    <div id="esquema" style="margin-bottom:8px"></div>
+</div>
+</section>
+
+<!-- ETAPA 2 -->
+<section id="inquietud" class="sec sec-alt" data-vista="inquietud">
+  <div class="wrap">
+    <p class="badge b-verde">De la inquietud al tema</p>
+    <h2 class="h2">¿Qué te llama la atención del sistema educativo?</h2>
+    <p class="lead">Ninguna investigación parte de un tema bien redactado. Parte de algo que te llamó la atención, te molestó o te dio curiosidad en tu práctica o en la universidad. Ese es el material con el que vas a trabajar. Escríbelo primero como lo dirías en voz alta, después se afinará.</p>
+
+    <h3 class="h3">De dónde suelen salir las ideas</h3>
+    <div class="grid" style="margin-bottom:24px">
+      <div class="card" style="border-left:4px solid var(--azul)">
+        <h3 class="card-t" style="color:var(--azul)">Algo que viste</h3>
+        <p class="txt">Una escena de tu práctica que te quedó dando vueltas. "En ese curso casi nadie participaba, salvo cuando trabajaban en grupo."</p>
+      </div>
+      <div class="card" style="border-left:4px solid var(--verde)">
+        <h3 class="card-t" style="color:var(--verde-texto)">Una oportunidad</h3>
+        <p class="txt">Tienes acceso a algo que otros no. Un establecimiento que te recibe, un programa que se está implementando, un curso que conoces bien.</p>
+      </div>
+      <div class="card" style="border-left:4px solid var(--morado)">
+        <h3 class="card-t" style="color:var(--morado)">Algo que nadie ha mirado</h3>
+        <p class="txt">Un tema del que todos hablan en la sala de profesores, pero sobre el que nadie ha reunido datos en ese establecimiento.</p>
+      </div>
+      <div class="card" style="border-left:4px solid var(--ambar-texto)">
+        <h3 class="card-t" style="color:var(--ambar-texto)">Un problema que resolver</h3>
+        <p class="txt">Una dificultad concreta que afecta a estudiantes o docentes y que vale la pena entender antes de intentar cambiarla.</p>
+      </div>
+    </div>
+
+    <div class="aviso aviso-ambar">
+      <p><strong>Una advertencia temprana.</strong> Investigar no es lo mismo que intervenir. En esta etapa no vas a solucionar el problema ni a hacer un taller para mejorarlo. Vas a comprender qué pasa y por qué. La propuesta de mejora, si la hay, viene después y se apoya en lo que encontraste.</p>
+    </div>
+
+    <h3 class="h3">Escribe tus inquietudes</h3>
+    <p class="lead" style="margin-bottom:18px">Anota hasta tres. En lenguaje cotidiano, sin tecnicismos y sin preocuparte de la redacción. Después eliges una para seguir trabajando, y las otras quedan guardadas por si la primera no prospera.</p>
+
+    <div class="card" style="margin-bottom:18px">
+      <div class="campo">
+        <label for="inq1">Inquietud 1</label>
+        <p class="ayuda" id="ayuda-inq1">Qué pasó, a quiénes les pasó y dónde. Una o dos frases bastan.</p>
+        <textarea id="inq1" data-ficha="inq1" aria-describedby="ayuda-inq1" placeholder="Ej: En mi práctica, los estudiantes de 1° medio casi no hablan en inglés en clases, aunque en los trabajos escritos les va bien."></textarea>
+      </div>
+      <div class="campo">
+        <label for="inq2">Inquietud 2 (opcional)</label>
+        <textarea id="inq2" data-ficha="inq2" placeholder="Otra cosa que te haya llamado la atención."></textarea>
+      </div>
+      <div class="campo" style="margin-bottom:0">
+        <label for="inq3">Inquietud 3 (opcional)</label>
+        <textarea id="inq3" data-ficha="inq3" placeholder="Y una tercera, si la tienes."></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="campo" style="margin-bottom:0">
+        <label for="elegida">¿Con cuál sigues?</label>
+        <p class="ayuda" id="ayuda-elegida">Elige una y cópiala aquí, o reescríbela mejor si ya se te ocurrió cómo decirla. Esta es la que vas a revisar en la etapa siguiente.</p>
+        <textarea id="elegida" data-ficha="elegida" aria-describedby="ayuda-elegida" placeholder="La inquietud con la que voy a trabajar es..."></textarea>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px" id="copiarInq"></div>
+      </div>
+    </div>
+
+    <details class="plegable">
+      <summary>Ver tres inquietudes reales y por qué funcionan</summary>
+      <p><strong>"Los estudiantes de 8° básico dejan de participar en clases de Educación Física cuando la actividad es competitiva."</strong> Funciona porque nombra a quiénes, dónde y qué se observa. Se puede mirar en una sala de clases.</p>
+      <p><strong>"En mi carrera, mis compañeros han comentado que planifican distinto según quién sea su profesor/a guía."</strong> Funciona porque se puede preguntar a esas personas y contrastar lo que dicen.</p>
+      <p><strong>"Quiero saber si la educación chilena es de calidad."</strong> No funciona todavía. No se puede observar ni preguntar de manera acotada, y no dice a quiénes ni dónde. Con un semestre por delante, no cabe.</p>
+    </details>
+    <div class="asistente-slot" data-asistente="inquietud"></div>
+  </div>
+</section>
+
+<!-- ETAPA 3 -->
+<section id="filtro" class="sec" data-vista="filtro">
+  <div class="wrap">
+    <p class="badge b-morado">Filtro de realidad</p>
+    <h2 class="h2">¿Esto se puede investigar?</h2>
+    <p class="lead">Muchas inquietudes buenas no se pueden investigar en un semestre, y es mejor descubrirlo ahora que en mayo. Responde las cuatro preguntas pensando en la inquietud que elegiste. No hay respuestas correctas, cada opción te dice qué ajustar.</p>
+
+    <div class="card" style="margin-bottom:22px">
+      <p style="font:700 12px 'Open Sans',sans-serif;text-transform:uppercase;letter-spacing:.04em;color:#6b7682;margin:0 0 8px">Tu inquietud</p>
+      <p id="ecoInquietud" style="font-size:15px;line-height:1.7;color:var(--texto-2);margin:0">Todavía no has escrito nada en la etapa 2.</p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px" id="filtroWrap"></div>
+    <div id="filtroAviso" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="card" style="margin-top:22px;border-left:4px solid var(--azul)">
+      <p style="font:700 13px 'Open Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--azul);margin:0 0 8px">Dónde estás</p>
+      <p id="filtroResumen" style="font-size:14.5px;line-height:1.65;color:var(--texto-2);margin:0">Responde las cuatro preguntas para ver el resumen.</p>
+    </div>
+    <div class="asistente-slot" data-asistente="filtro"></div>
+  </div>
+</section>
+
+<!-- ETAPA 4 -->
+<section id="tema" class="sec sec-alt" data-vista="tema">
+  <div class="wrap">
+    <p class="badge b-ambar">Tu tema en una frase</p>
+    <h2 class="h2">Del "me llama la atención" al tema acotado</h2>
+    <p class="lead">Un tema de investigación se reconoce porque dice tres cosas, qué fenómeno vas a estudiar, en quiénes y dónde. Si falta alguna, el tema queda tan amplio que no se puede investigar, y ese es el problema más frecuente en esta etapa.</p>
+
+    <div class="card" style="margin-bottom:22px;border-left:4px solid var(--ambar-borde)">
+      <p style="font:700 13px 'Open Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--ambar-texto);margin:0 0 10px">La fórmula</p>
+      <p style="font-size:16px;line-height:1.7;color:var(--texto-2);margin:0"><strong>Fenómeno</strong> que vas a estudiar, <strong>en quiénes</strong> lo vas a estudiar, <strong>dónde</strong> ocurre.</p>
+    </div>
+
+    <h3 class="h3">Tres temas antes y después</h3>
+    <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:24px" id="paresWrap"></div>
+
+    <h3 class="h3">Reconoce el que está acotado</h3>
+    <div style="margin-bottom:26px" id="temaQuizWrap"></div>
+    <div id="temaAviso" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+
+    <h3 class="h3">Ahora el tuyo</h3>
+    <p class="lead" style="margin-bottom:18px">Completa las tres partes. Abajo verás cómo queda la frase armada. Si algo suena forzado, vuelve a la etapa 2 y revisa tu inquietud, casi siempre el problema está ahí y no en la redacción.</p>
+
+    <div class="card" style="margin-bottom:18px">
+      <div class="campo">
+        <label for="fenomeno">Fenómeno</label>
+        <p class="ayuda" id="ayuda-fen">Qué vas a estudiar. Un proceso, una práctica, una percepción. Ej: la participación oral, las estrategias de planificación, la percepción sobre la evaluación.</p>
+        <input type="text" id="fenomeno" data-ficha="fenomeno" aria-describedby="ayuda-fen" placeholder="Ej: la participación oral en clases de inglés">
+      </div>
+      <div class="campo">
+        <label for="sujetos">En quiénes</label>
+        <p class="ayuda" id="ayuda-suj">Las personas o documentos de los que vas a obtener información. Ej: estudiantes de 1° medio, docentes de Lengua Castellana, el proyecto educativo del establecimiento.</p>
+        <input type="text" id="sujetos" data-ficha="sujetos" aria-describedby="ayuda-suj" placeholder="Ej: estudiantes de 1° medio">
+      </div>
+      <div class="campo" style="margin-bottom:0">
+        <label for="contexto">Dónde</label>
+        <p class="ayuda" id="ayuda-ctx">El establecimiento o el tipo de establecimiento y la comuna. Si aún no tienes acceso confirmado, describe el tipo. Ej: un liceo municipal de Osorno.</p>
+        <input type="text" id="contexto" data-ficha="contexto" aria-describedby="ayuda-ctx" placeholder="Ej: un liceo municipal de Osorno">
+      </div>
+    </div>
+
+    <div class="vista" id="vistaTema" role="status" aria-live="polite">Completa las tres partes para ver tu tema armado.</div>
+    <div class="asistente-slot" data-asistente="tema"></div>
+  </div>
+</section>
+
+<!-- FICHA -->
+<section id="ficha" class="sec" data-vista="ficha">
+  <div class="wrap">
+    <p class="badge b-azul">Tu ficha</p>
+    <h2 class="h2">Lo que llevas hasta aquí</h2>
+    <p class="lead">Todo lo que escribiste se guarda solo en este navegador, no se sube a ningún servidor. Si cambias de computador o borras el historial, se pierde. Por eso, antes de cerrar, descarga tu ficha. Es la copia que vas a usar en el taller y en tutoría.</p>
+
+    <div style="margin-bottom:22px">
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--texto-3);margin-bottom:6px">
+        <span>Avance de tu ficha</span><span id="avanceTexto">0 de 5 partes completas</span>
+      </div>
+      <div class="barra"><div id="avanceBarra"></div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px" id="resumenFicha"></div>
+
+    <h3 class="h3" style="margin-top:8px">Preguntas que me van surgiendo</h3>
+    <p class="lead" style="margin-bottom:16px">Todo lo que no sabes todavía, anótalo aquí. Dudas sobre tu tema, sobre el método, sobre lo que te van a pedir. Estas preguntas son el mejor material para llevar a tutoría, y marcar las que ya resolviste te muestra cuánto avanzaste. Puedes anotar una en cualquier momento con el botón "Anotar pregunta" que está abajo a la derecha.</p>
+    <div class="card" style="margin-bottom:24px">
+      <div class="campo" style="margin-bottom:12px">
+        <label for="nuevaPregunta">Nueva pregunta</label>
+        <textarea id="nuevaPregunta" style="min-height:64px" placeholder="Ej: ¿Puedo estudiar dos cursos distintos o me conviene uno solo?"></textarea>
+      </div>
+      <button class="btn btn-sec" id="btnAgregarPregunta">Agregar a mi ficha</button>
+      <div id="listaPreguntas" style="margin-top:14px"></div>
+    </div>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+      <button class="btn btn-pri" id="btnWord">Descargar mi ficha en Word</button>
+      <button class="btn btn-sec" id="btnPDF">Imprimir o guardar en PDF</button>
+      <button class="btn btn-danger" id="btnBorrar">Borrar mi ficha</button>
+    </div>
+    <p id="avisoDescarga" role="status" style="font-size:13px;color:var(--verde-texto);margin:14px 0 0;min-height:1em"></p>
+
+    <h3 class="h3">Guarden su trabajo</h3>
+    <p class="lead" style="margin-bottom:16px">Este recurso queda terminado cuando el grupo hace estas dos cosas. Al completarlas, en la portada aparece como terminado.</p>
+    <div id="cierreWrap"></div>
+
+    <div class="aviso" style="margin-top:22px">
+      <p><strong>Qué sigue.</strong> Con tu tema acotado ya puedes buscar qué se ha investigado sobre él, decidir tu enfoque y escribir tu primera pregunta. Eso es lo que viene en las próximas etapas.</p>
+    </div>
+    <div class="asistente-slot" data-asistente="ficha"></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="cimbra-pie site-footer">
+  <p><strong>Universidad de Los Lagos</strong> · Departamento de Educación</p>
+  <p>Esta obra de <strong>Jesús Sánchez Alvarado</strong> está bajo una <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">Licencia Creative Commons Atribución-NoComercial 4.0 Internacional</a>.</p>
+</footer>
+
+<button id="arriba" aria-label="Volver arriba" title="Volver arriba">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<button id="anotar" aria-expanded="false" aria-controls="panelPreguntas">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+  Anotar pregunta
+</button>
+
+<div id="panelPreguntas" role="dialog" aria-modal="false" aria-label="Anotar una pregunta">
+  <p style="font:700 14px 'Roboto Condensed',sans-serif;color:var(--tinta);margin:0 0 10px">¿Qué te quedó dando vueltas?</p>
+  <label for="preguntaRapida" class="visually-hidden">Escribe tu pregunta</label>
+  <textarea id="preguntaRapida" style="width:100%;min-height:72px;border-radius:8px;border:1.5px solid #d7dee5;padding:10px 12px;font-size:14px;line-height:1.5;resize:vertical" placeholder="Ej: ¿Cómo sé si mi tema ya lo estudió alguien?"></textarea>
+  <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+    <button class="btn btn-sm btn-pri" id="btnGuardarRapida">Guardar en mi ficha</button>
+    <button class="btn btn-sm btn-ghost" id="btnCerrarPanel">Cerrar</button>
+  </div>
+  <p id="panelAviso" role="status" style="font-size:12.5px;color:var(--verde-texto);margin:10px 0 0;min-height:1em"></p>
+  <p style="font-size:12.5px;color:#6b7682;margin:6px 0 0">Las verás todas juntas en la sección <a href="#ficha">Mi ficha</a>.</p>
+</div>
+
+<div id="areaImpresion"></div>
+
+<script>
+/* ============================================================
+   De la idea al problema · Sistema de andamiaje digital
+   ------------------------------------------------------------
+   BLOQUE DE CONFIGURACIÓN
+   Para adaptar este recurso a otra institución o asignatura,
+   modifica solo este bloque. El resto del archivo no cambia.
+   ============================================================ */
+const CONFIG = {
+  nombre: 'De la idea al problema',
+  descriptor: 'Sistema de andamiaje digital',
+  contexto: 'Investigación Educativa · Departamento de Educación',
+  descripcion: 'Un recurso para pensar tu primera idea y convertirla en un problema de investigación.',
+  institucion: 'Universidad de Los Lagos',
+  unidad: 'Departamento de Educación',
+  logo: 'logoula.png',
+  logoAlt: 'Universidad de Los Lagos',
+  autoria: 'Jesús Sánchez Alvarado',
+  licenciaUrl: 'https://creativecommons.org/licenses/by-nc/4.0/',
+  licenciaNombre: 'Licencia Creative Commons Atribución-NoComercial 4.0 Internacional',
+  licenciaImg: '../comun/cc-by-nc.svg',
+  claveFicha: 'cimbra_ficha_v1',
+  claveAntigua: 'De la idea al problema_ficha_v1',   // se lee una vez, para no perder lo ya escrito
+  asistente: { activo: false },
+};
+
+/* Vistas del recurso. Se muestra una a la vez y alimentan el menú
+   de pestañas, el esquema del inicio y los botones de volver y continuar. */
+const VISTAS = [
+  { id: 'que-es',    nav: '1 · Punto de partida',   titulo: 'Punto de partida',        sub: 'Qué cuenta como investigación' },
+  { id: 'inquietud', nav: '2 · Tu inquietud',       titulo: 'De la inquietud al tema', sub: 'Qué te llama la atención' },
+  { id: 'filtro',    nav: '3 · Filtro de realidad', titulo: 'Filtro de realidad',      sub: '¿Esto se puede investigar?' },
+  { id: 'tema',      nav: '4 · Tu tema',            titulo: 'Tu tema en una frase',    sub: 'Fenómeno, quiénes y dónde' },
+  { id: 'ficha',     nav: 'Mi ficha',               titulo: 'Mi ficha',                sub: 'Resumen y descarga' },
+];
+
+/* ===================== UTILIDADES ===================== */
+const esc = (s) => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const $ = (sel) => document.querySelector(sel);
+
+/* ===================== FICHA ===================== */
+const FICHA_VACIA = { version: 1, actualizado: '', inq1:'', inq2:'', inq3:'', elegida:'', fenomeno:'', sujetos:'', contexto:'', filtro:{}, preguntas:[], cierre:{ descargado:false, respaldado:false } };
+let ficha = Object.assign({}, FICHA_VACIA);
+let almacenamientoOk = true;
+
+function cargarFicha(){
+  try {
+    let raw = localStorage.getItem(CONFIG.claveFicha);
+    /* Si todavía no hay nada en la clave nueva, se rescata lo de la anterior. */
+    if (!raw && CONFIG.claveAntigua) {
+      const viejo = localStorage.getItem(CONFIG.claveAntigua);
+      if (viejo) { raw = viejo; try { localStorage.setItem(CONFIG.claveFicha, viejo); } catch(e) {} }
+    }
+    if (raw) {
+      const d = JSON.parse(raw);
+      if (d && typeof d === 'object') ficha = Object.assign({}, FICHA_VACIA, d, {
+        filtro: Object.assign({}, d.filtro || {}),
+        preguntas: Array.isArray(d.preguntas) ? d.preguntas : [],
+        cierre: Object.assign({ descargado:false, respaldado:false }, d.cierre || {}),
+      });
+    }
+  } catch(e) { almacenamientoOk = false; }
+}
+let guardandoCierre = false;
+function guardarFicha(){
+  ficha.actualizado = new Date().toISOString();
+  if (!guardandoCierre && ficha.cierre && ficha.cierre.descargado) {
+    /* Cambió el texto, así que el archivo descargado ya no corresponde. */
+    ficha.cierre.descargado = false;
+  }
+  try { localStorage.setItem(CONFIG.claveFicha, JSON.stringify(ficha)); }
+  catch(e) { almacenamientoOk = false; }
+  pintarAvance();
+  if (typeof pintarCierre === 'function') pintarCierre();
+}
+
+/* ===================== CABECERA, NAV Y PIE ===================== */
+$('#cabecera').innerHTML = `
+  <div style="max-width:1200px;margin:0 auto;display:flex;gap:26px;align-items:center;flex-wrap:wrap">
+    ${CONFIG.logo ? `<img src="${esc(CONFIG.logo)}" alt="${esc(CONFIG.logoAlt)}" style="max-width:150px;max-height:66px;object-fit:contain">` : ''}
+    <div style="flex:1;min-width:250px;max-width:100%">
+      <p style="margin:0 0 6px;font:600 12px/1.4 'Open Sans',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#d6ebfa">${esc(CONFIG.contexto)}</p>
+      <h1 style="font-size:clamp(30px,5vw,48px);line-height:1.05;font-weight:700">${esc(CONFIG.nombre)}</h1>
+      <p style="margin:10px 0 0;font-size:16px;line-height:1.6;max-width:100%;color:#e9f2fb">${esc(CONFIG.descripcion)}</p>
+    </div>
+  </div>`;
+
+$('#navFila').innerHTML = VISTAS.map(v => `<a class="navLink" href="#${v.id}" data-target="${v.id}">${esc(v.nav)}</a>`).join('');
+
+/* El pie de página es fijo en el HTML y común a todos los recursos (ver comun/cimbra.css). */
+
+/* ===================== VISTAS ===================== */
+const enlacesNav = Array.from(document.querySelectorAll('.navLink'));
+let vistaActual = 'que-es';
+
+function estadoVista(v){
+  const est = (n, total, rotulo) => {
+    if (!n) return { t:'sin empezar', color:'#6b7682', fondo:'#f4f6f8' };
+    if (n < total) return { t: rotulo || 'en progreso', color:'#7a5d12', fondo:'#fff8e6' };
+    return { t:'completo', color:'var(--verde-texto)', fondo:'#eafbe6' };
+  };
+  if (v.id === 'inquietud') {
+    const escritas = ['inq1','inq2','inq3'].filter(k => (ficha[k]||'').trim()).length;
+    const elegida = (ficha.elegida||'').trim() ? 1 : 0;
+    return est(escritas + elegida, 2, escritas ? 'falta elegir una' : '');
+  }
+  if (v.id === 'filtro') {
+    const n = FILTROS.filter(f => ficha.filtro[f.id] != null).length;
+    return est(n, FILTROS.length, n + ' de ' + FILTROS.length);
+  }
+  if (v.id === 'tema') {
+    const n = ['fenomeno','sujetos','contexto'].filter(k => (ficha[k]||'').trim()).length;
+    return est(n, 3, n + ' de 3');
+  }
+  if (v.id === 'ficha') {
+    const c = ficha.cierre || {};
+    return est((c.descargado ? 1 : 0) + (c.respaldado ? 1 : 0), 2, 'a medias');
+  }
+  return null;
+}
+
+function irA(id, foco){
+  const v = VISTAS.find(x => x.id === id) || VISTAS[0];
+  vistaActual = v.id;
+  document.querySelectorAll('main > section').forEach(sec => {
+    sec.style.display = sec.dataset.vista === v.id ? '' : 'none';
+  });
+  enlacesNav.forEach(a => a.dataset.target === v.id ? a.setAttribute('aria-current','true') : a.removeAttribute('aria-current'));
+  if (location.hash.slice(1) !== v.id) history.replaceState(null, '', '#' + v.id);
+  pintarEsquema(); pintarSiguiente();
+  window.scrollTo({ top:0, behavior: foco ? 'smooth' : 'auto' });
+  if (foco) {
+    const h = document.querySelector(`main > section[data-vista="${v.id}"] h2`);
+    if (h) { h.setAttribute('tabindex','-1'); h.focus({ preventScroll:true }); }
+  }
+}
+enlacesNav.forEach(a => a.addEventListener('click', (e) => { e.preventDefault(); irA(a.dataset.target, true); }));
+window.addEventListener('hashchange', () => {
+  const id = location.hash.slice(1);
+  if (id && !VISTAS.some(v => v.id === id)) return;
+  irA(id || 'que-es', true);
+});
+
+function pintarEsquema(){
+  const cont = document.getElementById('esquema');
+  if (!cont) return;
+  cont.innerHTML = `<p style="font-size:13px;color:#6b7682;margin:0 0 10px">Las partes de este recurso</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">` + VISTAS.slice(1).map(v => {
+      const e = estadoVista(v);
+      const activo = vistaActual === v.id;
+      const etiqueta = e ? `<span style="display:inline-block;margin-top:8px;font:700 11px 'Open Sans',sans-serif;text-transform:uppercase;letter-spacing:.04em;color:${e.color}">${esc(e.t)}</span>` : '';
+      return `<button type="button" class="card" data-ir="${v.id}" style="flex:1;min-width:190px;text-align:left;cursor:pointer;border:1.5px solid ${activo ? 'var(--azul)' : '#7f8b96'};background:${e ? e.fondo : '#fff'}">
+        <span style="display:block;font:700 15px 'Roboto Condensed',sans-serif;color:var(--tinta)">${esc(v.titulo)}</span>
+        <span style="display:block;font-size:13px;line-height:1.5;color:var(--texto-3);margin-top:4px">${esc(v.sub||'')}</span>${etiqueta}</button>`;
+    }).join('') + `</div>`;
+  cont.querySelectorAll('[data-ir]').forEach(b => b.addEventListener('click', () => irA(b.dataset.ir, true)));
+}
+
+function pintarSiguiente(){
+  document.querySelectorAll('.barraSiguiente').forEach(el => el.remove());
+  const i = VISTAS.findIndex(v => v.id === vistaActual);
+  if (i < 0) return;
+  const seccion = document.querySelector(`main > section[data-vista="${vistaActual}"]`);
+  if (!seccion) return;
+  const anterior = i > 0 ? VISTAS[i - 1] : null;
+  const siguiente = i < VISTAS.length - 1 ? VISTAS[i + 1] : null;
+  const div = document.createElement('div');
+  div.className = 'barraSiguiente';
+  div.style.cssText = 'display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:30px;padding-top:22px;border-top:1px solid var(--borde)';
+  div.innerHTML = `${anterior ? `<button type="button" class="btn btn-sec" data-anterior="${anterior.id}">← Volver a ${esc(anterior.nav.replace(/^\d+ · /,''))}</button>` : '<span></span>'}
+    ${siguiente ? `<button type="button" class="btn btn-pri" data-siguiente="${siguiente.id}">Ir a ${esc(siguiente.nav.replace(/^\d+ · /,''))} →</button>`
+      : '<button type="button" class="btn btn-ghost" data-siguiente="que-es">Volver al inicio</button>'}`;
+  const caja = seccion.querySelector('.wrap') || seccion;
+  caja.appendChild(div);
+  div.querySelectorAll('[data-siguiente],[data-anterior]').forEach(b => b.addEventListener('click', () => irA(b.dataset.siguiente || b.dataset.anterior, true)));
+}
+
+const btnArriba = $('#arriba');
+window.addEventListener('scroll', () => { btnArriba.classList.toggle('ver', window.scrollY > 500); });
+btnArriba.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+/* ===================== EJERCICIOS (pista y segundo intento) ===================== */
+function construirQuiz(contenedorId, items, grupo, avisoId){
+  const wrap = document.getElementById(contenedorId);
+  if (!wrap) return;
+  const estados = items.map(() => ({ elegidas: [], resuelta: false }));
+  wrap.innerHTML = items.map((_, i) => `<div class="quiz" id="${grupo}-q${i}"></div>`).join('');
+
+  function render(i, foco){
+    const it = items[i], st = estados[i];
+    const cont = document.getElementById(`${grupo}-q${i}`);
+    const ops = it.opciones.map((op, oi) => {
+      let bg = '#fff', color = '#1a232b', borde = '#d7dee5', marca = '';
+      const elegida = st.elegidas.includes(oi), correcta = oi === it.correcta;
+      if (elegida && !correcta) { bg = '#fdeeee'; color = '#b0392b'; borde = '#b0392b'; marca = '✗'; }
+      if (st.resuelta && correcta) { bg = '#eafbe6'; color = '#2E7D1F'; borde = '#2E7D1F'; marca = '✓'; }
+      return `<button type="button" class="opcion" data-op="${oi}" style="background:${bg};color:${color};border-color:${borde}"${st.resuelta ? ' disabled' : ''}>
+        <span class="marca" aria-hidden="true">${marca}</span><span>${esc(op)}</span></button>`;
+    }).join('');
+    let fb = '';
+    if (st.elegidas.length) {
+      const acerto = st.resuelta && st.elegidas[st.elegidas.length - 1] === it.correcta;
+      if (!st.resuelta) fb = `<div class="fb" tabindex="-1" style="background:#fff8e6;border-left:4px solid #7a5d12"><p class="fb-t" style="color:#7a5d12">Aún no. Elige otra opción.</p><p>Pista. ${esc(it.pista)}</p></div>`;
+      else if (acerto) fb = `<div class="fb" tabindex="-1" style="background:#eafbe6;border-left:4px solid #2E7D1F"><p class="fb-t" style="color:#2E7D1F">Correcto</p><p>${esc(it.explicacion)}</p></div>`;
+      else fb = `<div class="fb" tabindex="-1" style="background:#fdeeee;border-left:4px solid #b0392b"><p class="fb-t" style="color:#b0392b">La respuesta correcta era "${esc(it.opciones[it.correcta])}"</p><p>${esc(it.explicacion)}</p></div>`;
+    }
+    cont.innerHTML = `${it.enunciado ? `<p class="ejemplo">${it.enunciado}</p>` : ''}<p class="quiz-p">${i+1}. ${esc(it.pregunta)}</p><div class="quiz-ops">${ops}</div>${fb}`;
+    cont.querySelectorAll('.opcion').forEach(b => {
+      b.addEventListener('click', () => {
+        const oi = +b.dataset.op, s = estados[i];
+        if (s.resuelta || s.elegidas.includes(oi)) return;
+        s.elegidas.push(oi);
+        if (oi === items[i].correcta || s.elegidas.length >= 2) s.resuelta = true;
+        render(i, oi);
+        const av = document.getElementById(avisoId);
+        if (av) av.textContent = s.resuelta
+          ? (s.elegidas[s.elegidas.length-1] === items[i].correcta ? 'Correcto. ' : 'Incorrecto. ') + items[i].explicacion
+          : 'Aún no. Pista. ' + items[i].pista;
+      });
+    });
+    if (foco != null) {
+      const btn = cont.querySelector(`.opcion[data-op="${foco}"]`);
+      if (btn && !btn.disabled) btn.focus();
+      else { const f = cont.querySelector('.fb'); if (f) f.focus(); }
+    }
+  }
+  items.forEach((_, i) => render(i));
+}
+
+/* ===================== ETAPA 1 · CASOS ===================== */
+construirQuiz('casosWrap', [
+  { pregunta: 'Una profesora en práctica registra durante cuatro semanas qué estrategias generan más participación en su curso y compara sus registros. ¿Es investigación educativa?',
+    opciones: ['Sí','No'], correcta: 0,
+    pista: 'Fíjate en si hay un registro ordenado y sostenido en el tiempo.',
+    explicacion: 'Hay un plan previo, un registro sistemático y datos que se comparan. Cumple las tres condiciones, aunque el estudio sea pequeño.' },
+  { pregunta: 'El equipo directivo cambia el reglamento de convivencia después de conversarlo en el consejo de profesores. ¿Es investigación educativa?',
+    opciones: ['Sí','No'], correcta: 1,
+    pista: 'Pregúntate con qué evidencia se tomó la decisión.',
+    explicacion: 'La decisión se apoya en opiniones, sin datos recogidos de manera ordenada. Puede ser una buena decisión, pero no es investigación.' },
+  { pregunta: 'Un grupo de estudiantes busca ideas en internet para hacer una maqueta del sistema solar. ¿Es investigación educativa?',
+    opciones: ['Sí','No'], correcta: 1,
+    pista: 'Buscar información y producir conocimiento nuevo no son lo mismo.',
+    explicacion: 'Es una búsqueda de información para resolver una tarea. No hay pregunta de investigación ni datos que analizar.' },
+  { pregunta: 'Un equipo docente aplica un cuestionario a todas las familias sobre las razones de inasistencia y sistematiza los resultados. ¿Es investigación educativa?',
+    opciones: ['Sí','No'], correcta: 0,
+    pista: 'Revisa si hay un instrumento y un análisis posterior.',
+    explicacion: 'Hay un instrumento aplicado a un grupo definido y un análisis de lo recogido. Con eso se puede fundamentar una decisión.' },
+], 'caso', 'casosAviso');
+
+/* ===================== ETAPA 2 · INQUIETUDES ===================== */
+function conectarCampo(id){
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.value = ficha[el.dataset.ficha] || '';
+  el.addEventListener('input', () => {
+    ficha[el.dataset.ficha] = el.value;
+    guardarFicha();
+    if (id.startsWith('inq') || id === 'elegida') { pintarEco(); pintarCopiar(); }
+    if (['fenomeno','sujetos','contexto'].includes(id)) pintarTema();
+    pintarResumen();
+  });
+}
+['inq1','inq2','inq3','elegida','fenomeno','sujetos','contexto'].forEach(conectarCampo);
+
+function pintarCopiar(){
+  const cont = document.getElementById('copiarInq');
+  if (!cont) return;
+  const disponibles = ['inq1','inq2','inq3'].map((k,i) => ({ k, i, texto: (ficha[k]||'').trim() })).filter(x => x.texto);
+  cont.innerHTML = disponibles.length
+    ? disponibles.map(x => `<button type="button" class="btn btn-sm btn-sec" data-k="${x.k}">Usar inquietud ${x.i+1}</button>`).join('')
+    : '';
+  cont.querySelectorAll('button').forEach(b => {
+    b.addEventListener('click', () => {
+      const texto = ficha[b.dataset.k] || '';
+      ficha.elegida = texto;
+      const ta = document.getElementById('elegida');
+      if (ta) { ta.value = texto; ta.focus(); ta.selectionStart = ta.selectionEnd = texto.length; }
+      guardarFicha(); pintarEco(); pintarResumen();
+    });
+  });
+}
+
+function pintarEco(){
+  const el = document.getElementById('ecoInquietud');
+  if (!el) return;
+  const t = (ficha.elegida || '').trim();
+  el.textContent = t || 'Todavía no has escrito nada en la etapa 2. Puedes responder igual, pensando en la idea que tienes en mente.';
+  el.style.color = t ? 'var(--texto-2)' : '#6b7682';
+}
+
+/* ===================== ETAPA 3 · FILTRO ===================== */
+const FILTROS = [
+  { id:'observable', pregunta:'¿Lo que te interesa se puede observar, preguntar o registrar?',
+    ayuda:'Si tu inquietud se responde con una opinión sobre lo que está bien o mal, todavía no es investigable.',
+    opciones:[
+      { t:'Sí, puedo observarlo o preguntarlo', nivel:'ok', fb:'Bien. Ese es el requisito empírico. Anota desde ya cómo lo vas a mirar, observando una clase, preguntando a las personas o revisando documentos.' },
+      { t:'Creo que sí, pero no sé cómo', nivel:'medio', fb:'Es el caso más común. Escribe en una línea qué tendrías que ver o escuchar para darte cuenta de que el fenómeno está ocurriendo. Eso te dará la pista del instrumento.' },
+      { t:'No, es más bien una opinión', nivel:'no', fb:'Reformúlalo. En lugar de "si está bien que pase X", pregúntate cómo ocurre X, con qué frecuencia, o qué dicen quienes lo viven.' }] },
+  { id:'acceso', pregunta:'¿Tienes acceso real a esas personas o documentos este semestre?',
+    ayuda:'Acceso real significa que puedes entrar, pedir autorización y estar ahí en los plazos del curso.',
+    opciones:[
+      { t:'Sí, tengo el contacto', nivel:'ok', fb:'Consérvalo por escrito. Cuando llegue la delimitación te van a pedir nombrar el establecimiento y declarar que tienes acceso.' },
+      { t:'Todavía lo estoy gestionando', nivel:'medio', fb:'Ponle fecha. Gestionar el acceso toma más de lo que uno calcula, y sin acceso no hay datos. Ten un establecimiento alternativo en mente.' },
+      { t:'No tengo acceso', nivel:'no', fb:'Cambia los sujetos antes de seguir. Muchas veces la misma inquietud se puede estudiar con personas a las que sí llegas, por ejemplo tu propio centro de práctica.' }] },
+  { id:'antecedentes', pregunta:'¿Encontraste al menos un estudio sobre algo parecido?',
+    ayuda:'No necesitas leerlos todavía. Solo comprobar que el tema existe en la literatura.',
+    opciones:[
+      { t:'Sí, encontré varios', nivel:'ok', fb:'Guarda esas referencias ahora, con autor y año. Te van a servir para la fundamentación y te ahorrarán una búsqueda después.' },
+      { t:'Encontré poco', nivel:'medio', fb:'Prueba con otras palabras. Casi siempre el tema existe, pero se nombra distinto en la literatura, por ejemplo "convivencia escolar" en vez de "peleas en el recreo".' },
+      { t:'No encontré nada', nivel:'no', fb:'Ojo, esto rara vez significa que nadie lo ha estudiado. Suele significar que el tema está nombrado con palabras cotidianas. Revisa cómo lo llaman los autores del área.' }] },
+  { id:'alcance', pregunta:'¿Cabe en un semestre, con el tiempo y los recursos que tienes?',
+    ayuda:'Piensa en cuántas personas necesitarías, cuántas veces tendrías que ir y cuánto demoraría analizar eso.',
+    opciones:[
+      { t:'Sí, es acotado', nivel:'ok', fb:'Bien. Un estudio pequeño y bien hecho vale más que uno ambicioso a medio terminar.' },
+      { t:'Es un poco amplio', nivel:'medio', fb:'Recórtalo por algún lado, un solo nivel, un solo establecimiento, un periodo corto. Acotar no le quita valor, se lo da.' },
+      { t:'Es muy grande', nivel:'no', fb:'Elige una parte. De "la calidad de la educación" se puede pasar a "cómo evalúan la comprensión lectora dos docentes de un liceo". La pregunta grande se responde de a pedazos.' }] },
+];
+
+function pintarFiltro(){
+  const wrap = document.getElementById('filtroWrap');
+  if (!wrap) return;
+  wrap.innerHTML = FILTROS.map((f, i) => {
+    const elegido = ficha.filtro[f.id];
+    const ops = f.opciones.map((o, oi) => {
+      const sel = elegido === oi;
+      const colores = { ok:['#eafbe6','#2E7D1F'], medio:['#fff8e6','#7a5d12'], no:['#fdeeee','#b0392b'] }[o.nivel];
+      const bg = sel ? colores[0] : '#fff', col = sel ? colores[1] : '#1a232b', bor = sel ? colores[1] : '#d7dee5';
+      return `<button type="button" class="opcion" data-f="${f.id}" data-op="${oi}" style="background:${bg};color:${col};border-color:${bor}">
+        <span class="marca" aria-hidden="true">${sel ? '●' : '○'}</span><span>${esc(o.t)}</span></button>`;
+    }).join('');
+    let fb = '';
+    if (elegido != null) {
+      const o = f.opciones[elegido];
+      const borde = { ok:'#2E7D1F', medio:'#7a5d12', no:'#b0392b' }[o.nivel];
+      const fondo = { ok:'#eafbe6', medio:'#fff8e6', no:'#fdeeee' }[o.nivel];
+      fb = `<div class="fb" tabindex="-1" style="background:${fondo};border-left:4px solid ${borde}"><p>${esc(o.fb)}</p></div>`;
+    }
+    return `<div class="quiz" id="filtro-${f.id}">
+      <p class="quiz-p">${i+1}. ${esc(f.pregunta)}</p>
+      <p style="font-size:13px;color:#6b7682;margin:-8px 0 12px;line-height:1.55">${esc(f.ayuda)}</p>
+      <div class="quiz-ops quiz-ops--fila3">${ops}</div>${fb}</div>`;
+  }).join('');
+
+  wrap.querySelectorAll('.opcion').forEach(b => {
+    b.addEventListener('click', () => {
+      ficha.filtro[b.dataset.f] = +b.dataset.op;
+      guardarFicha();
+      pintarFiltro(); pintarResumen();
+      const nuevo = document.querySelector(`#filtro-${b.dataset.f} .opcion[data-op="${b.dataset.op}"]`);
+      if (nuevo) nuevo.focus();
+      const av = document.getElementById('filtroAviso');
+      const f = FILTROS.find(x => x.id === b.dataset.f);
+      if (av && f) av.textContent = f.opciones[+b.dataset.op].fb;
+    });
+  });
+  pintarResumenFiltro();
+}
+
+function pintarResumenFiltro(){
+  const el = document.getElementById('filtroResumen');
+  if (!el) return;
+  const respondidas = FILTROS.filter(f => ficha.filtro[f.id] != null);
+  if (respondidas.length < FILTROS.length) {
+    el.textContent = `Has respondido ${respondidas.length} de ${FILTROS.length}. Responde todas para ver el resumen.`;
+    return;
+  }
+  const niveles = FILTROS.map(f => f.opciones[ficha.filtro[f.id]].nivel);
+  const nos = FILTROS.filter((f,i) => niveles[i] === 'no').map(f => f.pregunta.toLowerCase().replace('¿','').replace('?',''));
+  const medios = niveles.filter(n => n === 'medio').length;
+  if (nos.length) el.innerHTML = `Tu idea necesita un ajuste antes de seguir, sobre todo en un punto, ${esc(nos[0])}. Vuelve a la etapa 2, reescribe tu inquietud con ese cambio y responde de nuevo. Es normal dar esta vuelta, casi todos los proyectos la dan.`;
+  else if (medios) el.innerHTML = medios === 1
+    ? 'Tu idea es viable, con un punto por resolver. Anótalo como tarea concreta de esta semana y avanza a la etapa 4.'
+    : `Tu idea es viable, con ${medios} puntos por resolver. Anótalos como tareas concretas de esta semana y avanza a la etapa 4.`;
+  else el.innerHTML = 'Tu idea pasa el filtro. Puedes avanzar a acotar el tema.';
+}
+
+/* ===================== ETAPA 4 · TEMA ===================== */
+const PARES = [
+  { amplio: 'La motivación de los estudiantes.', acotado: 'La motivación por participar en clases de Educación Física, en estudiantes de 1° medio de un liceo municipal de Osorno.',
+    nota: 'El primero no dice en quiénes ni dónde, así que podría estudiarse de mil maneras distintas. El segundo ya indica a quién preguntar y dónde ir.' },
+  { amplio: 'Las TIC en la escuela.', acotado: 'El uso de recursos digitales para enseñar comprensión lectora, por docentes de Lengua Castellana de enseñanza media, en un establecimiento de Osorno.',
+    nota: 'La sigla TIC abarca demasiado. Al nombrar para qué se usan y quién las usa, el tema se vuelve abarcable.' },
+  { amplio: 'El aprendizaje del inglés.', acotado: 'Las estrategias que usan los estudiantes de 7° básico para expresarse oralmente en inglés, en un colegio particular subvencionado de Osorno.',
+    nota: 'Aprender inglés incluye lectura, escritura, gramática y habla. Elegir una sola habilidad hace posible el estudio.' },
+];
+$('#paresWrap').innerHTML = PARES.map(p => `
+  <div>
+    <div class="par">
+      <div class="par-caja par-mal"><p class="par-rot" style="color:#b0392b">Demasiado amplio</p>${esc(p.amplio)}</div>
+      <div class="par-caja par-bien"><p class="par-rot" style="color:#2E7D1F">Acotado</p>${esc(p.acotado)}</div>
+    </div>
+    <p style="font-size:13px;color:#6b7682;margin:8px 0 0;line-height:1.6">${esc(p.nota)}</p>
+  </div>`).join('');
+
+construirQuiz('temaQuizWrap', [
+  { pregunta: '¿Cuál de estos temas está acotado, es decir, nombra el fenómeno, a quiénes y dónde?',
+    opciones: [
+      'La convivencia escolar en Chile.',
+      'Las percepciones de docentes de enseñanza media sobre el protocolo de convivencia, en dos liceos municipales de Osorno.',
+      'Los problemas de convivencia y cómo solucionarlos.',
+      'La convivencia escolar y su importancia para el aprendizaje.'],
+    correcta: 1,
+    pista: 'Busca el único que dice a quiénes se va a estudiar y en qué lugar.',
+    explicacion: 'Solo el segundo nombra el fenómeno (las percepciones sobre el protocolo), a quiénes (docentes de enseñanza media) y dónde (dos liceos municipales de Osorno). Los demás se podrían investigar de muchas formas distintas, o proponen solucionar antes de comprender.' },
+], 'tema', 'temaAviso');
+
+function pintarTema(){
+  const el = document.getElementById('vistaTema');
+  if (!el) return;
+  const f = (ficha.fenomeno||'').trim(), s = (ficha.sujetos||'').trim(), c = (ficha.contexto||'').trim();
+  if (!f && !s && !c) { el.textContent = 'Completa las tres partes para ver tu tema armado.'; el.style.color = '#6b7682'; return; }
+  const faltan = [!f && 'el fenómeno', !s && 'en quiénes', !c && 'dónde'].filter(Boolean);
+  el.style.color = 'var(--texto-2)';
+  el.innerHTML = `<p style="margin:0 0 8px"><strong>Mi tema.</strong> ${esc(f || '[fenómeno]')} en ${esc(s || '[en quiénes]')}, en ${esc(c || '[dónde]')}.</p>` +
+    (faltan.length
+      ? `<p style="margin:0;font-size:13.5px;color:#7a5d12">Todavía falta ${esc(faltan.join(' y '))}. Sin esa parte, el tema queda abierto.</p>`
+      : `<p style="margin:0;font-size:13.5px;color:#2E7D1F">Las tres partes están. Léelo en voz alta, si suena raro, casi siempre es el fenómeno el que necesita ser más preciso.</p>`);
+}
+
+/* ===================== FICHA · RESUMEN Y DESCARGAS ===================== */
+const PARTES = [
+  { k:'inquietudes', etiqueta:'Inquietudes', ok: () => ['inq1','inq2','inq3'].some(k => (ficha[k]||'').trim()) },
+  { k:'elegida',     etiqueta:'Inquietud elegida', ok: () => (ficha.elegida||'').trim() },
+  { k:'filtro',      etiqueta:'Filtro de realidad', ok: () => FILTROS.every(f => ficha.filtro[f.id] != null) },
+  { k:'fenomeno',    etiqueta:'Fenómeno', ok: () => (ficha.fenomeno||'').trim() },
+  { k:'sujetos',     etiqueta:'En quiénes', ok: () => (ficha.sujetos||'').trim() },
+  { k:'contexto',    etiqueta:'Dónde', ok: () => (ficha.contexto||'').trim() },
+];
+
+function pintarAvance(){
+  const hechas = PARTES.filter(p => p.ok()).length;
+  const barra = document.getElementById('avanceBarra'), texto = document.getElementById('avanceTexto');
+  if (barra) barra.style.width = Math.round(hechas / PARTES.length * 100) + '%';
+  if (texto) texto.textContent = `${hechas} de ${PARTES.length} partes completas`;
+}
+
+function pintarResumen(){
+  const el = document.getElementById('resumenFicha');
+  if (!el) return;
+  const linea = (rot, val, vacio) => `<div style="padding:12px 0;border-bottom:1px solid #eef1f4">
+      <p style="font:700 11.5px 'Open Sans',sans-serif;text-transform:uppercase;letter-spacing:.05em;color:#6b7682;margin:0 0 4px">${esc(rot)}</p>
+      <p style="font-size:14.5px;line-height:1.6;margin:0;color:${val ? 'var(--texto-2)' : '#6b7682'}">${val ? esc(val) : esc(vacio)}</p></div>`;
+  const inquietudes = ['inq1','inq2','inq3'].map(k => (ficha[k]||'').trim()).filter(Boolean);
+  const f = (ficha.fenomeno||'').trim(), s = (ficha.sujetos||'').trim(), c = (ficha.contexto||'').trim();
+  const tema = (f || s || c) ? `${f || '[fenómeno]'} en ${s || '[en quiénes]'}, en ${c || '[dónde]'}.` : '';
+  const filtroTexto = FILTROS.filter(x => ficha.filtro[x.id] != null)
+    .map(x => `${x.pregunta.replace('¿','').replace('?','')} → ${x.opciones[ficha.filtro[x.id]].t}`).join(' · ');
+  el.innerHTML =
+    linea('Inquietudes anotadas', inquietudes.length ? inquietudes.join(' | ') : '', 'Aún no anotas ninguna (etapa 2).') +
+    linea('Inquietud elegida', ficha.elegida, 'Aún no eliges una (etapa 2).') +
+    linea('Filtro de realidad', filtroTexto, 'Aún no respondes el filtro (etapa 3).') +
+    linea('Tema acotado', tema, 'Aún no armas tu tema (etapa 4).') +
+    linea('Preguntas anotadas', ficha.preguntas.length ? `${ficha.preguntas.length} en total, ${ficha.preguntas.filter(q => !q.resuelta).length} sin resolver` : '', 'Aún no anotas preguntas.') +
+    `<div style="padding:12px 0 0"><p style="font-size:12.5px;color:#6b7682;margin:0">${
+      almacenamientoOk
+        ? 'Guardado automáticamente en este navegador' + (ficha.actualizado ? ', última vez a las ' + new Date(ficha.actualizado).toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'}) + '.' : '.')
+        : 'Este navegador no permite guardar. Descarga tu ficha antes de cerrar la página.'}</p></div>`;
+  pintarAvance();
+}
+
+/* ===================== PREGUNTAS DEL ESTUDIANTE ===================== */
+function agregarPregunta(texto){
+  const t = (texto || '').trim();
+  if (!t) return false;
+  ficha.preguntas.push({ t, resuelta: false, fecha: new Date().toISOString() });
+  guardarFicha(); pintarPreguntas(); pintarResumen();
+  return true;
+}
+
+function pintarPreguntas(){
+  const cont = document.getElementById('listaPreguntas');
+  if (!cont) return;
+  if (!ficha.preguntas.length) {
+    cont.innerHTML = '<p style="font-size:13.5px;color:#6b7682;margin:0">Todavía no anotas ninguna pregunta. No es mala señal al empezar, pero si avanzas y sigues sin dudas, probablemente no estás mirando tu tema con suficiente detalle.</p>';
+    return;
+  }
+  const pendientes = ficha.preguntas.filter(q => !q.resuelta).length;
+  cont.innerHTML = `<p style="font-size:12.5px;color:#6b7682;margin:0 0 6px">${ficha.preguntas.length} anotada${ficha.preguntas.length === 1 ? '' : 's'}, ${pendientes} sin resolver</p>` +
+    ficha.preguntas.map((q, i) => `
+      <div class="pregunta-item${q.resuelta ? ' resuelta' : ''}">
+        <input type="checkbox" id="q-${i}" data-i="${i}" ${q.resuelta ? 'checked' : ''}>
+        <p><label for="q-${i}" style="cursor:pointer">${esc(q.t)}</label></p>
+        <button type="button" class="pregunta-borrar" data-borrar="${i}" aria-label="Borrar esta pregunta" title="Borrar">✕</button>
+      </div>`).join('');
+  cont.querySelectorAll('input[type=checkbox]').forEach(inp => {
+    inp.addEventListener('change', () => {
+      ficha.preguntas[+inp.dataset.i].resuelta = inp.checked;
+      guardarFicha();
+      const fila = inp.closest('.pregunta-item');
+      if (fila) fila.classList.toggle('resuelta', inp.checked);
+      const encabezado = document.querySelector('#listaPreguntas > p');
+      if (encabezado) encabezado.textContent = `${ficha.preguntas.length} anotada${ficha.preguntas.length === 1 ? '' : 's'}, ${ficha.preguntas.filter(q => !q.resuelta).length} sin resolver`;
+      pintarResumen();
+    });
+  });
+  cont.querySelectorAll('.pregunta-borrar').forEach(b => {
+    b.addEventListener('click', () => {
+      ficha.preguntas.splice(+b.dataset.borrar, 1);
+      guardarFicha(); pintarPreguntas(); pintarResumen();
+      const btn = document.getElementById('btnAgregarPregunta');
+      if (btn) btn.focus();
+    });
+  });
+}
+
+document.getElementById('btnAgregarPregunta').addEventListener('click', () => {
+  const ta = document.getElementById('nuevaPregunta');
+  if (agregarPregunta(ta.value)) { ta.value = ''; ta.focus(); }
+});
+
+const panel = document.getElementById('panelPreguntas');
+const btnAnotar = document.getElementById('anotar');
+function abrirPanel(abrir){
+  panel.classList.toggle('abierto', abrir);
+  btnAnotar.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+  if (abrir) { document.getElementById('preguntaRapida').focus(); }
+  else { document.getElementById('panelAviso').textContent = ''; btnAnotar.focus(); }
+}
+btnAnotar.addEventListener('click', () => abrirPanel(!panel.classList.contains('abierto')));
+document.getElementById('btnCerrarPanel').addEventListener('click', () => abrirPanel(false));
+document.getElementById('btnGuardarRapida').addEventListener('click', () => {
+  const ta = document.getElementById('preguntaRapida');
+  if (agregarPregunta(ta.value)) {
+    ta.value = '';
+    document.getElementById('panelAviso').textContent = 'Guardada en tu ficha.';
+    ta.focus();
+  } else {
+    document.getElementById('panelAviso').textContent = 'Escribe la pregunta antes de guardar.';
+  }
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && panel.classList.contains('abierto')) abrirPanel(false); });
+
+function contenidoFicha(){
+  const inquietudes = ['inq1','inq2','inq3'].map(k => (ficha[k]||'').trim()).filter(Boolean);
+  const f = (ficha.fenomeno||'').trim(), s = (ficha.sujetos||'').trim(), c = (ficha.contexto||'').trim();
+  const tema = (f || s || c) ? `${f || '[fenómeno]'} en ${s || '[en quiénes]'}, en ${c || '[dónde]'}.` : '(sin completar)';
+  return [
+    { t:'Inquietudes anotadas', p: inquietudes.length ? inquietudes : ['(sin completar)'] },
+    { t:'Inquietud elegida', p: [ficha.elegida.trim() || '(sin completar)'] },
+    { t:'Filtro de realidad', p: FILTROS.map(x => `${x.pregunta.replace('¿','').replace('?','')} ${ficha.filtro[x.id] != null ? '→ ' + x.opciones[ficha.filtro[x.id]].t : '→ (sin responder)'}`) },
+    { t:'Tema acotado', p: [tema] },
+    { t:'Preguntas que me surgieron', p: ficha.preguntas.length ? ficha.preguntas.map(q => (q.resuelta ? '[resuelta] ' : '[pendiente] ') + q.t) : ['(sin completar)'] },
+  ];
+}
+
+function aviso(texto){ const el = document.getElementById('avisoDescarga'); if (el) el.textContent = texto; }
+
+
+/* ===================== BLOQUE DE CIERRE ===================== */
+/* Un recurso queda terminado cuando el grupo descargó su documento y lo
+   subió a la carpeta de respaldo. La primera casilla se marca sola al
+   descargar y se desmarca si vuelven a editar. La segunda la marcan ellos. */
+function marcarDescarga(){
+  ficha.cierre = Object.assign({ descargado:false, respaldado:false }, ficha.cierre, { descargado:true });
+  guardandoCierre = true; guardarFicha(); guardandoCierre = false;
+  pintarCierre();
+}
+function pintarCierre(){
+  const el = document.getElementById('cierreWrap');
+  if (!el) return;
+  const c = ficha.cierre || {};
+  const listo = c.descargado && c.respaldado;
+  const caja = 'display:flex;gap:12px;align-items:flex-start;border-radius:10px;padding:14px 16px;min-height:44px;border:1px solid';
+  el.innerHTML = `
+    <div style="${caja} ${c.descargado ? 'var(--verde-borde,#ACDA90);background:#f4faf2' : 'var(--borde,#e2e6ea);background:#f4f6f8'};margin-bottom:10px">
+      <span aria-hidden="true" style="flex:none;font-weight:700;color:${c.descargado ? 'var(--verde-texto,#2E7D1F)' : '#6b7682'}">${c.descargado ? '✓' : '○'}</span>
+      <span style="flex:1">
+        <span style="display:block;font-size:14.5px;line-height:1.55;color:var(--texto-2,#3a4551)">Descargamos el documento</span>
+        <span style="display:block;font-size:12.5px;color:var(--texto-3,#55606b);margin-top:3px">${c.descargado
+          ? 'Se marcó al descargar. Si vuelven a editar la ficha se desmarca, porque el archivo que guardaron deja de corresponder.'
+          : 'Se marca sola cuando descarguen la ficha, con cualquiera de los dos botones de arriba.'}</span>
+      </span>
+    </div>
+    <label style="${caja} ${c.respaldado ? 'var(--verde-borde,#ACDA90);background:#f4faf2' : 'var(--borde,#e2e6ea);background:#fff'};cursor:pointer">
+      <input type="checkbox" id="chkRespaldo"${c.respaldado ? ' checked' : ''} style="width:19px;height:19px;flex:none;margin-top:3px;accent-color:var(--verde-texto,#2E7D1F)">
+      <span style="flex:1">
+        <span style="display:block;font-size:14.5px;line-height:1.55;color:var(--texto-2,#3a4551)">Lo subimos a una carpeta Drive de respaldo</span>
+        <span style="display:block;font-size:12.5px;color:var(--texto-3,#55606b);margin-top:3px">Márquenla cuando lo hayan subido. Esta la marca el grupo.</span>
+      </span>
+    </label>
+    ${listo ? `<div class="aviso" style="margin-top:12px;background:#eafbe6;color:#1d4a15"><p style="margin:0"><strong>Este recurso quedó terminado.</strong> En la portada aparece completo y su parte de la barra de avance se llena.</p></div>` : ''}`;
+  const chk = document.getElementById('chkRespaldo');
+  if (chk) chk.addEventListener('change', () => {
+    ficha.cierre = Object.assign({ descargado:false, respaldado:false }, ficha.cierre, { respaldado: chk.checked });
+    guardandoCierre = true; guardarFicha(); guardandoCierre = false;
+    pintarCierre(); pintarEsquema();
+  });
+}
+
+document.getElementById('btnWord').addEventListener('click', async () => {
+  if (typeof docx === 'undefined') { aviso('No se pudo cargar la herramienta de Word. Usa la opción de PDF.'); return; }
+  const { Document, Packer, Paragraph, TextRun, HeadingLevel } = docx;
+  const hoy = new Date().toLocaleDateString('es-CL');
+  const hijos = [
+    new Paragraph({ text: 'Ficha de mi investigación', heading: HeadingLevel.HEADING_1 }),
+    new Paragraph({ spacing:{ after:240 }, children:[ new TextRun({ text: `${CONFIG.nombre} · ${CONFIG.institucion} · ${hoy}`, italics:true, size:20 }) ] }),
+  ];
+  contenidoFicha().forEach(b => {
+    hijos.push(new Paragraph({ text: b.t, heading: HeadingLevel.HEADING_2, spacing:{ before:280, after:120 } }));
+    b.p.forEach(t => hijos.push(new Paragraph({ spacing:{ after:140 }, children:[ new TextRun({ text: t }) ] })));
+  });
+  try {
+    const blob = await Packer.toBlob(new Document({ sections:[{ properties:{}, children: hijos }] }));
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'Ficha_de_mi_investigacion.docx';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    marcarDescarga();
+    aviso('Ficha descargada en Word.');
+  } catch(e) { aviso('No se pudo generar el archivo de Word. Prueba con la opción de PDF.'); }
+});
+
+document.getElementById('btnPDF').addEventListener('click', () => {
+  const area = document.getElementById('areaImpresion');
+  let html = `<h1 style="font-family:Georgia,serif;font-size:23px;margin-bottom:6px">Ficha de mi investigación</h1>
+    <p style="font-family:Georgia,serif;font-size:12px;color:#555;margin-bottom:18px">${esc(CONFIG.nombre)} · ${esc(CONFIG.institucion)} · ${new Date().toLocaleDateString('es-CL')}</p>`;
+  contenidoFicha().forEach(b => {
+    html += `<h2 style="font-family:Georgia,serif;font-size:16px;margin:20px 0 8px">${esc(b.t)}</h2>`;
+    b.p.forEach(t => { html += `<p style="font-family:Georgia,serif;font-size:13px;line-height:1.7;margin-bottom:8px">${esc(t)}</p>`; });
+  });
+  area.innerHTML = html;
+  marcarDescarga();
+  aviso('Se abrió el cuadro de impresión. Elige "Guardar como PDF".');
+  window.print();
+});
+
+document.getElementById('btnBorrar').addEventListener('click', () => {
+  if (!window.confirm('¿Seguro que quieres borrar tu ficha? Se pierde todo lo que escribiste en este navegador y no se puede deshacer.')) return;
+  ficha = Object.assign({}, FICHA_VACIA, { filtro:{}, preguntas:[] });
+  try { localStorage.removeItem(CONFIG.claveFicha); } catch(e) {}
+  ['inq1','inq2','inq3','elegida','fenomeno','sujetos','contexto'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  pintarFiltro(); pintarEco(); pintarCopiar(); pintarTema(); pintarPreguntas(); pintarResumen(); pintarCierre(); pintarEsquema();
+  aviso('Ficha borrada.');
+});
+
+/* ===================== ARRANQUE ===================== */
+cargarFicha();
+['inq1','inq2','inq3','elegida','fenomeno','sujetos','contexto'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.value = ficha[el.dataset.ficha] || '';
+});
+pintarFiltro(); pintarEco(); pintarCopiar(); pintarTema(); pintarPreguntas(); pintarResumen();
+pintarCierre();
+irA(location.hash.slice(1) || 'que-es', false);
+</script>
+
+<!-- Cierre de etapa y enlaces entre etapas (compartido, ver comun/cierre.js) -->
+<script src="../comun/cierre.js" defer data-recurso="idea" data-casillas="no" data-despues="#cierreWrap" data-siguiente="../2-planteamiento/index.html|Planteamiento del problema"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+/* ============================================================
+   CIMBRA · Piezas comunes a todos los recursos
+   El pie de página y el botón "Volver al inicio" son iguales en todos
+   los recursos. Para cambiarlos, se cambian aquí y en el HTML del pie.
+   ============================================================ */
+footer.cimbra-pie{background:#0d1b2a;color:#e9f2fb;padding:36px clamp(20px,6vw,56px) 88px;text-align:center;font:400 14px/1.6 'Open Sans',system-ui,-apple-system,'Segoe UI',Arial,sans-serif}
+footer.cimbra-pie p{margin:0 auto;max-width:760px}
+footer.cimbra-pie p + p{margin-top:8px;font-size:13px;color:#c3ccd6}
+footer.cimbra-pie strong{font-weight:700;color:inherit}
+footer.cimbra-pie a{color:#cfe4fb;text-decoration:underline;text-underline-offset:2px}
+footer.cimbra-pie a:hover{color:#fff}
+
+a.cimbra-volver{position:fixed;left:16px;bottom:16px;z-index:1000;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 18px 10px 14px;border-radius:999px;background:#0055B7;color:#fff;font:600 14px/1 'Open Sans',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;letter-spacing:0;text-decoration:none;box-shadow:0 4px 14px rgba(13,27,42,.24)}
+a.cimbra-volver:hover{background:#003d85;color:#fff}
+a.cimbra-volver svg{display:block;width:16px;height:16px;flex:none}
+a.cimbra-volver:focus-visible{outline:3px solid #FFC845;outline-offset:3px}
+@media print{a.cimbra-volver{display:none}}
