@@ -1,0 +1,2481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diseño metodológico · Investigación Educativa</title>
+<link rel="stylesheet" href="../comun/fuentes.css">
+<script src="../comun/lib/docx.umd.js"></script>
+<style>
+  :root{
+    --azul:#0055B7;--azul-osc:#003d85;--azul-claro:#e9f2fb;--celeste:#8FC6E8;
+    --morado:#9F26B4;--morado-claro:#f3e8f7;
+    --verde:#3FAE29;--verde-texto:#2E7D1F;--verde-claro:#eafbe6;--verde-borde:#ACDA90;
+    --rojo:#b0392b;--rojo-claro:#fdeeee;
+    --ambar-texto:#7a5d12;--ambar-claro:#fff8e6;--ambar-borde:#f0dca0;
+    --tinta:#0d1b2a;--texto:#1a232b;--texto-2:#3a4551;--texto-3:#55606b;
+    --borde:#e2e6ea;--gris-claro:#f4f6f8;--fondo-alt:#f9fafb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:0;background:#fff;font-family:'Open Sans',sans-serif;color:var(--texto);line-height:1.6;overflow-x:hidden}
+  a{color:var(--azul)}
+  a:hover{color:var(--azul-osc)}
+  h1,h2,h3,h4{font-family:'Roboto Condensed',sans-serif;margin:0;line-height:1.15}
+  img{display:block;max-width:100%;height:auto}
+  button{font-family:inherit}
+  textarea,input[type=text]{font-family:'Open Sans',sans-serif}
+  html{scroll-behavior:smooth}
+  section[id]{scroll-margin-top:110px}
+  .skip-link{position:absolute;left:-999px;top:0;background:var(--azul);color:#fff;padding:10px 18px;z-index:200;border-radius:0 0 6px 0}
+  .skip-link:focus{left:0}
+  :focus-visible{outline:3px solid var(--azul);outline-offset:2px}
+  ::selection{background:var(--celeste)}
+  .sec{padding:60px clamp(20px,6vw,56px)}
+  .sec-alt{background:var(--fondo-alt)}
+  .wrap{max-width:1100px;margin:0 auto}
+  .badge{display:inline-block;font:700 12px 'Open Sans',sans-serif;letter-spacing:.07em;text-transform:uppercase;padding:6px 12px;border-radius:20px;margin:0 0 16px}
+  .b-azul{background:var(--azul-claro);color:var(--azul)}
+  .b-verde{background:var(--verde-claro);color:var(--verde-texto)}
+  .b-morado{background:var(--morado-claro);color:var(--morado)}
+  .b-ambar{background:#fff1c2;color:var(--ambar-texto)}
+  .h2{font-size:clamp(26px,3.2vw,36px);margin-bottom:10px;color:var(--tinta)}
+  .h3{font-size:20px;margin:30px 0 8px;color:var(--tinta)}
+  .lead{font-size:16px;line-height:1.7;color:var(--texto-3);margin:0 0 24px;max-width:100%;text-align:justify}
+  table th{background:var(--azul)!important}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+  .card{background:#fff;border:1px solid var(--borde);border-radius:10px;padding:18px 20px;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+  .card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(13,27,42,.09)}
+  .quiz{transition:box-shadow .18s ease}
+  .quiz:hover{box-shadow:0 8px 20px rgba(13,27,42,.06)}
+  .par-caja{transition:transform .18s ease,box-shadow .18s ease}
+  .par-caja:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(13,27,42,.09)}
+  .btn{transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(13,27,42,.12)}
+  .card-t{font:700 15px 'Roboto Condensed',sans-serif;margin:0 0 6px;color:var(--tinta)}
+  .card p.txt{font-size:16px;line-height:1.6;color:var(--texto-3);margin:0}
+  .aviso{display:flex;gap:10px;align-items:flex-start;background:var(--azul-claro);border-radius:10px;padding:14px 16px;margin:0 0 22px;font-size:16px;line-height:1.6;color:#1a3a5c}
+  .aviso-ambar{background:var(--ambar-claro);border:1px solid var(--ambar-borde);color:#5c4a14}
+  .aviso p{margin:0}
+  .btn{min-height:44px;padding:11px 18px;border-radius:8px;font:700 13.5px 'Open Sans',sans-serif;cursor:pointer;border:none}
+  .btn-pri{background:var(--azul);color:#fff}
+  .btn-pri:hover{background:var(--azul-osc)}
+  .btn-sec{background:#fff;color:var(--azul);border:1.5px solid var(--azul)}
+  .btn-sec:hover{background:var(--azul-claro)}
+  .btn-ghost{background:transparent;color:var(--texto-3);border:1.5px dashed #b7c2cc}
+  .btn-ghost:hover{border-color:var(--azul);color:var(--azul)}
+  .campo{margin-bottom:16px}
+  .campo label{display:block;font:700 12px 'Open Sans',sans-serif;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;color:var(--azul)}
+  .campo .ayuda{font-size:12.5px;color:#6b7682;margin:0 0 8px;line-height:1.55}
+  .campo textarea,.campo input[type=text]{width:100%;border-radius:8px;border:1.5px solid #d7dee5;padding:12px 14px;font-size:14.5px;line-height:1.55;color:var(--texto);resize:vertical}
+  .campo textarea{min-height:82px}
+  .campo input[type=text]{min-height:46px}
+  .campo textarea:focus,.campo input[type=text]:focus{outline:none;border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,85,183,.15)}
+  textarea::placeholder,input::placeholder{color:#6b7682;opacity:1}
+  .quiz{background:#fff;border:1px solid var(--borde);border-radius:10px;padding:20px 22px}
+  .quiz-p{font:700 15px 'Roboto Condensed',sans-serif;color:var(--tinta);margin:0 0 14px;line-height:1.35}
+  .quiz-ops{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px}
+  .opcion{min-height:44px;padding:11px 14px;border-radius:8px;font:600 13.5px 'Open Sans',sans-serif;cursor:pointer;text-align:left;display:flex;gap:8px;align-items:flex-start;background:#fff;border:1.5px solid #d7dee5;color:var(--texto)}
+  .opcion{transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background-color .16s ease}
+  .opcion:hover:not([disabled]){border-color:var(--azul);transform:translateY(-2px);box-shadow:0 8px 18px rgba(13,27,42,.09)}
+  .marca{flex:none;font-weight:700;min-width:1em}
+  .fb{margin-top:14px;padding:14px 16px;border-radius:8px}
+  .fb p{margin:0;font-size:13.5px;line-height:1.6;color:var(--texto-2)}
+  .fb p.fb-t{font:700 13px 'Open Sans',sans-serif;margin-bottom:4px}
+  .ejemplo{background:var(--gris-claro);border-left:4px solid #c9d3db;border-radius:0 8px 8px 0;padding:13px 15px;font-size:16px;line-height:1.6;color:var(--texto-2);margin:0 0 12px}
+  .par{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:780px){.par{grid-template-columns:1fr 1fr}}
+  .par-caja{border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.6}
+  .par-mal{background:var(--rojo-claro);border:1px solid #f3c9c2;color:var(--texto-2)}
+  .par-bien{background:var(--verde-claro);border:1px solid var(--verde-borde);color:var(--texto-2)}
+  .par-rot{font:700 11.5px 'Open Sans',sans-serif;text-transform:uppercase;letter-spacing:.05em;margin:0 0 6px}
+  .vista{background:var(--fondo-alt);border:1px solid var(--borde);border-radius:8px;padding:16px 18px;font-size:15px;line-height:1.7;color:var(--texto-2)}
+  .navLink{flex:none;padding:14px 13px;font:600 13px 'Open Sans',sans-serif;color:var(--texto);text-decoration:none;border-bottom:3px solid transparent;white-space:nowrap}
+  .navLink:hover{color:var(--azul)}
+  .navLink[aria-current="true"]{color:var(--azul);border-bottom-color:var(--azul)}
+  .barra{background:var(--gris-claro);border-radius:100px;height:9px;overflow:hidden}
+  .barra > div{height:9px;background:var(--verde-texto);border-radius:100px;width:0;transition:width .4s ease}
+  .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  details.plegable{background:#fff;border:1px dashed #b6c6d6;border-radius:10px;padding:0 18px;margin:16px 0}
+  details.plegable > summary{cursor:pointer;padding:14px 0;font:700 13.5px 'Open Sans',sans-serif;color:var(--azul);min-height:44px}
+  details.plegable[open]{padding-bottom:16px}
+  details.plegable p{font-size:14px;line-height:1.65;color:var(--texto-2);margin:0 0 10px}
+  details.avisoDetalle{background:var(--azul-claro);border-radius:10px;padding:14px 16px;margin:0 0 22px}
+  details.avisoDetalle.ambar{background:var(--ambar-claro);border:1px solid var(--ambar-borde)}
+  details.avisoDetalle > summary{cursor:pointer;list-style:none;display:flex;gap:10px;align-items:center;min-height:44px;font:700 16px/1.5 'Open Sans',sans-serif;color:#1a3a5c}
+  details.avisoDetalle.ambar > summary{color:#5c4a14}
+  details.avisoDetalle > summary::-webkit-details-marker{display:none}
+  details.avisoDetalle > summary .tit{flex:1}
+  details.avisoDetalle > summary .chev{flex:none;display:inline-flex;transition:transform .15s ease}
+  details.avisoDetalle[open] > summary .chev{transform:rotate(180deg)}
+  details.avisoDetalle .cuerpo{margin:10px 0 0 30px;font-size:16px;line-height:1.6;color:#1a3a5c}
+  details.avisoDetalle.ambar .cuerpo{color:#5c4a14}
+  details.avisoDetalle .cuerpo p{margin:0 0 8px}
+  details.avisoDetalle .cuerpo p:last-child{margin:0}
+  .asistente-slot{display:none}
+  #arriba{position:fixed;bottom:86px;right:24px;width:48px;height:48px;border-radius:50%;background:var(--azul);color:#fff;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:150}
+  #arriba.ver{opacity:1;pointer-events:auto}
+  #anotar{position:fixed;bottom:24px;right:82px;min-height:48px;padding:0 18px;border-radius:24px;background:#fff;color:var(--azul);border:1.5px solid var(--azul);display:flex;align-items:center;gap:8px;cursor:pointer;box-shadow:0 4px 14px rgba(13,27,42,.18);font:700 13px 'Open Sans',sans-serif;z-index:150}
+  #anotar:hover{background:var(--azul-claro)}
+  #panelPreguntas{position:fixed;bottom:84px;right:24px;width:min(360px,calc(100vw - 32px));background:#fff;border:1px solid var(--borde);border-radius:12px;box-shadow:0 14px 40px rgba(13,27,42,.22);padding:16px 18px;z-index:160;display:none}
+  #panelPreguntas.abierto{display:block}
+  .pregunta-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #eef1f4}
+  .pregunta-item:last-child{border-bottom:none}
+  .pregunta-item input[type=checkbox]{width:18px;height:18px;flex:none;margin-top:3px;accent-color:var(--verde-texto)}
+  .pregunta-item p{margin:0;font-size:14px;line-height:1.55;color:var(--texto-2);flex:1}
+  .pregunta-item.resuelta p{text-decoration:line-through;color:#6b7682}
+  .pregunta-borrar{background:none;border:none;color:#6b7682;cursor:pointer;font:700 15px 'Open Sans',sans-serif;line-height:1;padding:6px 8px;border-radius:6px;min-height:32px}
+  .pregunta-borrar:hover{color:var(--rojo);background:var(--rojo-claro)}
+  .paso{border-top:1px solid var(--borde);margin-top:36px;padding-top:30px}
+  .paso-alt{background:var(--fondo-alt);border:1px solid var(--borde);border-radius:14px;padding:26px clamp(16px,3vw,30px);margin-top:36px;border-top:1px solid var(--borde)}
+  .paso-num{display:flex;align-items:center;gap:9px;font:700 12px 'Open Sans',sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--azul);margin:0 0 10px}
+  .paso-num i{font-style:normal;display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--azul);color:#fff;font-size:12.5px;flex:0 0 auto}
+  .paso > .h3:first-of-type,.paso-alt > .h3:first-of-type{margin-top:0}
+  .ruta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 28px;padding:0;list-style:none}
+  .ruta li{margin:0}
+  .ruta a{display:inline-block;text-decoration:none;font:600 13px 'Open Sans',sans-serif;color:var(--texto-2);background:#fff;border:1px solid var(--borde);border-radius:20px;padding:7px 14px;min-height:34px;transition:border-color .18s ease,color .18s ease,background .18s ease}
+  .ruta a:hover,.ruta a:focus-visible{border-color:var(--azul);color:var(--azul);background:var(--azul-claro)}
+  .ruta a b{color:var(--azul)}
+  mark.mk{padding:1px 4px;border-radius:3px;color:#1a232b;background:#ffe9a8}
+  mark.mk-enf{background:#cfe4fb}
+  mark.mk-mue{background:#e6dbf7}
+  mark.mk-ins{background:#d9f0cf}
+  mark.mk-res{background:#ffe2d2}
+  sup.mkr{font:700 9.5px 'Open Sans',sans-serif;text-transform:uppercase;letter-spacing:.05em;color:var(--texto-3);margin-left:3px;white-space:nowrap;vertical-align:super}
+  .leyenda{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px;padding:0;list-style:none}
+  .leyenda li{font:600 11.5px 'Open Sans',sans-serif;color:var(--texto-2);border-radius:20px;padding:5px 11px}
+  .card-cab{display:flex;align-items:center;gap:9px;margin:0 0 6px}
+  .card-cab .card-t{margin:0}
+  .ico{flex:0 0 auto;display:inline-flex}
+  .ico svg{display:block}
+  .aviso > .ico{margin-top:1px;color:var(--azul)}
+  .aviso-ambar > .ico{color:var(--ambar-texto)}
+  .aviso > p{margin:0}
+  .est-card{background:#fff;border:1px solid var(--borde);border-radius:10px;padding:16px 18px;margin:0 0 14px}
+  .est-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 12px}
+  .est-n{font:700 13px 'Roboto Condensed',sans-serif;color:var(--tinta);text-transform:uppercase;letter-spacing:.05em;margin:0}
+  .est-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+  .est-grid .campo{margin:0}
+  .est-grid label{display:block;font:700 11.5px 'Open Sans',sans-serif;color:var(--texto-2);margin:0 0 4px}
+  .est-grid input,.est-grid select,.est-grid textarea{width:100%;min-height:42px;border-radius:8px;border:1.5px solid #d7dee5;padding:9px 11px;font-size:14px;font-family:'Open Sans',sans-serif;background:#fff;color:var(--texto)}
+  .est-grid textarea{min-height:66px;resize:vertical}
+  .est-ancho{grid-column:1/-1}
+  #areaImpresion{display:none}
+  @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    .card:hover,.par-caja:hover,.opcion:hover,.btn:hover{transform:none!important}}
+  @media print{
+    body *{visibility:hidden}
+    #areaImpresion,#areaImpresion *{visibility:visible}
+    #areaImpresion{display:block;position:absolute;top:0;left:0;width:100%;padding:24px}
+    #arriba{display:none}
+  }
+  /* ===== burbuja de referencias ===== */
+  .burbuja{position:fixed;right:24px;bottom:24px;z-index:151;display:inline-flex;align-items:center;gap:9px;background:var(--azul);color:#fff;text-decoration:none;padding:12px 17px;border-radius:30px;box-shadow:0 6px 20px rgba(13,27,42,.26);font:700 13.5px 'Open Sans',sans-serif;min-height:48px;transition:transform .16s ease,background .16s ease}
+  .burbuja:hover{background:var(--azul-osc);color:#fff;transform:translateY(-2px)}
+  .burbuja .ico svg{display:block}
+  .burbuja-n{background:#fff;color:var(--azul);border-radius:20px;min-width:24px;height:22px;display:inline-flex;align-items:center;justify-content:center;font:700 12.5px 'Open Sans',sans-serif;padding:0 7px}
+  .burbuja-n.cero{background:rgba(255,255,255,.26);color:#fff}
+  @media (max-width:520px){ .burbuja-t{display:none} .burbuja{right:16px;bottom:16px;padding:12px 15px} }
+  @media print{ .burbuja{display:none} }
+</style><link rel="stylesheet" href="../comun/cimbra.css">
+</head>
+<body>
+<a href="../index.html" class="cimbra-volver" aria-label="Volver al inicio de Cimbra"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Volver al inicio</a>
+
+<a href="#principal" class="skip-link">Saltar al contenido principal</a>
+
+<header id="cabecera" style="background:var(--azul);color:#fff;padding:36px clamp(20px,6vw,56px) 30px"></header>
+
+<nav aria-label="Secciones" style="position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #e2e6ea;box-shadow:0 2px 8px rgba(0,0,0,.04)">
+  <div style="display:flex;gap:4px;overflow-x:auto;padding:0 clamp(20px,6vw,56px);scrollbar-width:thin;max-width:1200px;margin:0 auto" id="navFila"></div>
+</nav>
+
+<main id="principal">
+
+<!-- INICIO -->
+<section id="partida" class="sec" data-vista="inicio">
+  <div class="wrap">
+    <p class="badge b-azul">Antes de empezar</p>
+    <h2 class="h2">Antes de decidir cómo vas a estudiarlo</h2>
+    <p class="lead">El diseño metodológico no se inventa, se deriva. Cada decisión que tomes aquí tiene que poder rastrearse hasta tu pregunta y tus objetivos. Por eso lo primero es comprobar que tienes con qué trabajar, y después ver qué necesitas repasar.</p>
+
+    <h3 class="h3">Lo que necesitas tener antes de seguir</h3>
+    <p class="lead" style="margin-bottom:18px">Marca lo que ya tengas. Si algo falta, vuelve al recurso donde se trabaja, porque sin eso las decisiones de esta etapa quedan al azar.</p>
+    <div id="entradaWrap" style="margin-bottom:22px"></div>
+
+    <div class="card" style="border-left:4px solid var(--azul);margin-bottom:26px">
+      <p style="font:700 13px 'Open Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--azul);margin:0 0 8px">Lo que traes de la etapa anterior</p>
+      <div id="ecoPrevio" style="font-size:15px;line-height:1.7;color:var(--texto-2)"></div>
+    </div>
+
+    <h3 class="h3">Qué necesitas recordar</h3>
+    <p class="lead" style="margin-bottom:18px">Seis preguntas sobre lo que ya viste en la unidad anterior y que aquí se usa todo el tiempo. Responde de acuerdo a lo que sepas y no lo que creas que se espera. Al final vas a ver qué conviene repasar.</p>
+    <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:14px" id="diagQuiz"></div>
+    <div id="diagAviso" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+    <div style="margin-bottom:22px">
+      <button type="button" class="btn btn-ghost" id="btnReiniciarDiag">↺ Reiniciar y responder de nuevo</button>
+    </div>
+    <div id="rutaSugerida"></div>
+
+    <h3 class="h3">El camino, y dónde estás</h3>
+    <div id="esquema" style="margin-bottom:26px"></div>
+
+    <div class="aviso">
+      <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg></span>
+      <p><strong>Cómo usar esta página.</strong> Cada sección te hace tomar una decisión y te pide justificarla. Al final, el taller reúne todo en la matriz y en el cronograma, y lo descargas en Word. Lo que escribas se guarda en este navegador.</p>
+    </div>
+    <div class="asistente-slot" data-asistente="partida"></div>
+  </div>
+</section>
+
+<!-- CÓMO MIRAR -->
+<section id="mirada" class="sec" data-vista="mirada">
+  <div class="wrap">
+    <p class="badge b-verde">Metodología</p>
+    <h2 class="h2">Cómo vas a mirar tu problema</h2>
+    <p class="lead">Aquí tomas las cuatro decisiones que ordenan todo lo demás. Van en cascada, cada una se apoya en la anterior, y las cuatro tienen que poder justificarse desde tu pregunta.</p>
+
+    <ul class="ruta">
+      <li><a href="#pasoM1"><b>1</b> Paradigma</a></li>
+      <li><a href="#pasoM2"><b>2</b> Enfoque</a></li>
+      <li><a href="#pasoM3"><b>3</b> Alcance</a></li>
+      <li><a href="#pasoM4"><b>4</b> Diseño</a></li>
+      <li><a href="#pasoM5"><b>5</b> Tus decisiones</a></li>
+    </ul>
+
+    <!-- PASO 1 -->
+    <div id="pasoM1" class="paso" style="border-top:0;margin-top:0;padding-top:0">
+      <h3 class="paso-num"><i>1</i> El paradigma</h3>
+      <p class="lead" style="margin-bottom:18px">El paradigma es tu postura sobre qué cuenta como conocimiento en este estudio y decide qué vas a poder afirmar al final. Los artículos rara vez lo declaran, pero las tesis sí, y la tuya tiene que hacerlo.</p>
+      <div class="grid" style="margin-bottom:22px" id="paradigmasWrap"></div>
+
+      <div class="aviso">
+        <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg></span>
+        <p><strong>La pista está en tu pregunta.</strong> Si tu pregunta empieza con "de qué manera", "cómo experimentan" o "qué significa", estás buscando comprender, y eso es interpretativo. Si empieza con "cuál es el nivel de", "qué relación existe entre" o "qué efecto produce", estás buscando medir y generalizar, y eso es positivista.</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:22px" id="paradigmaQuiz"></div>
+      <div id="paradigmaAviso" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+    </div>
+
+    <!-- PASO 2 -->
+    <div id="pasoM2" class="paso-alt">
+      <h3 class="paso-num"><i>2</i> El enfoque</h3>
+      <p class="lead" style="margin-bottom:18px">El enfoque es la estrategia con la que vas a estudiar el fenómeno. Ya lo reconociste en los estudios que leíste, ahora te toca elegir el tuyo. Y se elige por lo que tu pregunta necesita, no por lo que hace la mayoría del campo.</p>
+
+      <div class="card" style="border-left:4px solid var(--morado);margin-bottom:22px">
+        <p style="font:700 13px 'Open Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--morado);margin:0 0 8px">Cómo se ha estudiado tu problema</p>
+        <div id="ecoEnfoques" style="font-size:14.5px;line-height:1.7;color:var(--texto-2)"></div>
+      </div>
+
+      <details class="plegable">
+        <summary>Repaso, los tres enfoques</summary>
+        <div class="grid" id="enfoquesWrap" style="margin-bottom:12px"></div>
+        <p id="enlaceAnteriorRepaso" style="font-size:13.5px;color:var(--texto-3)"></p>
+      </details>
+
+      <div class="scroll-x" style="overflow-x:auto;margin:20px 0 22px">
+        <table style="width:100%;border-collapse:collapse;font-size:13.5px;min-width:620px">
+          <caption style="caption-side:bottom;text-align:left;font-size:12.5px;color:#6b7682;padding-top:8px">La última columna es la más importante. Es lo que vas a poder escribir en tus conclusiones.</caption>
+          <thead><tr>
+            <th scope="col" style="background:var(--tinta);color:#fff;text-align:left;padding:9px 12px;font:700 12px 'Open Sans',sans-serif">Paradigma</th>
+            <th scope="col" style="background:var(--tinta);color:#fff;text-align:left;padding:9px 12px;font:700 12px 'Open Sans',sans-serif">Enfoque coherente</th>
+            <th scope="col" style="background:var(--tinta);color:#fff;text-align:left;padding:9px 12px;font:700 12px 'Open Sans',sans-serif">Qué vas a poder afirmar</th>
+          </tr></thead>
+          <tbody>
+            <tr><td style="padding:9px 12px;border-top:1px solid #eef1f4">Positivista</td><td style="padding:9px 12px;border-top:1px solid #eef1f4">Cuantitativo</td><td style="padding:9px 12px;border-top:1px solid #eef1f4">Cuánto ocurre, con qué frecuencia, y si dos cosas varían juntas. Hasta dónde se puede extender esa afirmación depende de cómo elegiste la muestra.</td></tr>
+            <tr><td style="padding:9px 12px;border-top:1px solid #eef1f4">Interpretativo</td><td style="padding:9px 12px;border-top:1px solid #eef1f4">Cualitativo</td><td style="padding:9px 12px;border-top:1px solid #eef1f4">Qué significa el fenómeno para quienes lo viven, en ese contexto. No se extiende a otros contextos, y no hace falta que lo haga.</td></tr>
+            <tr><td style="padding:9px 12px;border-top:1px solid #eef1f4">Ambos, en momentos distintos</td><td style="padding:9px 12px;border-top:1px solid #eef1f4">Mixto</td><td style="padding:9px 12px;border-top:1px solid #eef1f4">Las dos cosas, si de verdad haces las dos. Un estudio mixto exige dos instrumentos, dos análisis y un momento donde los resultados se cruzan.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="aviso aviso-ambar">
+        <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg></span>
+        <p><strong>Sobre el enfoque mixto.</strong> Suena a lo más completo y por eso lo eligen muchos grupos, pero cuesta el doble. Son dos instrumentos que validar, dos formas de análisis y un semestre igual de largo. Elígelo solo si tu pregunta de verdad tiene dos partes que se responden de maneras distintas, y no para cubrirte por si acaso.</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:22px" id="enfoqueQuiz"></div>
+      <div id="enfoqueAviso" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+    </div>
+
+    <!-- PASO 3 -->
+    <div id="pasoM3" class="paso">
+      <h3 class="paso-num"><i>3</i> El alcance</h3>
+      <p class="lead" style="margin-bottom:18px">El alcance dice hasta dónde llega tu estudio. Se reconoce mirando el verbo de tu objetivo general. Estos son los cuatro de Hernández et al. (2014), ordenados de menor a mayor exigencia.</p>
+      <div class="grid" style="margin-bottom:20px" id="alcancesWrap"></div>
+
+      <details class="plegable">
+        <summary>Ver cómo se justifica cada alcance, con la frase hecha</summary>
+        <div id="alcancesJust"></div>
+      </details>
+
+      <div class="aviso aviso-ambar">
+        <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg></span>
+        <p><strong>Dos avisos de realidad.</strong> El alcance <strong>exploratorio</strong> rara vez es utilizado en este tipo de estudios, pues generalmente hay literatura de la mayoría de los problemas. El alcance <strong>explicativo</strong> exige manipular una variable y tener grupo de comparación, o sea un diseño experimental o cuasiexperimental, que en un semestre casi nunca cabe. La mayoría de los trabajos de esta asignatura son descriptivos, y un descriptivo bien hecho vale más que un correlacional mal sostenido.</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:22px" id="alcanceQuiz"></div>
+      <div id="alcanceAviso" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+    </div>
+
+    <!-- PASO 4 -->
+    <div id="pasoM4" class="paso-alt">
+      <h3 class="paso-num"><i>4</i> El diseño</h3>
+      <p class="lead" style="margin-bottom:18px">Alcance y diseño no son lo mismo, aunque se confunden todo el tiempo. El alcance dice hasta dónde llegas. El diseño dice <strong>cómo te las arreglas para recoger los datos</strong>, o sea si intervienes o no, y cuántas veces mides. Ato, López y Benavente (2013) lo ordenan así.</p>
+      <div class="grid" style="margin-bottom:20px" id="disenosWrap"></div>
+
+      <div class="aviso">
+        <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg></span>
+        <p><strong>Cómo se escribe junto.</strong> Las cuatro decisiones se declaran en una sola frase al comienzo de tu metodología. Por ejemplo, "el estudio se sitúa en un paradigma interpretativo, con enfoque cualitativo, alcance descriptivo y un diseño no experimental de corte transversal". Después viene un párrafo por cada una justificándola.</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:22px" id="disenoQuiz"></div>
+      <div id="disenoAviso" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+    </div>
+
+    <!-- PASO 5 -->
+    <div id="pasoM5" class="paso">
+      <h3 class="paso-num"><i>5</i> Tus cuatro decisiones</h3>
+      <p class="lead" style="margin-bottom:18px">Elige y justifica. La justificación no es repetir la definición, es decir por qué tu pregunta y tus objetivos piden eso y no otra cosa, apoyándote en un autor.</p>
+      <div class="card" id="decisionesWrap"></div>
+      <div id="revisionMirada" style="margin-top:16px"></div>
+      <div class="asistente-slot" data-asistente="mirada"></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUÉ OBSERVAR -->
+<section id="observable" class="sec" data-vista="observable">
+  <div class="wrap">
+    <p class="badge b-morado">Del objetivo a lo observable</p>
+    <h2 class="h2">Qué vas a observar, exactamente</h2>
+    <p class="lead">Entre tu objetivo y tu instrumento falta un paso, y es el que más se salta. Un objetivo dice "analizar la motivación", pero la motivación no se puede preguntar así. Hay que descomponerla hasta llegar a algo que una persona pueda responder. Eso es operacionalizar.</p>
+
+    <div class="aviso">
+      <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg></span>
+      <p><strong>Se llama distinto según tu enfoque.</strong> En cuantitativo se llaman <strong>variables</strong> y se operacionalizan antes de recoger datos. En cualitativo se llaman <strong>categorías</strong> y se pueden definir antes, pero pueden aparecer otras durante el análisis. El trabajo es el mismo, bajar desde el concepto hasta algo observable.</p>
+    </div>
+
+    <details class="plegable">
+      <summary>Si tu objetivo relaciona dos variables, una es independiente y la otra dependiente</summary>
+      <p><strong>Esto aplica solo a algunos estudios.</strong> Si tu objetivo describe cómo se manifiesta algo, no tienes variable independiente ni dependiente, y así está bien. La mayoría de los trabajos de esta asignatura son descriptivos. Estas dos aparecen cuando el objetivo dice que algo se relaciona con algo, o que algo influye en algo.</p>
+      <p><strong>La independiente</strong> es la que se supone que influye. En estos estudios no se manipula, viene dada, como el uso de una técnica, el clima de aula o los años de experiencia docente.</p>
+      <p><strong>La dependiente</strong> es la que se mide para ver si cambia. Es el efecto que se observa.</p>
+      <p class="ejemplo">"Los estudiantes que usan técnicas de organización del tiempo presentan menores niveles de estrés."<br>Independiente, el uso de técnicas de organización. Dependiente, el nivel de estrés.</p>
+      <p>El atajo para distinguirlas es preguntarse cuál sería la causa y cuál el efecto. Y para reconocerlas en tu propio objetivo, mira el verbo. "Determinar la relación entre X e Y" y "determinar el efecto de X sobre Y" las tienen. "Describir X" y "caracterizar X" no.</p>
+      <p><strong>Dos cuidados.</strong> En un estudio correlacional las dos se miden tal como están, sin manipular nada, así que se puede afirmar que varían juntas pero no que una causa la otra. Y si marcas una independiente y una dependiente, tu alcance deja de ser descriptivo y pasa a ser correlacional o explicativo, así que hay que declararlo así en la sección anterior.</p>
+      <p style="margin:0">Las dos se operacionalizan igual, con el mismo descenso de recién. Lo que cambia es el papel que cumplen en tu pregunta, no cómo se bajan a indicadores.</p>
+    </details>
+
+    <h3 class="h3">Los tres niveles</h3>
+    <p class="lead" style="margin-bottom:16px">Presiona para ir descubriendo cada nivel, en orden. Así se ve el descenso real, del concepto a lo observable.</p>
+    <div style="margin-bottom:24px" id="nivelesWrap"></div>
+
+    <h3 class="h3">Un ejemplo completo</h3>
+    <p class="lead" style="margin-bottom:16px">El mismo recorrido, del concepto a lo observable, aplicado primero a una variable y después a una categoría. Fíjate en que la definición no es de diccionario, dice qué se va a entender por eso <em>en este estudio</em>.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-bottom:24px">
+      <div>
+        <p style="font:700 12px 'Open Sans',sans-serif;text-transform:uppercase;letter-spacing:.05em;color:var(--azul);margin:0 0 12px">Si tu estudio es cuantitativo</p>
+        <div id="cuantiEjemplo"></div>
+      </div>
+      <div>
+        <p style="font:700 12px 'Open Sans',sans-serif;text-transform:uppercase;letter-spacing:.05em;color:var(--morado);margin:0 0 12px">Si tu estudio es cualitativo</p>
+        <div id="cualiEjemplo"></div>
+      </div>
+    </div>
+
+    <h3 class="h3">Practica antes de hacer la tuya</h3>
+    <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:26px" id="obsQuiz"></div>
+    <div id="obsAviso" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+
+    <h3 class="h3">Tu tabla</h3>
+    <p class="lead" style="margin-bottom:16px">Parte por tu <strong>objetivo general</strong>, no por los específicos. Ahí están las variables o los conceptos clave que tienes que descomponer. Una fila por cada uno.</p>
+    <div id="ecoObjetivos" style="margin-bottom:18px"></div>
+
+    <div class="aviso aviso-ambar" style="margin-bottom:18px">
+      <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg></span>
+      <p><strong>Si tu estudio es cualitativo.</strong> No busques subcategorías todavía, esas suelen ser emergentes y se ajustan recién después del análisis. Lo que sí puedes hacer ahora es identificar entre 2 y 3 conceptos clave que aparecen en tu objetivo general, normalmente los sustantivos centrales del fenómeno, por ejemplo "violencia escolar", "convivencia" o "planificación docente", y definir cada uno con un autor. Si ya intuyes algunas subcategorías, anótalas como tentativas, no como definitivas.</p>
+    </div>
+
+    <div id="ecoMarco" style="margin-bottom:18px"></div>
+    <div id="obsWrap"></div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:4px">
+      <button type="button" class="btn btn-sec" id="btnAgregarObs">+ Agregar variable o concepto</button>
+      <span id="obsContador" style="font-size:13px;color:var(--texto-3)"></span>
+    </div>
+    <div id="obsTablaAviso" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+    <div id="revisionObservable" style="margin-top:18px"></div>
+
+    <div class="campo" style="margin-top:22px">
+      <label for="o_cierre">Cómo tu(s) instrumento(s) responden tu objetivo general (y tu pregunta)</label>
+      <p class="ayuda" id="ay_ocierre">Una o dos frases por instrumento. No repitas la tabla, di cómo sumando lo que mide u observa cada variable o concepto de arriba, terminas respondiendo tu objetivo general y tu pregunta de investigación.</p>
+      <textarea id="o_cierre" data-ficha="o_cierre" aria-describedby="ay_ocierre" placeholder="A partir de lo anterior, se aplicará ... para responder ... , lo que en conjunto permite responder el objetivo general y la pregunta de investigación porque ..."></textarea>
+    </div>
+
+    <div class="aviso">
+      <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg></span>
+      <p id="puenteInstrumentos"><strong>El instrumento se construye en otro recurso.</strong> Aquí solo declaras cuál vas a usar y por qué. La redacción de los enunciados, la escala, la trazabilidad y la validación por juicio de expertos se trabajan en el recurso de instrumentos, y esta tabla es justamente lo que se lleva para allá.</p>
+    </div>
+    <div class="asistente-slot" data-asistente="observable"></div>
+  </div>
+</section>
+
+<!-- CON QUIÉNES -->
+<section id="quienes" class="sec" data-vista="quienes">
+  <div class="wrap">
+    <p class="badge b-azul">Sujetos</p>
+    <h2 class="h2">Con quiénes, cuántos y cómo llegas a ellos</h2>
+    <p class="lead">Esta sección decide más cosas de las que parece. De quiénes estudies depende qué vas a poder afirmar, y de si consigues el acceso depende que el proyecto exista.</p>
+
+    <ul class="ruta">
+      <li><a href="#pasoQ1"><b>1</b> Población y muestra</a></li>
+      <li><a href="#pasoQ2"><b>2</b> Cómo seleccionas</a></li>
+      <li><a href="#pasoQ3"><b>3</b> Cuántos</a></li>
+      <li><a href="#pasoQ4"><b>4</b> El acceso</a></li>
+      <li><a href="#pasoQ5"><b>5</b> Tu decisión</a></li>
+    </ul>
+
+    <div id="pasoQ1" class="paso" style="border-top:0;margin-top:0;padding-top:0">
+      <h3 class="paso-num"><i>1</i> Población y muestra</h3>
+      <div class="grid" style="margin-bottom:20px" id="poblacionWrap"></div>
+      <div class="aviso">
+        <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg></span>
+        <p><strong>Delimita la población con cuatro datos.</strong> Quiénes son, de qué institución o comuna, en qué nivel o cargo, y en qué periodo. "Estudiantes de enseñanza media" no es una población, pues es un muy amplio. "Estudiantes de primero y segundo medio de un liceo municipal de Osorno, durante el segundo semestre de 2026" sí lo es.</p>
+      </div>
+    </div>
+
+    <div id="pasoQ2" class="paso-alt">
+      <h3 class="paso-num"><i>2</i> Cómo seleccionas</h3>
+      <p class="lead" style="margin-bottom:18px">Hay dos maneras de elegir a quiénes vas a estudiar, y cada una tiene subtipos. Lo importante no es el nombre, es lo que cada una te permite decir después.</p>
+      <div class="grid" style="margin-bottom:20px" id="muestreoWrap"></div>
+
+      <details class="plegable">
+        <summary>Por si quieres profundizar: Haz click aquí para ver los subtipos de cada uno</summary>
+        <div id="subtiposWrap"></div>
+      </details>
+
+      <div class="aviso aviso-ambar">
+        <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg></span>
+        <p><strong>Esto es lo que más se equivoca, léelo con calma.</strong> Casi todos los proyectos de esta asignatura trabajan con el curso o el establecimiento donde hacen su práctica, y eso es <strong>muestreo por conveniencia</strong>, que es no probabilístico. Y está bien, es lo razonable en un semestre. Lo que no se puede es hacer eso y después escribir que la muestra es representativa o que los resultados se generalizan. Un estudio cuantitativo con muestra no probabilística es perfectamente válido, solo que sus conclusiones valen para ese grupo y ese contexto, y así hay que escribirlas. Declararlo no despretigia tu estudio. Ocultarlo sí.</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:22px" id="muestreoQuiz"></div>
+      <div id="muestreoAviso" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+    </div>
+
+    <div id="pasoQ3" class="paso">
+      <h3 class="paso-num"><i>3</i> Cuántos</h3>
+      <p class="lead" style="margin-bottom:18px">No hay un número mágico, pero sí un criterio distinto según cómo seleccionaste. Estos son los tres casos que se dan en esta asignatura.</p>
+      <div class="grid" style="margin-bottom:20px" id="tamanoWrap"></div>
+      <div class="aviso">
+        <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg></span>
+        <p><strong>Lo que se evalúa no es el número, es el criterio.</strong> En el informe no basta con decir "la muestra será de 60 estudiantes". Hay que decir por qué 60, de dónde salen y qué pasa si alguno no participa. Un número sin criterio es un número inventado.</p>
+      </div>
+    </div>
+
+    <div id="pasoQ4" class="paso-alt">
+      <h3 class="paso-num"><i>4</i> El acceso</h3>
+      <p class="lead" style="margin-bottom:18px">Es lo que más proyectos frena, y casi siempre se descubre tarde. Conviene resolverlo ahora, mientras todavía puedes cambiar de establecimiento.</p>
+      <div class="grid" style="margin-bottom:12px" id="accesoWrap"></div>
+      <div id="ecoViabilidad" style="margin-top:14px"></div>
+    </div>
+
+    <div id="pasoQ5" class="paso">
+      <h3 class="paso-num"><i>5</i> Tu decisión</h3>
+      <div class="card" id="quienesWrap"></div>
+      <div id="revisionQuienes" style="margin-top:16px"></div>
+      <div class="asistente-slot" data-asistente="quienes"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO Y CUÁNDO -->
+<section id="campo" class="sec" data-vista="campo">
+  <div class="wrap">
+    <p class="badge b-verde">Trabajo de campo</p>
+    <h2 class="h2">Cómo vas a recoger los datos, y con qué resguardos</h2>
+    <p class="lead">El procedimiento es el relato de lo que vas a hacer, en orden y con fechas. La ética no es un párrafo al final, es lo que hace que puedas entrar a un establecimiento y que las personas quieran participar.</p>
+
+    <h3 class="h3">Los pasos del procedimiento</h3>
+    <p class="lead" style="margin-bottom:18px">Cinco pasos, en este orden. Abre cada uno para ver qué implica y qué error se comete ahí.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:26px" id="pasosCampo"></div>
+
+    <h3 class="h3">Los resguardos éticos</h3>
+    <p class="lead" style="margin-bottom:18px">Cinco, y el primero cambia según con quién trabajes. Esto se escribe en el informe y además se materializa en documentos que tienes que preparar.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-bottom:20px" id="eticaWrap"></div>
+
+    <details class="avisoDetalle ambar">
+      <summary>
+        <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg></span>
+        <span class="tit">¿Trabajarías con menores de edad? Haz click aquí para saber qué necesitarás:</span>
+        <span class="chev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+      </summary>
+      <div class="cuerpo">
+        <p>Necesitas dos documentos. Primero, el <strong>consentimiento</strong>, que lo firma el apoderado porque es quien puede autorizar legalmente. Segundo, el <strong>asentimiento</strong>, que lo firma el estudiante, en lenguaje que él pueda entender, porque nadie participa en una investigación comprender de qué trata.</p>
+        <p>Que el apoderado autorice no obliga al estudiante a participar, y si el estudiante no quiere, no participa. Muchos establecimientos tienen además su propio protocolo, así que deberás preguntar de antemano más adelante cuando sea el momento.</p>
+      </div>
+    </details>
+
+    <details class="avisoDetalle">
+      <summary>
+        <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg></span>
+        <span class="tit">Anonimato y confidencialidad no son lo mismo</span>
+        <span class="chev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+      </summary>
+      <div class="cuerpo">
+        <p><strong>Anonimato</strong> significa que ni siquiera tú puedes saber quién respondió qué. Se logra cuando no pides ningún dato identificatorio, típico de una encuesta.</p>
+        <p><strong>Confidencialidad</strong> significa que tú sí sabes quién es, porque lo entrevistaste cara a cara, pero te comprometes a que nadie más pueda identificarlo. Se logra con códigos en vez de nombres, por ejemplo E1PH para "entrevistado 1, Pedagogía en Historia", y cambiando los nombres de lugares y personas que aparezcan en los relatos.</p>
+        <p>En una entrevista no puedes prometer anonimato, porque no es cierto. Promete confidencialidad, que sí puedes cumplir.</p>
+      </div>
+    </details>
+
+    <div style="display:flex;flex-direction:column;gap:16px;margin:22px 0" id="eticaQuiz"></div>
+    <div id="eticaAviso" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="card">
+      <div class="campo">
+        <label for="c_pasos">Tu procedimiento</label>
+        <p class="ayuda" id="ay_cpasos">En párrafo, no en lista, y en futuro. Usa los seis pasos de arriba como guía y agrega tus fechas y tu establecimiento.</p>
+        <textarea id="c_pasos" data-ficha="c_pasos" aria-describedby="ay_cpasos" style="min-height:150px" placeholder="El procedimiento de recolección de datos se desarrollará en seis etapas. En primer lugar, se solicitará..."></textarea>
+      </div>
+      <div class="campo" style="margin-bottom:0">
+        <label for="c_etica">Tus resguardos éticos</label>
+        <p class="ayuda" id="ay_cetica">Qué documentos vas a usar, cómo vas a identificar a los participantes y qué harás con los datos al terminar.</p>
+        <textarea id="c_etica" data-ficha="c_etica" aria-describedby="ay_cetica" style="min-height:120px" placeholder="Se solicitará consentimiento informado a... y asentimiento a... Los participantes serán identificados mediante..."></textarea>
+      </div>
+    </div>
+    <div id="revisionCampo" style="margin-top:16px"></div>
+
+    <details class="plegable">
+      <summary>Ver un procedimiento completo</summary>
+      <p class="ejemplo">"El procedimiento de recolección de datos se desarrollará en cinco etapas. En primer lugar, se solicitará autorización escrita a la dirección del establecimiento, mediante una carta que explicará el propósito del estudio y el uso que se dará a la información. En segundo lugar, se coordinará con la Unidad Técnico Pedagógica la fecha y el horario de aplicación, procurando no interferir con evaluaciones programadas. En tercer lugar, se enviará el consentimiento informado a los apoderados y se aplicará el asentimiento a los estudiantes el mismo día de la aplicación. En cuarto lugar, se aplicará el instrumento definitivo durante una hora de clases, previa lectura en voz alta de las instrucciones y del resguardo de anonimato. Finalmente, las respuestas se digitalizarán en una base de datos en la que cada participante será identificado mediante un código numérico, y los cuestionarios en papel se mantendrán bajo resguardo del equipo investigador hasta el término del estudio."</p>
+      <p style="font-size:13px;color:var(--texto-3)">Fíjate en tres cosas. Está todo en futuro, cada etapa dice quién hace qué y dónde, y los resguardos éticos aparecen dentro del relato y no como un apéndice.</p>
+    </details>
+    <div class="asistente-slot" data-asistente="campo"></div>
+  </div>
+</section>
+
+<!-- TALLER -->
+<section id="taller" class="sec" data-vista="taller">
+  <div class="wrap">
+    <p class="badge b-morado">Taller</p>
+    <h2 class="h2">Tu matriz y tu cronograma</h2>
+    <p class="lead">La matriz reúne lo que ya decidiste en las secciones anteriores. No hay que volver a escribirla, se arma sola. Lo que falta es revisar que sea coherente y ordenar el tiempo que queda.</p>
+
+    <h3 class="h3">Matriz de decisiones metodológicas</h3>
+    <p class="lead" style="margin-bottom:16px">Si algo aparece vacío, vuelve a la sección que corresponda con el botón de cada fila.</p>
+    <div id="matrizWrap" style="margin-bottom:12px"></div>
+    <div id="coherenciaWrap" style="margin-bottom:26px"></div>
+
+    <h3 class="h3">Plan de trabajo</h3>
+    <p class="lead" style="margin-bottom:16px">Ordena lo ya hecho y proyecta hasta el cierre. Escribe en cada fase qué harás y entre qué fechas.</p>
+    <div id="cronoWrap" style="margin-bottom:22px"></div>
+
+    <h3 class="h3">Carta Gantt</h3>
+    <p class="lead" style="margin-bottom:16px">Pinta las celdas para representar la duración de cada fase. Puedes cambiar los nombres, los periodos y los colores. Se guarda en este navegador y sale en la descarga.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+      <button type="button" class="btn btn-sec" id="ganttFila">+ Actividad</button>
+      <button type="button" class="btn btn-sec" id="ganttPer">+ Periodo</button>
+      <button type="button" class="btn btn-sec" id="ganttPerMenos">− Periodo</button>
+      <button type="button" class="btn btn-ghost" id="ganttReset">Restaurar</button>
+    </div>
+    <div id="ganttWrap" class="scroll-x" style="overflow-x:auto;max-width:100%"></div>
+    <p style="font-size:13px;color:var(--texto-3);margin-top:10px">Haz clic en una celda para pintarla o despintarla. El cuadrito de color cambia el tono de la fila.</p>
+    <div class="asistente-slot" data-asistente="taller"></div>
+  </div>
+</section>
+
+<!-- REVISIÓN -->
+<section id="errores" class="sec" data-vista="revision">
+  <div class="wrap">
+    <p class="badge b-ambar">Antes de escribir</p>
+    <h2 class="h2">Lo que debilita un diseño metodológico</h2>
+    <p class="lead">Siete errores que aparecen todos los semestres. Se muestra primero el error. Abre cada tarjeta cuando quieras ver cómo se arregla.</p>
+    <div class="grid" id="errMet"></div>
+  </div>
+</section>
+
+<section id="checklist" class="sec sec-alt" data-vista="revision">
+  <div class="wrap">
+    <p class="badge b-verde">Revisión</p>
+    <h2 class="h2">¿Tu diseño se sostiene?</h2>
+    <p class="lead">Marca lo que ya puedas responder con lo que tienes escrito. Si algo queda sin marcar, ahí está el trabajo que falta.</p>
+    <div style="display:flex;flex-direction:column;gap:22px" id="checklistWrap"></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px">
+      <button class="btn btn-ghost" id="btnDesmarcar">Desmarcar todo</button>
+    </div>
+    <div class="asistente-slot" data-asistente="checklist"></div>
+  </div>
+</section>
+
+<!-- BORRADOR -->
+<section id="borrador" class="sec" data-vista="cierre">
+  <div class="wrap">
+    <p class="badge b-azul">Tu borrador</p>
+    <h2 class="h2">Descarga lo que escribiste</h2>
+    <p class="lead">Sale ordenado con los títulos, incluidas la tabla de operacionalización y la carta Gantt, así que puedes seguir escribiendo directamente ahí. Lo que está en esta página se guarda solo en este navegador, de modo que conviene descargarlo antes de cerrar.</p>
+
+    <div style="margin-bottom:22px">
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--texto-3);margin-bottom:6px">
+        <span>Avance de tu borrador</span><span id="avanceTexto">0 de 0 partes con contenido</span>
+      </div>
+      <div class="barra"><div id="avanceBarra"></div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px" id="resumenBorrador"></div>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+      <button class="btn btn-pri" id="btnWord">Descargar en Word</button>
+      <button class="btn btn-sec" id="btnPDF">Imprimir o guardar en PDF</button>
+      <button class="btn btn-ghost" id="btnBorrar" style="color:var(--rojo);border-color:#e3b8b0">Borrar mi borrador</button>
+    </div>
+    <p id="avisoDescarga" role="status" style="font-size:13px;color:var(--verde-texto);margin:14px 0 0;min-height:1em"></p>
+    <div class="asistente-slot" data-asistente="borrador"></div>
+  </div>
+</section>
+
+<!-- REFERENCIAS -->
+<section id="referencias" class="sec sec-alt" data-vista="cierre">
+  <div class="wrap">
+    <p class="badge b-ambar">Referencias</p>
+    <h2 class="h2">Fuentes de esta guía</h2>
+    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px">
+      <li class="card"><p class="txt" style="color:var(--texto-2)">Ato, M., López, J. J., y Benavente, A. (2013). Un sistema de clasificación de los diseños de investigación en psicología. <em>Anales de Psicología, 29</em>(3), 1038–1059. https://doi.org/10.6018/analesps.29.3.178511</p></li>
+      <li class="card"><p class="txt" style="color:var(--texto-2)">Hernández Sampieri, R., Fernández Collado, C., y Baptista Lucio, P. (2014). <em>Metodología de la investigación</em> (6.ª ed.). McGraw-Hill Education.</p></li>
+      <li class="card"><p class="txt" style="color:var(--texto-2)">Taylor, S. J., y Bogdan, R. (1992). <em>Introducción a los métodos cualitativos de investigación: la búsqueda de significados</em>. Paidós.</p></li>
+      <li class="card"><p class="txt" style="color:var(--texto-2)">Ferreyra, A., y De Longhi, A. L. (2014). <em>Metodología de la investigación I</em> (1.ª ed.). Encuentro Grupo Editor.</p></li>
+    </ul>
+    <div class="aviso" style="margin-top:20px">
+      <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg></span>
+      <p>Los criterios de cantidad de participantes, de extensión y de plazos que aparecen en esta guía son <strong>decisiones de la asignatura</strong>, no reglas generales de la metodología. Están puestos para que un proyecto quepa en un semestre.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="cimbra-pie site-footer">
+  <p><strong>Universidad de Los Lagos</strong> · Departamento de Educación</p>
+  <p>Esta obra de <strong>Jesús Sánchez Alvarado</strong> está bajo una <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">Licencia Creative Commons Atribución-NoComercial 4.0 Internacional</a>.</p>
+</footer>
+
+<button id="arriba" aria-label="Volver arriba" title="Volver arriba">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<a class="burbuja" id="burbujaRef" href="#" target="_blank" rel="noopener" title="Abrir mis referencias en una pestaña nueva">
+  <span class="ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2 2 0 0 1 2 2 2 2 0 0 1 2-2h4.5A1.5 1.5 0 0 1 20 5.5v12a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 0 0-2 2 2 2 0 0 0-2-2H5.5A1.5 1.5 0 0 1 4 17.5z"/><path d="M12 6v14"/></svg></span>
+  <span class="burbuja-t">Referencias</span>
+  <span class="burbuja-n" id="burbujaRefN">0</span>
+</a>
+
+<div id="areaImpresion"></div>
+
+<script>
+/* ============================================================
+   CIMBRA · Etapa "Planteamiento del problema"
+   BLOQUE DE CONFIGURACIÓN
+   Para adaptar este recurso a otra institución o asignatura,
+   modifica solo este bloque.
+   ============================================================ */
+const CONFIG = {
+  sistema: 'Cimbra',
+  titulo: 'Diseño metodológico',
+  contexto: 'Investigación Educativa · Departamento de Educación',
+  descripcion: 'Un recurso para decidir cómo vas a estudiar tu problema, y justificar cada decisión.',
+  institucion: 'Universidad de Los Lagos',
+  unidad: 'Departamento de Educación',
+  logo: 'logoula.png',
+  logoAlt: 'Universidad de Los Lagos',
+  autoria: 'Jesús Sánchez Alvarado',
+  licenciaUrl: 'https://creativecommons.org/licenses/by-nc/4.0/',
+  licenciaNombre: 'Licencia Creative Commons Atribución-NoComercial 4.0 Internacional',
+  licenciaImg: '../comun/cc-by-nc.svg',
+  clave: 'cimbra_metodologico_v1',
+  claveAnterior: 'cimbra_planteamiento_v1',  // planteamiento, solo se lee
+  claveMarco: 'cimbra_marco_v1',             // marco teórico, solo se lee (las definiciones)
+  enlaceMarco: '../3-marco-teorico/marco-teorico.html',                           // ruta al recurso del marco teórico, si está publicado
+  enlaceAnterior: '../2-planteamiento/index.html',                        // ruta al recurso del planteamiento, si está publicado
+  nombreAnterior: 'Planteamiento del problema',
+  enlaceSiguiente: '../5-instrumentos/index.html',
+  nombreSiguiente: 'Instrumentos',
+  enlaceInstrumentos: '../5-instrumentos/index.html',                    // ruta al recurso de Instrumentos, si está publicado
+  enlaceReferencias: '../referencias/index.html#biblioteca',   // recurso de Referencias, se abre en una pestaña nueva
+  claveReferencias: 'cimbra_referencias_v1',
+  asistente: { activo: false },
+};
+
+const VISTAS = [
+  { id:'inicio',     nav:'Inicio',            titulo:'Antes de decidir cómo vas a estudiarlo' },
+  { id:'mirada',     nav:'Cómo mirar',        titulo:'Cómo mirar',       sub:'Paradigma, enfoque, alcance y diseño', campos:['m_paradigma','m_paradigma_just','m_enfoque','m_enfoque_just','m_alcance','m_alcance_just','m_diseno','m_diseno_just'] },
+  { id:'observable', nav:'Qué observar',      titulo:'Qué observar',     sub:'De los objetivos a lo observable',     campos:['o_cierre'] },
+  { id:'quienes',    nav:'Con quiénes',       titulo:'Con quiénes',      sub:'Población, muestra y acceso',          campos:['q_poblacion','q_tipo','q_subtipo','q_tamano','q_just','q_acceso'] },
+  { id:'campo',      nav:'Cómo y cuándo',     titulo:'Cómo y cuándo',    sub:'Procedimiento y ética',                campos:['c_pasos','c_etica'] },
+  { id:'taller',     nav:'Taller',            titulo:'Tu matriz y tu cronograma' },
+  { id:'revision',   nav:'Revisión',          titulo:'¿Tu diseño se sostiene?' },
+  { id:'cierre',     nav:'Mi borrador',       titulo:'Lo que llevas escrito' },
+];
+
+const esc = (s) => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const $ = (sel) => document.querySelector(sel);
+
+/* ===================== BORRADOR ===================== */
+const CAMPOS = ['m_paradigma','m_paradigma_just','m_enfoque','m_enfoque_just','m_alcance','m_alcance_just','m_diseno','m_diseno_just','o_cierre','q_poblacion','q_tipo','q_subtipo','q_tamano','q_just','q_acceso','c_pasos','c_etica','cr_0','cr_1','cr_2','cr_3','cr_4','cr_5'];
+const VACIO = { version:1, actualizado:'' , check:{}, entrada:{}, diag:{}, m_obs:[], gantt:null };
+CAMPOS.forEach(k => VACIO[k] = '');
+const OBS_VACIA = () => ({ clase:'', nombre:'', rol:'', definicion:'', indicadores:'', instrumento:'' });
+
+let datos = Object.assign({}, VACIO, { check:{}, entrada:{}, diag:{}, m_obs:[] });
+let almacenamientoOk = true;
+let previo = null;   // borrador del planteamiento, solo se lee
+let marco = null;    // borrador del marco teórico, solo se lee
+
+function cargar(){
+  try {
+    const raw = localStorage.getItem(CONFIG.clave);
+    if (raw) { const d = JSON.parse(raw); if (d && typeof d === 'object') datos = Object.assign({}, VACIO, d, { check: Object.assign({}, d.check || {}) }); }
+  } catch(e) { almacenamientoOk = false; }
+  if (datos.f_estado && !datos.f_estado_int && !datos.f_estado_nac) { datos.f_estado_int = datos.f_estado; datos.f_estado = ''; }
+  if (!Array.isArray(datos.f_estudios)) datos.f_estudios = [];
+  datos.f_estudios = datos.f_estudios.map(e => Object.assign(ESTUDIO_VACIO(), e || {}));
+  try { const r2 = localStorage.getItem(CONFIG.claveAnterior); if (r2) previo = JSON.parse(r2); } catch(e) {}
+  try { const r3 = localStorage.getItem(CONFIG.claveMarco); if (r3) marco = JSON.parse(r3); } catch(e) {}
+}
+function guardar(){
+  datos.actualizado = new Date().toISOString();
+  try { localStorage.setItem(CONFIG.clave, JSON.stringify(datos)); } catch(e) { almacenamientoOk = false; }
+  pintarAvance(); pintarResumen(); pintarEsquema();
+}
+
+/* ===================== CABECERA, NAV Y PIE ===================== */
+$('#cabecera').innerHTML = `
+  <div style="max-width:1200px;margin:0 auto;display:flex;gap:26px;align-items:center;flex-wrap:wrap">
+    ${CONFIG.logo ? `<img src="${esc(CONFIG.logo)}" alt="${esc(CONFIG.logoAlt)}" style="max-width:150px;max-height:66px;object-fit:contain">` : ''}
+    <div style="flex:1;min-width:250px;max-width:100%">
+      <p style="margin:0 0 6px;font:600 12px/1.4 'Open Sans',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#d6ebfa">${esc(CONFIG.contexto)}</p>
+      <h1 style="font-size:clamp(28px,4.4vw,44px);line-height:1.05;font-weight:700">${esc(CONFIG.titulo)}</h1>
+      <p style="margin:10px 0 0;font-size:16px;line-height:1.6;color:#e9f2fb">${esc(CONFIG.descripcion)}</p>
+    </div>
+  </div>`;
+$('#navFila').innerHTML = VISTAS.map(v => `<a class="navLink" href="#${v.id}" data-target="${v.id}">${esc(v.nav)}</a>`).join('');
+/* El pie de página es fijo en el HTML y común a todos los recursos (ver comun/cimbra.css). */
+
+const enlacesNav = Array.from(document.querySelectorAll('.navLink'));
+let vistaActual = 'inicio';
+
+function estadoVista(v){
+  if (!v.campos) return null;
+  let llenos = v.campos.filter(k => (datos[k]||'').trim()).length;
+  let total = v.campos.length;
+  if (!llenos) return { t:'sin empezar', color:'#6b7682', fondo:'#f4f6f8' };
+  if (llenos < total) return { t:'en progreso', color:'#7a5d12', fondo:'#fff8e6' };
+  return { t:'completo', color:'var(--verde-texto)', fondo:'#eafbe6' };
+}
+
+function irA(id, foco){
+  const v = VISTAS.find(x => x.id === id) || VISTAS[0];
+  vistaActual = v.id;
+  document.querySelectorAll('main > section').forEach(sec => {
+    sec.style.display = sec.dataset.vista === v.id ? '' : 'none';
+  });
+  enlacesNav.forEach(a => a.dataset.target === v.id ? a.setAttribute('aria-current','true') : a.removeAttribute('aria-current'));
+  if (location.hash.slice(1) !== v.id) history.replaceState(null, '', '#' + v.id);
+  pintarEsquema();
+  pintarSiguiente();
+  pintarCierre();
+  window.scrollTo({ top:0, behavior: foco ? 'smooth' : 'auto' });
+  if (foco) {
+    const h = document.querySelector(`main > section[data-vista="${v.id}"] h2`);
+    if (h) { h.setAttribute('tabindex','-1'); h.focus({ preventScroll:true }); }
+  }
+}
+enlacesNav.forEach(a => a.addEventListener('click', (e) => { e.preventDefault(); irA(a.dataset.target, true); }));
+window.addEventListener('hashchange', () => {
+  const id = location.hash.slice(1);
+  if (id && !VISTAS.some(v => v.id === id)) return;   // ancla interna de un paso, no una vista
+  irA(id || 'inicio', true);
+});
+
+/* Índice de pasos dentro de una vista: desplaza sin tocar la vista activa */
+document.querySelectorAll('.ruta a[href^="#"]').forEach(a => {
+  a.addEventListener('click', ev => {
+    const destino = document.getElementById(a.getAttribute('href').slice(1));
+    if (!destino) return;
+    ev.preventDefault();
+    destino.scrollIntoView({ behavior:'smooth', block:'start' });
+    const titulo = destino.querySelector('.paso-num');
+    if (titulo) { titulo.setAttribute('tabindex','-1'); titulo.focus({ preventScroll:true }); }
+  });
+});
+const btnArriba = $('#arriba');
+window.addEventListener('scroll', () => btnArriba.classList.toggle('ver', window.scrollY > 500));
+btnArriba.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+
+/* ===================== ESQUEMA DEL CAMINO ===================== */
+function pintarEsquema(){
+  const cont = document.getElementById('esquema');
+  if (!cont) return;
+  const bloques = VISTAS.filter(v => v.campos);
+  const caja = (titulo, sub, estado, activo, id, tipo) => {
+    const borde = activo ? 'var(--azul)' : '#d7dee5';
+    const fondo = estado ? estado.fondo : (activo ? 'var(--azul-claro)' : '#fff');
+    const etiqueta = estado ? `<span style="display:inline-block;margin-top:8px;font:700 11px 'Open Sans',sans-serif;text-transform:uppercase;letter-spacing:.04em;color:${estado.color}">${estado.t}</span>` : '';
+    const interior = `<span style="display:block;font:700 15px 'Roboto Condensed',sans-serif;color:var(--tinta)">${esc(titulo)}</span>
+      <span style="display:block;font-size:13px;line-height:1.5;color:var(--texto-3);margin-top:4px">${esc(sub)}</span>${etiqueta}`;
+    if (tipo === 'boton') return `<button type="button" class="card" data-ir="${id}" style="flex:1;min-width:210px;text-align:left;cursor:pointer;border:1.5px solid ${borde};background:${fondo}">${interior}</button>`;
+    return `<div class="card" style="flex:1;min-width:190px;border:1.5px ${tipo === 'hecho' ? 'solid' : 'dashed'} ${borde};background:${fondo}">${interior}</div>`;
+  };
+  const flecha = '<span aria-hidden="true" style="align-self:center;color:#9aa6b2;font-size:20px">→</span>';
+  cont.innerHTML = `
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+      ${CONFIG.enlaceAnterior
+        ? `<a class="card" href="${esc(CONFIG.enlaceAnterior)}" style="flex:1;min-width:190px;border:1.5px solid #d7dee5;text-decoration:none"><span style="display:block;font:700 15px 'Roboto Condensed',sans-serif;color:var(--tinta)">${esc(CONFIG.nombreAnterior)}</span><span style="display:block;font-size:13px;line-height:1.5;color:var(--texto-3);margin-top:4px">${hayPrevio() ? 'Ya lo trabajaste, abrir de nuevo' : 'Etapa anterior, abrir'}</span></a>`
+        : caja(CONFIG.nombreAnterior, hayPrevio() ? 'Ya lo trabajaste' : 'Etapa anterior', null, false, '', 'hecho')}
+      ${flecha}
+      ${caja('Planteamiento del problema', 'Estás aquí', null, true, '', 'actual')}
+    </div>
+    <p style="font-size:13px;color:#6b7682;margin:0 0 10px">Las partes del diseño metodológico</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      ${bloques.map(v => caja(v.titulo, v.sub, estadoVista(v), vistaActual === v.id, v.id, 'boton')).join('')}
+    </div>`;
+  cont.querySelectorAll('[data-ir]').forEach(b => b.addEventListener('click', () => irA(b.dataset.ir, true)));
+}
+
+function pintarSiguiente(){
+  document.querySelectorAll('.barraSiguiente').forEach(el => el.remove());
+  const i = VISTAS.findIndex(v => v.id === vistaActual);
+  if (i < 0 || i === VISTAS.length - 1) return;
+  const siguiente = VISTAS[i + 1];
+  const secciones = Array.from(document.querySelectorAll(`main > section[data-vista="${vistaActual}"]`));
+  const ultima = secciones[secciones.length - 1];
+  if (!ultima) return;
+  const anterior = i > 0 ? VISTAS[i - 1] : null;
+  const div = document.createElement('div');
+  div.className = 'barraSiguiente';
+  div.style.cssText = 'display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:30px;padding-top:22px;border-top:1px solid var(--borde)';
+  div.innerHTML = `${anterior ? `<button type="button" class="btn btn-sec" data-anterior="${anterior.id}">← Volver a ${esc(anterior.nav)}</button>` : '<span></span>'}
+    <button type="button" class="btn btn-pri" data-siguiente="${siguiente.id}">Ir a ${esc(siguiente.nav)} →</button>`;
+  ultima.querySelector('.wrap').appendChild(div);
+  div.querySelector('[data-siguiente]').addEventListener('click', () => irA(siguiente.id, true));
+  const bAnt = div.querySelector('[data-anterior]');
+  if (bAnt) bAnt.addEventListener('click', () => irA(bAnt.dataset.anterior, true));
+}
+
+function pintarCierre(){
+  document.querySelectorAll('.barraCierre').forEach(el => el.remove());
+  if (vistaActual !== VISTAS[VISTAS.length - 1].id) return;
+  const ultima = document.querySelector(`main > section[data-vista="${vistaActual}"]:last-of-type .wrap`);
+  if (!ultima) return;
+  const div = document.createElement('div');
+  div.className = 'barraCierre';
+  div.style.cssText = 'display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:30px;padding-top:22px;border-top:1px solid var(--borde)';
+  div.innerHTML = `<button type="button" class="btn btn-sec" data-anterior="revision">← Volver a la revisión</button>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <button type="button" class="btn btn-ghost" data-anterior="inicio">Volver al inicio</button>
+      ${CONFIG.enlaceSiguiente ? `<a class="btn btn-pri" href="${esc(CONFIG.enlaceSiguiente)}" style="display:inline-flex;align-items:center;text-decoration:none">Ir a ${esc(CONFIG.nombreSiguiente)} →</a>` : ''}
+    </div>`;
+  ultima.appendChild(div);
+  div.querySelectorAll('[data-anterior]').forEach(b => b.addEventListener('click', () => irA(b.dataset.anterior, true)));
+}
+
+/* ===================== EJERCICIOS ===================== */
+function construirQuiz(contenedorId, items, grupo, avisoId, alResolver){
+  const wrap = document.getElementById(contenedorId);
+  if (!wrap) return;
+  const estados = items.map(() => ({ elegidas: [], resuelta: false }));
+  wrap.innerHTML = items.map((_, i) => `<div class="quiz" id="${grupo}-q${i}"></div>`).join('');
+  function render(i, foco){
+    const it = items[i], st = estados[i];
+    const cont = document.getElementById(`${grupo}-q${i}`);
+    const ops = it.opciones.map((op, oi) => {
+      let bg='#fff', color='#1a232b', borde='#d7dee5', marca='';
+      const elegida = st.elegidas.includes(oi), correcta = oi === it.correcta;
+      if (elegida && !correcta) { bg='#fdeeee'; color='#b0392b'; borde='#b0392b'; marca='✗'; }
+      if (st.resuelta && correcta) { bg='#eafbe6'; color='var(--verde-texto)'; borde='var(--verde-texto)'; marca='✓'; }
+      return `<button type="button" class="opcion" data-op="${oi}" style="background:${bg};color:${color};border-color:${borde}"${st.resuelta?' disabled':''}><span class="marca" aria-hidden="true">${marca}</span><span>${esc(op)}</span></button>`;
+    }).join('');
+    let fb = '';
+    if (st.elegidas.length) {
+      const acerto = st.resuelta && st.elegidas[st.elegidas.length-1] === it.correcta;
+      if (!st.resuelta) fb = `<div class="fb" tabindex="-1" style="background:#fff8e6;border-left:4px solid #7a5d12"><p class="fb-t" style="color:#7a5d12">Aún no. Elige otra opción.</p><p>Pista. ${esc(it.pista)}</p></div>`;
+      else if (acerto) fb = `<div class="fb" tabindex="-1" style="background:#eafbe6;border-left:4px solid var(--verde-texto)"><p class="fb-t" style="color:var(--verde-texto)">Correcto</p><p>${esc(it.explicacion)}</p></div>`;
+      else fb = `<div class="fb" tabindex="-1" style="background:#fdeeee;border-left:4px solid #b0392b"><p class="fb-t" style="color:#b0392b">La respuesta correcta era "${esc(it.opciones[it.correcta])}"</p><p>${esc(it.explicacion)}</p></div>`;
+    }
+    cont.innerHTML = `${it.enunciado ? `<p class="ejemplo">${it.enunciado}</p>` : ''}<p class="quiz-p">${i+1}. ${esc(it.pregunta)}</p><div class="quiz-ops">${ops}</div>${fb}`;
+    cont.querySelectorAll('.opcion').forEach(b => {
+      b.addEventListener('click', () => {
+        const oi = +b.dataset.op, s = estados[i];
+        if (s.resuelta || s.elegidas.includes(oi)) return;
+        s.elegidas.push(oi);
+        if (oi === items[i].correcta || s.elegidas.length >= 2) s.resuelta = true;
+        render(i, oi);
+        if (s.resuelta && typeof alResolver === 'function') alResolver(i, s.elegidas[s.elegidas.length-1] === items[i].correcta);
+        const av = document.getElementById(avisoId);
+        if (av) av.textContent = s.resuelta ? (s.elegidas[s.elegidas.length-1] === items[i].correcta ? 'Correcto. ' : 'Incorrecto. ') + items[i].explicacion : 'Aún no. Pista. ' + items[i].pista;
+      });
+    });
+    if (foco != null) { const btn = cont.querySelector(`.opcion[data-op="${foco}"]`); if (btn && !btn.disabled) btn.focus(); else { const f = cont.querySelector('.fb'); if (f) f.focus(); } }
+  }
+  items.forEach((_, i) => render(i));
+}
+
+/* ===================== ICONOS (decorativos, el texto ya dice lo mismo) ===================== */
+const ICONOS = {
+  conceptual:'<path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2 2 0 0 1 2 2 2 2 0 0 1 2-2h4.5A1.5 1.5 0 0 1 20 5.5v12a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 0 0-2 2 2 2 0 0 0-2-2H5.5A1.5 1.5 0 0 1 4 17.5z"/><path d="M12 6v14"/>',
+  normativa:'<path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M10 21v-6h4v6"/>',
+  estadoarte:'<circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/><path d="M8.5 11h5"/>',
+  cuanti:'<path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="12" width="3" height="5"/><rect x="12" y="8" width="3" height="9"/><rect x="17" y="5" width="3" height="12"/>',
+  cuali:'<path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h7A2.5 2.5 0 0 1 16 6.5v4A2.5 2.5 0 0 1 13.5 13H9l-5 4z"/><path d="M8 8.5h4"/>',
+  mixto:'<circle cx="9.5" cy="12" r="5.5"/><circle cx="14.5" cy="12" r="5.5"/>',
+  poblacion:'<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16 5.5a3.2 3.2 0 0 1 0 6"/><path d="M17 13.6a5.5 5.5 0 0 1 3.5 5.4"/>',
+  contexto:'<path d="M12 21s6.5-5.7 6.5-10.2A6.5 6.5 0 0 0 5.5 10.8C5.5 15.3 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.4"/>',
+  metodo:'<path d="M14.5 4.5a4.5 4.5 0 0 0-5.9 5.7L4 14.8V20h5.2l4.6-4.6a4.5 4.5 0 0 0 5.7-5.9l-2.9 2.9-2.6-2.6z"/>',
+  evidencia:'<path d="M4 8h10"/><path d="M11 5l3 3-3 3"/><path d="M20 16H10"/><path d="M13 13l-3 3 3 3"/>',
+  info:'<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/>',
+};
+function ico(nombre, color, tam){
+  const d = ICONOS[nombre];
+  if (!d) return '';
+  const t = tam || 22;
+  return `<span class="ico" style="color:${color || 'currentColor'}"><svg width="${t}" height="${t}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${d}</svg></span>`;
+}
+
+/* ===================== TARJETAS ESTÁTICAS ===================== */
+const tarjetas = (sel, items, color) => {
+  const el = document.querySelector(sel);
+  if (el) el.innerHTML = items.map(c => {
+    const tono = c.texto || c.color || color;
+    const cabeza = c.ico
+      ? `<div class="card-cab">${ico(c.ico, c.color || color)}<h3 class="card-t" style="color:${tono}">${esc(c.t)}</h3></div>`
+      : `<h3 class="card-t" style="color:${tono}">${esc(c.t)}</h3>`;
+    return `<div class="card" style="border-left:4px solid ${c.color || color}">${cabeza}<p class="txt">${c.d}</p></div>`;
+  }).join('');
+};
+
+/* ===================== HERENCIA DE LA ETAPA ANTERIOR ===================== */
+function hayPrevio(){
+  if (!previo) return false;
+  return !!((previo.og_verbo && previo.og_resto) || previo.p_principal || (previo.f_estudios||[]).length);
+}
+function objetivoPrevio(k){
+  const v = previo && previo[k + '_verbo'], r = previo && (previo[k + '_resto']||'').trim();
+  return (v && r) ? `${v} ${r}` : '';
+}
+function objetivosPrevios(){
+  return [['Objetivo general','og'],['Objetivo específico 1','oe1'],['Objetivo específico 2','oe2'],['Objetivo específico 3','oe3']]
+    .map(([rot,k]) => [rot, objetivoPrevio(k)]).filter(x => x[1]);
+}
+function estudiosPrevios(){
+  return (previo && Array.isArray(previo.f_estudios) ? previo.f_estudios : [])
+    .filter(e => (e.autor||'').trim() || (e.resultado||'').trim());
+}
+
+function pintarEcoPrevio(){
+  const el = document.getElementById('ecoPrevio');
+  if (!el) return;
+  if (!hayPrevio()) {
+    el.innerHTML = 'Para esta etapa, debes tener a mano tu pregunta, tus objetivos y tu tabla con el estado del arte.';
+    el.style.color = '#55606b';
+    return;
+  }
+  const filas = [];
+  if ((previo.p_principal||'').trim()) filas.push(['Pregunta principal', previo.p_principal.trim()]);
+  objetivosPrevios().forEach(o => filas.push(o));
+  const n = estudiosPrevios().length;
+  if (n) filas.push(['Estudios en tu estado del arte', n === 1 ? '1 estudio registrado' : `${n} estudios registrados`]);
+  if ((previo.d_sujetos||'').trim()) filas.push(['Sujetos declarados', previo.d_sujetos.trim()]);
+  if ((previo.d_lugar||'').trim()) filas.push(['Lugar declarado', previo.d_lugar.trim()]);
+  el.innerHTML = filas.map(([r,v]) => `<p style="margin:0 0 8px"><strong>${esc(r)}.</strong> ${esc(v)}</p>`).join('')
+    + '<p style="margin:10px 0 0;font-size:13px;color:var(--texto-3)">Esto se lee de la etapa anterior y no se modifica desde aquí. Si algo cambió, cámbialo allá.</p>';
+}
+
+function pintarEcoEnfoques(){
+  const el = document.getElementById('ecoEnfoques');
+  if (!el) return;
+  const est = estudiosPrevios();
+  const como = previo && (previo.f_como_miraron||'').trim();
+  if (!est.length && !como) {
+    el.innerHTML = 'Cuando registres tus estudios en el recurso anterior, aquí vas a ver con qué enfoques se ha estudiado tu problema. Sirve para dos cosas, para justificar tu elección y para detectar si siempre se ha mirado de la misma manera.';
+    el.style.color = '#55606b';
+    return;
+  }
+  const cuenta = {};
+  est.forEach(e => { const k = (e.enfoque||'Sin declarar').trim() || 'Sin declarar'; cuenta[k] = (cuenta[k]||0) + 1; });
+  const lista = Object.entries(cuenta).sort((a,b) => b[1]-a[1]);
+  let html = '';
+  if (lista.length) {
+    html += `<p style="margin:0 0 8px">De los ${est.length} estudios que registraste, ` + lista.map(([k,n]) => `<strong>${n}</strong> ${n === 1 ? 'es' : 'son'} de enfoque ${esc(k.toLowerCase())}`).join(', ') + '.</p>';
+    if (lista.length === 1 && lista[0][0] !== 'Sin declarar' && est.length >= 3) {
+      html += `<p style="margin:0 0 8px;color:var(--ambar-texto)"><strong>Todos usan el mismo enfoque.</strong> Si tu pregunta pide otra cosa, esa diferencia es tu vacío metodológico y conviene decirlo al justificar.</p>`;
+    }
+  }
+  if (como) html += `<p style="margin:0"><strong>Lo que escribiste.</strong> ${esc(como)}</p>`;
+  el.innerHTML = html;
+}
+
+function conceptosMarco(){
+  const cs = (marco && Array.isArray(marco.conceptos)) ? marco.conceptos : [];
+  return cs.filter(c => (c.nombre||'').trim() && (c.enEste||'').trim());
+}
+
+/* Eco del marco teórico. Las definiciones se escriben allá, aquí solo se usan. */
+function pintarEcoMarco(){
+  const el = document.getElementById('ecoMarco');
+  if (!el) return;
+  const cs = conceptosMarco();
+  if (!cs.length) {
+    el.innerHTML = `<div class="aviso"><span class="ico">${ICO_OK}</span>
+      <p><strong>Las definiciones vienen del marco teórico.</strong> En este navegador todavía no se encontraron conceptos definidos ahí. Si ya escribiste tu marco teórico, abre ese recurso en este mismo navegador y vuelve. Si no, define primero los conceptos allá, porque aquí no se define, aquí se baja a lo observable.</p></div>`;
+    return;
+  }
+  el.innerHTML = `<div class="card" style="border-left:4px solid var(--morado)">
+      <p style="font:700 11.5px 'Open Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--morado);margin:0 0 10px">Tus conceptos definidos en el marco teórico</p>
+      ${cs.map((c,i) => `<div style="padding:10px 0;border-top:${i ? '1px solid #eef1f4' : 'none'}">
+        <p style="margin:0 0 4px;font-size:15px;line-height:1.6;color:var(--texto-2)"><strong>${esc(c.nombre.trim())}.</strong> ${esc(c.enEste.trim())}</p>
+        ${(c.clase||'').trim() ? `<p style="margin:0 0 4px;font:700 11px 'Open Sans',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--texto-3)">${esc(c.clase.trim())}</p>` : ''}
+        ${(c.fuera||'').trim() ? `<p style="margin:0 0 6px;font-size:13.5px;line-height:1.55;color:var(--texto-3)"><strong>Queda fuera.</strong> ${esc(c.fuera.trim())}</p>` : ''}
+        <button type="button" class="btn btn-sec" data-desdemarco="${i}" style="min-height:38px;padding:9px 14px;font-size:12.5px">Agregar como fila de la tabla</button>
+      </div>`).join('')}
+      <p style="margin:10px 0 0;font-size:13px;color:var(--texto-3)">Esto se lee del marco teórico y no se modifica desde aquí. Aquí el trabajo es bajar cada definición a algo observable, no volver a definirla.</p>
+    </div>`;
+  el.querySelectorAll('[data-desdemarco]').forEach(b => b.addEventListener('click', () => {
+    const c = cs[+b.dataset.desdemarco];
+    const fila = OBS_VACIA();
+    fila.nombre = c.nombre.trim();
+    fila.definicion = c.enEste.trim();
+    if ((c.clase||'').trim() && OBS_CLASES.indexOf(c.clase.trim()) >= 0) fila.clase = c.clase.trim();
+    const vacias = datos.m_obs.filter(f => !Object.values(f).some(v => (v||'').trim()));
+    if (vacias.length) Object.assign(vacias[0], fila); else datos.m_obs.push(fila);
+    guardar(); pintarObs(); pintarResumen(); pintarAvance();
+    const av = document.getElementById('obsTablaAviso');
+    if (av) av.textContent = `Se agregó ${fila.nombre} con su definición del marco teórico. Falta bajarla a lo observable.`;
+    const ultimo = document.getElementById(`obs_${datos.m_obs.indexOf(vacias.length ? vacias[0] : datos.m_obs[datos.m_obs.length-1])}_indicadores`);
+    if (ultimo) ultimo.focus();
+  }));
+}
+
+function pintarEcoViabilidad(){
+  const el = document.getElementById('ecoViabilidad');
+  if (!el) return;
+  const rec = (previo && (previo.v_recursos||'').trim()) || '';
+  if (!rec) {
+    el.innerHTML = '<p class="ejemplo" style="margin:0">En este navegador no se encontró la viabilidad de tu planteamiento. Ahí declaraste cómo ibas a conseguir el acceso y qué alternativa tenías. Conviene tenerla a la vista, porque esto es la concreción de aquello.</p>';
+    return;
+  }
+  el.innerHTML = `<div class="card" style="border-left:4px solid #BA7517">
+    <p style="margin:0 0 6px;font:700 11px 'Open Sans',sans-serif;text-transform:uppercase;letter-spacing:.05em;color:#BA7517">Lo que escribiste en la viabilidad de tu planteamiento</p>
+    <p style="margin:0;font-size:14.5px;line-height:1.6;color:var(--texto-2);white-space:pre-wrap">${esc(rec)}</p>
+    <p style="margin:10px 0 0;font-size:13px;color:var(--texto-3)">Se lee del planteamiento y no se modifica desde aquí. Allá era una previsión, ahora que sabes con quiénes vas a trabajar, el acceso y la alternativa se escriben con nombre en el paso siguiente.</p>
+  </div>`;
+}
+
+function pintarEcoObjetivos(){
+  const el = document.getElementById('ecoObjetivos');
+  if (!el) return;
+  const obj = objetivosPrevios();
+  if (!obj.length) {
+    el.innerHTML = '<p class="ejemplo" style="margin:0">No se encontraron objetivos guardados en este navegador. Ten tu objetivo general a la vista mientras llenas la tabla, porque de ahí salen las variables o los conceptos clave.</p>';
+    return;
+  }
+  const general = obj.find(o => o[0] === 'Objetivo general');
+  const especificos = obj.filter(o => o[0] !== 'Objetivo general');
+  el.innerHTML = (general ? `<div class="card" style="border-left:4px solid var(--azul);margin-bottom:${especificos.length ? '10px' : '0'}">
+      <p style="margin:0;font:700 11px 'Open Sans',sans-serif;text-transform:uppercase;letter-spacing:.05em;color:var(--azul)">Objetivo general, tu punto de partida</p>
+      <p style="margin:4px 0 0;font-size:15px;line-height:1.6;color:var(--texto-2)">${esc(general[1])}</p>
+    </div>` : '')
+    + (especificos.length ? `<div class="card" style="border-left:4px solid var(--verde-texto)">`
+      + especificos.map(([r,v]) => `<p style="margin:0 0 8px;font-size:13.5px;line-height:1.6;color:var(--texto-2)"><strong>${esc(r)}.</strong> ${esc(v)}</p>`).join('')
+      + `</div>` : '');
+}
+
+function pintarEnlacesConfig(){
+  const rep = document.getElementById('enlaceAnteriorRepaso');
+  if (rep) rep.innerHTML = CONFIG.enlaceAnterior
+    ? `Si quieres el desarrollo completo, está en <a href="${esc(CONFIG.enlaceAnterior)}">${esc(CONFIG.nombreAnterior)}</a>, en el paso "Cómo se ha mirado tu problema".`
+    : 'El desarrollo completo está en el recurso del planteamiento, en el paso "Cómo se ha mirado tu problema".';
+  const pu = document.getElementById('puenteInstrumentos');
+  if (pu && CONFIG.enlaceInstrumentos) {
+    pu.innerHTML = pu.innerHTML.replace('el recurso de instrumentos', `<a href="${esc(CONFIG.enlaceInstrumentos)}">el recurso de instrumentos</a>`);
+  }
+}
+
+/* ===================== VERIFICACIÓN DE ENTRADA ===================== */
+const ENTRADA = [
+  { k:'e1', t:'Tenemos la pregunta principal y los cuatro objetivos escritos y revisados.', d:'Se trabaja en el planteamiento del problema.' },
+  { k:'e2', t:'Tenemos la tabla de estudios del estado del arte, con cada apartado completado.', d:'Se trabaja en el planteamiento, en el paso de la tabla de estudios.' },
+  { k:'e3', t:'Sabemos a quiénes vamos a estudiar y en qué establecimiento y/o tenemos una idea de dónde podría ser.', d:'Se trabaja en la delimitación y viabilidad del planteamiento.' },
+];
+function pintarEntrada(){
+  const wrap = document.getElementById('entradaWrap');
+  if (!wrap) return;
+  wrap.innerHTML = ENTRADA.map(it => `
+    <label class="pregunta-item" style="display:flex;gap:11px;align-items:flex-start;background:#fff;border:1px solid var(--borde);border-radius:10px;padding:13px 15px;margin-bottom:10px;cursor:pointer">
+      <input type="checkbox" data-entrada="${it.k}"${datos.entrada[it.k] ? ' checked' : ''} style="margin-top:3px;width:18px;height:18px;flex:0 0 auto;accent-color:var(--verde-texto)">
+      <span style="flex:1"><span style="display:block;font-size:14.5px;line-height:1.55;color:var(--texto-2)">${esc(it.t)}</span>
+      <span style="display:block;font-size:12.5px;color:var(--texto-3);margin-top:3px">${esc(it.d)}</span></span>
+    </label>`).join('') + `<p id="entradaResumen" style="font-size:13.5px;margin:4px 0 0"></p>`;
+  wrap.querySelectorAll('[data-entrada]').forEach(c => c.addEventListener('change', () => {
+    datos.entrada[c.dataset.entrada] = c.checked;
+    guardar(); resumenEntrada(); pintarAvance();
+  }));
+  resumenEntrada();
+}
+function resumenEntrada(){
+  const el = document.getElementById('entradaResumen');
+  if (!el) return;
+  const faltan = ENTRADA.filter(it => !datos.entrada[it.k]);
+  if (!faltan.length) { el.style.color = 'var(--verde-texto)'; el.textContent = 'Tienes todo lo necesario para empezar.'; return; }
+  el.style.color = 'var(--ambar-texto)';
+  el.textContent = faltan.length === 1
+    ? 'Falta una cosa. Puedes avanzar igual, pero conviene resolverla pronto porque las decisiones de aquí dependen de ella.'
+    : `Faltan ${faltan.length} cosas. Puedes avanzar igual, pero las decisiones de aquí dependen de ellas.`;
+}
+
+
+/* ===================== DIAGNÓSTICO DE CONOCIMIENTOS PREVIOS ===================== */
+const DIAG = [
+  { seccion:'mirada', rot:'Cómo mirar',
+    pregunta:'Un objetivo dice "determinar el nivel de satisfacción de los apoderados para generalizar los resultados al establecimiento". ¿Qué paradigma corresponde?',
+    opciones:['Interpretativo','Positivista','Ninguno de los dos'], correcta:1,
+    pista:'Fíjate en la palabra generalizar. ¿Qué supone sobre la realidad que se estudia?',
+    explicacion:'Generalizar supone que hay una realidad medible que se comporta igual más allá de los casos observados, y eso es positivista. El interpretativo no busca generalizar, busca comprender en contexto.' },
+  { seccion:'mirada', rot:'Cómo mirar',
+    pregunta:'Ordena las fases del proceso de investigación. ¿Cuál es la secuencia correcta?',
+    opciones:[
+      'Conceptual, metodológica, empírica',
+      'Metodológica, conceptual, empírica',
+      'Empírica, conceptual, metodológica',
+      'Conceptual, empírica, metodológica'], correcta:0,
+    pista:'Piensa qué necesitas tener antes de poder diseñar el instrumento.',
+    explicacion:'Primero la fase conceptual, que fundamenta el problema. Después la metodológica, que es esta etapa, donde decides cómo lo vas a estudiar. Y al final la empírica, donde recoges y analizas. No se puede diseñar un instrumento sin saber qué se busca.' },
+  { seccion:'observable', rot:'Qué observar',
+    pregunta:'"Los estudiantes que usan técnicas de organización del tiempo presentan menores niveles de estrés." ¿Cuál es la variable dependiente?',
+    opciones:['El uso de técnicas de organización','El nivel de estrés','Los estudiantes','El tiempo'], correcta:1,
+    pista:'La dependiente es la que cambia según la otra, o sea el efecto.',
+    explicacion:'El nivel de estrés es lo que se mide y lo que varía según la otra. El uso de técnicas es la independiente, la que se supone que influye. Si te cuesta, pregúntate cuál de las dos es la causa y cuál el efecto.' },
+  { seccion:'observable', rot:'Qué observar',
+    pregunta:'"Motivación escolar" aparece en tu objetivo. ¿Qué falta para poder preguntarla en un instrumento?',
+    opciones:[
+      'Nada, se puede preguntar directamente',
+      'Definirla en este estudio y bajarla a indicadores observables',
+      'Buscar más autores que la definan',
+      'Cambiarla por una palabra más simple'], correcta:1,
+    pista:'Nadie puede responder "¿cuál es tu motivación escolar?" de una forma que sirva para comparar.',
+    explicacion:'Hay que decir qué se va a entender por motivación escolar en este estudio y después bajarla a indicadores, como asistencia, participación en clases o persistencia ante tareas difíciles. Eso es operacionalizar, y es justo lo que se trabaja en la sección Qué observar.' },
+  { seccion:'quienes', rot:'Con quiénes',
+    pregunta:'En un liceo hay 420 estudiantes de enseñanza media y vas a aplicar el cuestionario a dos cursos, 62 en total. ¿Cuál es la población?',
+    opciones:['Los 62 estudiantes','Los 420 estudiantes','Los dos cursos','Todos los liceos de Osorno'], correcta:1,
+    pista:'La población es el grupo completo sobre el que quieres saber algo. La muestra es a quién le aplicas.',
+    explicacion:'La población son los 420, que es el grupo del que quieres saber algo. Los 62 son la muestra. Confundirlas lleva a escribir conclusiones sobre un grupo al que nunca le preguntaste.' },
+  { seccion:'mirada', rot:'Cómo mirar',
+    pregunta:'¿Cuál es la diferencia entre una hipótesis y un supuesto?',
+    opciones:[
+      'Son lo mismo, cambia el nombre según el autor',
+      'La hipótesis anticipa una respuesta que se pondrá a prueba, el supuesto orienta la búsqueda sin cerrarla',
+      'La hipótesis va en cualitativo y el supuesto en cuantitativo',
+      'El supuesto se escribe al final del estudio'], correcta:1,
+    pista:'Pregúntate cuál de las dos se puede confirmar o rechazar con datos.',
+    explicacion:'La hipótesis es una explicación anticipada que se pone a prueba, propia del enfoque cuantitativo. El supuesto orienta la investigación cualitativa sin cerrar la respuesta, porque ahí no se prueba, se comprende.' },
+];
+
+function pintarDiagnostico(){
+  const wrap = document.getElementById('diagQuiz');
+  if (!wrap) return;
+  construirQuiz('diagQuiz', DIAG, 'diag', 'diagAviso', (i, acerto) => {
+    datos.diag[i] = acerto ? 'ok' : 'falla';
+    guardar(); pintarRuta();
+  });
+  pintarRuta();
+}
+
+function pintarRuta(){
+  const el = document.getElementById('rutaSugerida');
+  if (!el) return;
+  const respondidas = Object.keys(datos.diag).length;
+  if (respondidas < DIAG.length) {
+    el.innerHTML = respondidas
+      ? `<p style="font-size:13.5px;color:var(--texto-3);margin:0 0 26px">Llevas ${respondidas} de ${DIAG.length}. Cuando termines, aparece aquí qué conviene repasar.</p>`
+      : '';
+    return;
+  }
+  const fallas = Object.entries(datos.diag).filter(([,v]) => v === 'falla').map(([i]) => DIAG[+i]);
+  if (!fallas.length) {
+    el.innerHTML = `<div class="aviso" style="margin-bottom:26px"><span class="ico">${ICO_OK}</span><p><strong>Las seis correctas.</strong> Tienes los prerrequisitos resueltos, así que puedes avanzar.</p></div>`;
+    return;
+  }
+  const secciones = [...new Set(fallas.map(f => f.seccion))];
+  const nombres = secciones.map(id => (VISTAS.find(v => v.id === id)||{}).nav || id);
+  el.innerHTML = `<div class="aviso aviso-ambar" style="margin-bottom:26px"><span class="ico">${ICO_OK}</span>
+    <p><strong>Tu ruta sugerida.</strong> ${fallas.length === 1 ? 'Una pregunta quedó mal' : `${fallas.length} preguntas quedaron mal`}, así que conviene que leas con calma ${secciones.length === 1 ? 'la sección' : 'las secciones'} <strong>${nombres.map(esc).join('</strong> y <strong>')}</strong> antes de llegar al taller. No es que no sepas, es que ahí está lo que conviene tener claridad.</p></div>`;
+  el.querySelectorAll('[data-ir]').forEach(b => b.addEventListener('click', () => irA(b.dataset.ir, true)));
+}
+const ICO_OK = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg>';
+
+document.getElementById('btnReiniciarDiag').addEventListener('click', () => {
+  datos.diag = {};
+  guardar();
+  pintarDiagnostico();
+  const wrap = document.getElementById('diagQuiz');
+  if (wrap) { wrap.setAttribute('tabindex','-1'); wrap.focus({ preventScroll:true }); }
+});
+
+
+/* ===================== TARJETAS Y EJERCICIOS DE CONTENIDO ===================== */
+tarjetas('#paradigmasWrap', [
+  { t:'Positivista', ico:'cuanti', color:'var(--azul)', d:'Supone que el fenómeno existe con independencia de quien lo observa y que se puede medir. Busca describir cuánto ocurre, comparar grupos o establecer relaciones entre variables. Trabaja con números y busca resultados que se sostengan más allá de los casos observados.' },
+  { t:'Interpretativo', ico:'cuali', color:'var(--morado)', d:'Supone que el fenómeno se construye en la experiencia de las personas y que no se entiende sin sus significados. Busca comprender cómo viven algo quienes lo viven. Trabaja con relatos y no pretende que sus resultados valgan para otros contextos.' },
+], 'var(--azul)');
+
+construirQuiz('paradigmaQuiz', [
+  { pregunta:'"Comprender cómo los docentes de un liceo interpretan el protocolo de convivencia." ¿Qué paradigma?',
+    opciones:['Positivista','Interpretativo'], correcta:1,
+    pista:'El verbo es comprender y el objeto son interpretaciones.',
+    explicacion:'Interpretar y comprender apuntan a significados, y los significados no se miden. Es interpretativo, y el enfoque coherente es cualitativo.' },
+  { pregunta:'"Determinar la relación entre horas de estudio y rendimiento en matemática en estudiantes de 8° básico." ¿Qué paradigma?',
+    opciones:['Positivista','Interpretativo'], correcta:0,
+    pista:'Hay dos cosas que se van a medir y comparar entre sí.',
+    explicacion:'Determinar una relación entre dos variables medibles es positivista, con enfoque cuantitativo. Fíjate además en que un objetivo así exige instrumentos que midan de verdad cada variable.' },
+  { pregunta:'Un grupo declara paradigma positivista y, para recoger datos, hará seis entrevistas en profundidad y analizará categorías preestablecidas. ¿Qué ocurre?',
+    opciones:[
+      'Está bien, la entrevista sirve para cualquier paradigma',
+      'Hay incoherencia, el procedimiento corresponde a un paradigma interpretativo',
+      'Falta declarar el alcance',
+      'Deberían aumentar el número de entrevistas'], correcta:1,
+    pista:'Mira qué tipo de dato produce lo que van a hacer y con qué postura calza.',
+    explicacion:'Categorías y seis casos son propios del paradigma interpretativo. O cambian el paradigma declarado o cambian el procedimiento, pero no pueden sostener los dos. Este es el error de coherencia más frecuente.' },
+], 'paradigma', 'paradigmaAviso');
+
+tarjetas('#enfoquesWrap', [
+  { t:'Cuantitativo', ico:'cuanti', color:'var(--azul)', d:'Mide, cuenta y compara. Generalmente se usan instrumentos con escalas (resultados en números).' },
+  { t:'Cualitativo', ico:'cuali', color:'var(--morado)', d:'Comprende significados. Generalmente se usan entrevistas u observación, resultados en categorías y citas.' },
+  { t:'Mixto', ico:'mixto', color:'var(--verde-texto)', d:'Los dos, en dos momentos. Dos instrumentos, dos análisis y un punto donde los resultados se triangulan.' },
+], 'var(--azul)');
+
+construirQuiz('enfoqueQuiz', [
+  { pregunta:'Tu pregunta es "¿de qué manera los estudiantes de 1° medio perciben la retroalimentación en clases de educación física?". ¿Qué enfoque pide?',
+    opciones:['Cuantitativo','Cualitativo','Mixto'], correcta:1,
+    pista:'Percepciones y "de qué manera" apuntan a lo que las personas entienden y sienten.',
+    explicacion:'Percepciones se exploran preguntando y escuchando, no midiendo. Cualitativo. Si quisieras además saber cuántos se sienten así, ahí sí podrías pensar en mixto, pero eso sería otra pregunta.' },
+  { pregunta:'Un grupo quiere enfoque mixto porque "así el estudio queda más completo". ¿Qué le dirías?',
+    opciones:[
+      'Que adelante, mixto siempre es mejor',
+      'Que mixto se justifica solo si la pregunta tiene dos partes que se responden de maneras distintas',
+      'Que el mixto no se usa en pregrado',
+      'Que primero elija el instrumento y después el enfoque'], correcta:1,
+    pista:'El enfoque se deriva de la pregunta, no del deseo de abarcar más.',
+    explicacion:'Mixto no es más completo, es más trabajo. Se justifica cuando la pregunta tiene una parte que se mide y otra que se comprende. Si no, se termina con una encuesta débil y dos entrevistas sueltas.' },
+], 'enfoque', 'enfoqueAviso');
+
+const ALCANCES = [
+  { k:'Exploratorio', ico:'estadoarte', color:'#1C6AA0',
+    d:'Para fenómenos con muy pocos antecedentes. Busca una primera aproximación y deja preguntas abiertas para estudios posteriores. El verbo típico es explorar o indagar.',
+    just:'"El estudio es de alcance exploratorio porque el fenómeno abordado cuenta con escasos antecedentes empíricos, por lo que se busca una primera aproximación comprensiva (Hernández et al., 2014)."' },
+  { k:'Descriptivo', ico:'poblacion', color:'var(--azul)',
+    d:'Para caracterizar cómo se manifiesta algo, sin explicar por qué. Es el alcance más frecuente y más razonable en un semestre. El verbo típico es describir o caracterizar.',
+    just:'"La investigación es de alcance descriptivo porque busca caracterizar los niveles de participación estudiantil existentes, sin pretender explicar sus causas ni establecer relaciones entre variables (Hernández et al., 2014)."' },
+  { k:'Correlacional', ico:'evidencia', color:'var(--verde-texto)',
+    d:'Para saber si dos variables varían juntas. No dice cuál causa cuál. Exige medir las dos con instrumentos que de verdad las midan. Solo cuantitativo.',
+    just:'"Se adopta un alcance correlacional dado que el objetivo es establecer el grado de asociación entre las variables clima de aula y rendimiento académico, sin manipularlas ni atribuir causalidad (Hernández et al., 2014)."' },
+  { k:'Explicativo', ico:'metodo', color:'#A32D2D',
+    d:'Para establecer causas. Exige manipular una variable y comparar con un grupo que no la recibió. Requiere diseño experimental o cuasiexperimental. Casi nunca cabe en un semestre.',
+    just:'"El estudio es de alcance explicativo porque su objetivo es determinar el efecto de la variable independiente sobre la dependiente, mediante un diseño cuasiexperimental con grupo de comparación (Hernández et al., 2014)."' },
+];
+tarjetas('#alcancesWrap', ALCANCES.map(a => ({ t:a.k, ico:a.ico, color:a.color, d:a.d })), 'var(--azul)');
+{
+  const el = document.getElementById('alcancesJust');
+  if (el) el.innerHTML = ALCANCES.map(a => `<p style="font-size:14px;line-height:1.7;color:var(--texto-2);margin:0 0 12px"><strong style="color:${a.color}">${esc(a.k)}.</strong> ${esc(a.just)}</p>`).join('')
+    + `<p style="font-size:13px;color:var(--texto-3);margin:0">No copies la frase tal cual. Cámbiale las variables y el contexto por los tuyos, y agrega por qué tu pregunta pide ese alcance y no el siguiente.</p>`;
+}
+
+construirQuiz('alcanceQuiz', [
+  { pregunta:'"Caracterizar las estrategias de evaluación formativa que utilizan docentes de Lengua Castellana en un liceo de Osorno." ¿Qué alcance?',
+    opciones:['Exploratorio','Descriptivo','Correlacional','Explicativo'], correcta:1,
+    pista:'El verbo caracterizar dice todo. ¿Se comparan variables o se retrata algo?',
+    explicacion:'Caracterizar es describir. No hay dos variables que se asocien ni una causa que se busque. Descriptivo, y perfectamente suficiente.' },
+  { pregunta:'Un grupo declara alcance correlacional y va a aplicar una entrevista. ¿Cuál es el riesgo?',
+    opciones:[
+      'Ninguno, cualquier cuestionario sirve',
+      'Que no pueda medir las variables. Entonces no habría correlación que calcular',
+      'Que la muestra quede pequeña',
+      'Que el paradigma quede mal declarado'], correcta:1,
+    pista:'Una correlación es una operación sobre dos mediciones numéricas.',
+    explicacion:'Correlacionar dos variables requiere de un instrumento válido y apto para ello.' },
+  { pregunta:'"Determinar el efecto de un taller de lectura sobre la comprensión lectora de estudiantes de 7° básico." ¿Qué exige este objetivo?',
+    opciones:[
+      'Solo aplicar un cuestionario al final',
+      'Medir antes y después, y comparar con un grupo que no recibió el taller',
+      'Entrevistar a los estudiantes sobre su experiencia',
+      'Observar algunas clases'], correcta:1,
+    pista:'La palabra efecto obliga a poder descartar que la mejora venga de otra cosa.',
+    explicacion:'Hablar de efecto exige un diseño cuasiexperimental, con medición antes y después y un grupo de comparación. Si no puedes hacer eso, el objetivo hay que reformularlo, por ejemplo a describir cómo valoran los estudiantes el taller.' },
+], 'alcance', 'alcanceAviso');
+
+const DISENOS = [
+  { k:'No experimental transversal', color:'var(--azul)', ico:'poblacion',
+    d:'No intervienes en nada y mides una sola vez. Es el diseño de casi todos los trabajos de licenciatura. Una encuesta aplicada en una fecha, o una ronda de entrevistas.' },
+  { k:'No experimental longitudinal', color:'#1C6AA0', ico:'evidencia',
+    d:'No intervienes, pero mides en dos o más momentos para ver cambios en el tiempo. Requiere volver al establecimiento, y eso pocas veces alcanza en un semestre.' },
+  { k:'Cuasiexperimental', color:'#BA7517', ico:'metodo',
+    d:'Intervienes con algo, un taller o un método, y comparas con un grupo que no lo recibió, pero los grupos ya estaban formados y no los asignaste al azar. Es lo máximo que suele ser posible en un establecimiento o institución.' },
+  { k:'Experimental', color:'#A32D2D', ico:'mixto',
+    d:'Intervienes y además asignas al azar a quién le toca la intervención. En un colegio no se puede repartir cursos al azar, así que en la práctica queda fuera.' },
+];
+tarjetas('#disenosWrap', DISENOS.map(d => ({ t:d.k, ico:d.ico, color:d.color, d:d.d })), 'var(--azul)');
+
+construirQuiz('disenoQuiz', [
+  { pregunta:'Aplicarás un cuestionario a dos cursos, una vez, en octubre, sin hacer ninguna intervención. ¿Qué diseño es?',
+    opciones:['No experimental transversal','No experimental longitudinal','Cuasiexperimental','Experimental'], correcta:0,
+    pista:'Dos preguntas bastan. ¿Intervienes? ¿Cuántas veces mides?',
+    explicacion:'No intervienes y mides una sola vez, así que es no experimental transversal. Es el caso más común, y se declara así en una línea.' },
+  { pregunta:'¿Cuál es la diferencia entre alcance y diseño?',
+    opciones:[
+      'Son sinónimos, se usan indistintamente',
+      'El alcance dice hasta dónde llegan tus conclusiones, el diseño dice cómo recoges los datos',
+      'El alcance es del enfoque cuantitativo y el diseño del cualitativo',
+      'El diseño se decide después de recoger los datos'], correcta:1,
+    pista:'Uno responde hasta dónde. El otro responde cómo te las arreglas.',
+    explicacion:'Son dos decisiones distintas y se declaran ambas. Un estudio puede ser descriptivo, que es el alcance, y no experimental transversal, que es el diseño.' },
+], 'diseno', 'disenoAviso');
+
+
+/* ===================== CAMPOS CON SELECTOR ===================== */
+function opcionesSimples(lista, valor, vacio){
+  return [`<option value="">${esc(vacio)}</option>`]
+    .concat(lista.map(o => `<option value="${esc(o)}"${valor === o ? ' selected' : ''}>${esc(o)}</option>`)).join('');
+}
+const SEL_ESTILO = "width:100%;min-height:46px;border-radius:8px;border:1.5px solid #d7dee5;padding:10px 12px;font-size:14.5px;font-family:'Open Sans',sans-serif;background:#fff";
+
+const OPC = {
+  m_paradigma: ['Positivista','Interpretativo'],
+  m_enfoque: ['Cuantitativo','Cualitativo','Mixto'],
+  m_alcance: ALCANCES.map(a => a.k),
+  m_diseno: DISENOS.map(d => d.k),
+  q_tipo: ['Probabilístico','No probabilístico'],
+  q_subtipo: ['Aleatorio simple','Sistemático','Estratificado','Por conglomerados','Por conveniencia','Intencional o por criterio','Bola de nieve','Por cuotas'],
+};
+
+const DECISIONES = [
+  { k:'m_paradigma', et:'Paradigma', ayuda:'Cómo entiendes la realidad que vas a estudiar.' },
+  { k:'m_paradigma_just', et:'Por qué este paradigma', ayuda:'Qué hay en tu pregunta que pide esta postura, y qué autor la respalda.', area:true, ph:'Dado que el objetivo es ..., el paradigma ... permite ... (Autor, año).' },
+  { k:'m_enfoque', et:'Enfoque', ayuda:'La estrategia con la que vas a estudiarlo.' },
+  { k:'m_enfoque_just', et:'Por qué este enfoque', ayuda:'Por qué es coherente con el paradigma y con lo que tu pregunta necesita. Si los estudios que leíste usaron otro, dilo y explica por qué el tuyo es distinto.', area:true, ph:'El enfoque ... es coherente con este paradigma, pues ...' },
+  { k:'m_alcance', et:'Alcance', ayuda:'Hasta dónde llegan tus conclusiones. Mira el verbo de tu objetivo general.' },
+  { k:'m_alcance_just', et:'Por qué este alcance', ayuda:'Por qué tu objetivo pide este alcance y no el siguiente.', area:true, ph:'El estudio es de alcance ... porque ...' },
+  { k:'m_diseno', et:'Diseño', ayuda:'Si intervienes o no, y cuántas veces mides.' },
+  { k:'m_diseno_just', et:'Por qué este diseño', ayuda:'Una o dos frases. Basta con decir que no hay intervención y cuántas mediciones habrá.', area:true, ph:'Se trata de un diseño ... , dado que no se manipula ninguna variable y la información se recoge en ...' },
+];
+
+const QUIENES = [
+  { k:'q_poblacion', et:'Población', ayuda:'Quiénes son, de qué institución o comuna, en qué nivel o cargo, y en qué periodo.', area:true, ph:'Estudiantes de primero y segundo medio de ... , durante el segundo semestre de 2026. En total, ... personas.' },
+  { k:'q_tipo', et:'Tipo de muestreo', ayuda:'Probabilístico si hay sorteo desde un listado completo. No probabilístico si eliges por criterio o por acceso.' },
+  { k:'q_subtipo', et:'Subtipo', ayuda:'El nombre preciso. Si trabajas con el curso donde haces práctica, es por conveniencia.' },
+  { k:'q_tamano', et:'Cuántos, y de dónde salen', ayuda:'El número y su origen. Si es cualitativo, di cuántos informantes y por qué ese número.', ph:'62 estudiantes, correspondientes a los dos cursos completos de ...' },
+  { k:'q_just', et:'Por qué así', ayuda:'El criterio, no el número. Y si es no probabilístico, hasta dónde llegan tus conclusiones.', area:true, ph:'La selección responde a ... Dado que se trata de una muestra no probabilística, los resultados describen a este grupo y no se generalizan a ...' },
+  { k:'q_acceso', et:'Cómo vas a llegar a ellos', ayuda:'Con quién hablarás, y qué harás si se cae el acceso. La alternativa que declaraste en tu viabilidad se escribe aquí con nombre.', area:true, ph:'Se conversará con ... , quien ... Si eso no resulta, la alternativa es ...' },
+];
+
+function campoHTML(c){
+  const v = datos[c.k] || '';
+  let control;
+  if (OPC[c.k]) control = `<select id="${c.k}" data-ficha="${c.k}" aria-describedby="ay_${c.k}" style="${SEL_ESTILO}">${opcionesSimples(OPC[c.k], v, 'Elige una opción')}</select>`;
+  else if (c.area) control = `<textarea id="${c.k}" data-ficha="${c.k}" aria-describedby="ay_${c.k}" placeholder="${esc(c.ph||'')}">${esc(v)}</textarea>`;
+  else control = `<input type="text" id="${c.k}" data-ficha="${c.k}" aria-describedby="ay_${c.k}" value="${esc(v)}" placeholder="${esc(c.ph||'')}">`;
+  return `<div class="campo"><label for="${c.k}">${esc(c.et)}</label>
+    <p class="ayuda" id="ay_${c.k}">${esc(c.ayuda)}</p>${control}</div>`;
+}
+function pintarCampos(sel, lista){
+  const el = document.getElementById(sel);
+  if (el) el.innerHTML = lista.map(campoHTML).join('');
+}
+
+/* ===================== TABLA DE OPERACIONALIZACIÓN ===================== */
+const NIVELES = [
+  { t:'1. El concepto', ico:'conceptual', color:'var(--azul)', d:'La palabra que aparece en tu objetivo. Motivación, convivencia, comprensión lectora. Todavía no se puede preguntar.', boton:'Ver el siguiente nivel → la definición' },
+  { t:'2. La definición en este estudio', ico:'normativa', color:'var(--morado)', d:'Qué vas a entender por eso, apoyado en un autor. Acota el concepto y descarta lo que no vas a mirar. Este paso es el que más se salta.', boton:'Ver el siguiente nivel → lo observable' },
+  { t:'3. Lo observable', ico:'estadoarte', color:'var(--verde-texto)', d:'Indicadores si es cuantitativo, subcategorías si es cualitativo. Es lo que se convierte en enunciados o preguntas del instrumento.', boton:'' },
+];
+let nivelesAbierto = 1;
+function pintarNiveles(foco){
+  const el = document.getElementById('nivelesWrap');
+  if (!el) return;
+  const visibles = NIVELES.slice(0, nivelesAbierto);
+  const tarjetasHTML = visibles.map((n, i) => {
+    const esUltimo = i === visibles.length - 1;
+    const cabeza = `<div class="card-cab">${ico(n.ico, n.color)}<h3 class="card-t" style="color:${n.color}">${esc(n.t)}</h3></div>`;
+    const boton = (esUltimo && nivelesAbierto < NIVELES.length)
+      ? `<button type="button" class="btn btn-sec" data-niv-sig="1" style="margin-top:14px">${esc(n.boton)}</button>` : '';
+    return `<div class="card" style="border-left:4px solid ${n.color};flex:1 1 260px;max-width:360px">${cabeza}<p class="txt">${n.d}</p>${boton}</div>`;
+  }).join('');
+  el.innerHTML = `<div style="display:flex;flex-wrap:wrap;gap:16px">${tarjetasHTML}</div>` + (nivelesAbierto >= NIVELES.length
+    ? `<button type="button" class="btn btn-ghost" id="btnNivelesReiniciar" style="margin-top:14px">↺ Volver a verlos uno por uno</button>` : '');
+  el.querySelectorAll('[data-niv-sig]').forEach(b => b.addEventListener('click', () => { nivelesAbierto++; pintarNiveles(true); }));
+  const btnR = document.getElementById('btnNivelesReiniciar');
+  if (btnR) btnR.addEventListener('click', () => { nivelesAbierto = 1; pintarNiveles(true); });
+  if (foco) {
+    const cards = el.querySelectorAll('.card');
+    const destino = cards[cards.length - 1];
+    if (destino) { destino.setAttribute('tabindex','-1'); destino.focus({ preventScroll:false }); }
+  }
+}
+pintarNiveles();
+
+function mapaPasos(pasos){
+  const flecha = '<div aria-hidden="true" style="text-align:center;color:#9aa6b2;font-size:20px;line-height:1;margin:2px 0 2px 24px">↓</div>';
+  const paso = (rot, color, fondo, tit, texto) => `<div class="card" style="border-left:4px solid ${color};background:${fondo}">
+      <p style="font:700 11px 'Open Sans',sans-serif;text-transform:uppercase;letter-spacing:.06em;color:${color};margin:0 0 6px">${esc(rot)}</p>
+      <p class="card-t" style="margin-bottom:6px;color:${color}">${esc(tit)}</p>
+      <p class="txt">${texto}</p>
+    </div>`;
+  return pasos.map((p, i) => paso(p.rot, p.color, p.fondo, p.tit, p.texto) + (i < pasos.length - 1 ? flecha : '')).join('');
+}
+
+function pintarCuantiEjemplo(){
+  const el = document.getElementById('cuantiEjemplo');
+  if (!el) return;
+  el.innerHTML = mapaPasos([
+    { rot:'1. Variable', color:'var(--azul)', fondo:'#e9f2fb', tit:'Desempeño académico', texto:'El concepto general que aparece en el objetivo. Todavía no se puede medir tal como está escrito.' },
+    { rot:'2. Definición en este estudio', color:'var(--morado)', fondo:'#f3e8f7', tit:'Qué se entenderá por eso aquí', texto:'Nivel de conocimientos y habilidades que el estudiante demuestra en su proceso de aprendizaje (Autor, año).' },
+    { rot:'3. Indicadores', color:'var(--verde-texto)', fondo:'#eafbe6', tit:'Cómo se observa', texto:'Promedio de notas del semestre y niveles de logro por asignatura.' },
+  ]) + `<p style="font-size:13px;color:var(--texto-3);margin:12px 0 0">Cada indicador se convierte después en uno o más ítems del cuestionario. Ahí es donde este ejemplo se conecta con el recurso de instrumentos.</p>`;
+}
+
+function pintarCualiEjemplo(){
+  const el = document.getElementById('cualiEjemplo');
+  if (!el) return;
+  el.innerHTML = mapaPasos([
+    { rot:'1. Categoría', color:'var(--azul)', fondo:'#e9f2fb', tit:'Experiencias al planificar', texto:'El concepto general que aparece en el objetivo, tal como en cuantitativo era la variable.' },
+    { rot:'2. Definición en este estudio', color:'var(--morado)', fondo:'#f3e8f7', tit:'Qué se entenderá por eso aquí', texto:'Lo que los docentes relatan sobre cómo viven el proceso de planificar sus clases (Autor, año).' },
+    { rot:'3. Categorías', color:'var(--verde-texto)', fondo:'#eafbe6', tit:'Los aspectos observables por los que se va a preguntar', texto:'Tiempo disponible · Apoyo institucional · Uso de formatos exigidos · Sentido que le atribuyen a la tarea.' },
+  ]) + `<p style="font-size:13px;color:var(--texto-3);margin:12px 0 0">Cada categoría se convierte después en una o dos preguntas de la entrevista. Ahí es donde este ejemplo se conecta con el recurso de instrumentos.</p>`;
+}
+pintarCuantiEjemplo();
+pintarCualiEjemplo();
+
+construirQuiz('obsQuiz', [
+  { pregunta:'¿Cuál de estas es una definición útil para operacionalizar, y no una de diccionario?',
+    opciones:[
+      '"La motivación es el impulso que mueve a las personas a actuar."',
+      '"En este estudio se entenderá la motivación escolar como la disposición del estudiante a participar y persistir en tareas académicas, expresada en su asistencia, su participación en clases y su persistencia ante tareas difíciles."',
+      '"La motivación es un concepto muy estudiado en educación."',
+      '"La motivación es importante para el aprendizaje."'], correcta:1,
+    pista:'Busca la que dice qué se va a mirar y qué no.',
+    explicacion:'La segunda acota el concepto para este estudio y además ya nombra por dónde se va a observar. Las otras tres no permiten escribir ni una pregunta. Fíjate en la fórmula, "en este estudio se entenderá X como ...". Es importante que luego de esa oración, se defina con autores' },
+  { pregunta:'Tu categoría es "experiencias al planificar" y pusiste definición "opinión sobre la reforma educativa". ¿Qué problema hay?',
+    opciones:[
+      'Ninguno, todo se relaciona',
+      'La definición no pertenece a la categoría, y esa pregunta va a quedar suelta en el análisis',
+      'Faltan más preguntas para completar la categoría',
+      'La categoría está mal nombrada'], correcta:1,
+    pista:'Pregúntate si la respuesta a eso va a poder analizarse dentro de esa categoría.',
+    explicacion:'Una definición tiene que ser un aspecto de su categoría. Si no lo es, la pregunta se hace, el informante responde, y después esa respuesta no entra en ningún análisis. Es el error de trazabilidad que se trabaja en el recurso de instrumentos.' },
+], 'obs', 'obsAviso');
+
+const OBS_CLASES = ['Variable (cuantitativo)','Concepto o categoría (cualitativo)'];
+/* Solo se pregunta en las variables, y solo cuando el objetivo relaciona dos. */
+const OBS_ROLES = ['No aplica, mi estudio describe','Independiente','Dependiente'];
+function esVariableObs(fila){ return !fila.clase || fila.clase.indexOf('Variable') === 0; }
+
+function pintarObs(){
+  const wrap = document.getElementById('obsWrap');
+  if (!wrap) return;
+  if (!datos.m_obs.length) datos.m_obs = [OBS_VACIA(), OBS_VACIA()];
+  wrap.innerHTML = datos.m_obs.map((fila, i) => {
+    const variable = esVariableObs(fila);
+    const campos = [
+      { k:'clase', et:'¿Variable o concepto?', tipo:'select', ops:OBS_CLASES },
+      { k:'nombre', et:'Nombre', ph: variable ? 'Motivación académica' : 'Violencia escolar' },
+      ...(variable ? [{ k:'rol', et:'Papel en tu estudio', tipo:'select', ops:OBS_ROLES }] : []),
+      variable
+        ? { k:'definicion', et:'¿Qué implica? (lo observable)', tipo:'textarea', ancho:true, ph:'Relaciones interpersonales, relación con el docente, autoeficacia...' }
+        : { k:'definicion', et:'¿Qué se entiende por esto en tu estudio?', tipo:'textarea', ancho:true, ph:'En este estudio se entenderá ... como ... (Autor, año).' },
+      variable
+        ? { k:'indicadores', et:'¿Cómo se mide?', tipo:'textarea', ancho:true, ph:'Puntaje en la subescala de autoeficacia del cuestionario...' }
+        : { k:'indicadores', et:'Categorías tentativas (pueden variar tras el análisis)', tipo:'textarea', ancho:true, ph:'Tiempo disponible, apoyo institucional... (puedes dejarlo abierto)' },
+      { k:'instrumento', et:'¿Con qué instrumento se observará?', ph:'Cuestionario Likert' },
+    ];
+    return `
+    <div class="est-card">
+      <div class="est-top">
+        <p class="est-n">${i + 1}. ${variable ? 'Variable' : 'Concepto / categoría'}</p>
+        <button type="button" class="btn btn-ghost" data-quitarobs="${i}" style="min-height:36px;padding:7px 12px;font-size:12.5px"${datos.m_obs.length <= 1 ? ' disabled' : ''}>Quitar</button>
+      </div>
+      <div class="est-grid">
+        ${campos.map(c => {
+          const id = `obs_${i}_${c.k}`;
+          const v = fila[c.k] || '';
+          let control;
+          if (c.tipo === 'select') control = `<select id="${id}" data-obs="${i}" data-campo="${c.k}">${opcionesSimples(c.ops, v, 'Elige')}</select>`;
+          else if (c.tipo === 'textarea') control = `<textarea id="${id}" data-obs="${i}" data-campo="${c.k}" placeholder="${esc(c.ph||'')}">${esc(v)}</textarea>`;
+          else control = `<input type="text" id="${id}" data-obs="${i}" data-campo="${c.k}" value="${esc(v)}" placeholder="${esc(c.ph||'')}">`;
+          return `<div class="campo${c.ancho ? ' est-ancho' : ''}"><label for="${id}">${esc(c.et)}</label>${control}</div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
+  wrap.querySelectorAll('[data-obs]').forEach(el => {
+    const ev = el.tagName === 'SELECT' ? 'change' : 'input';
+    el.addEventListener(ev, () => {
+      const i = +el.dataset.obs;
+      if (!datos.m_obs[i]) return;
+      datos.m_obs[i][el.dataset.campo] = el.value;
+      guardar(); contarObs(); pintarResumen(); pintarAvance(); pintarSenales();
+      if (el.dataset.campo === 'clase') pintarObs();
+    });
+  });
+  wrap.querySelectorAll('[data-quitarobs]').forEach(b => b.addEventListener('click', () => {
+    const i = +b.dataset.quitarobs;
+    const fila = datos.m_obs[i];
+    if (fila && Object.values(fila).some(v => (v||'').trim()) && !window.confirm('Esta fila tiene información escrita. ¿Quieres quitarla igual?')) return;
+    datos.m_obs.splice(i, 1);
+    if (!datos.m_obs.length) datos.m_obs.push(OBS_VACIA());
+    guardar(); pintarObs(); pintarResumen(); pintarAvance();
+    const av = document.getElementById('obsTablaAviso');
+    if (av) av.textContent = `Fila quitada. Quedan ${datos.m_obs.length}.`;
+    const btn = document.getElementById('btnAgregarObs');
+    if (btn) btn.focus();
+  }));
+  contarObs();
+}
+function obsConDatos(){ return datos.m_obs.filter(f => (f.nombre||'').trim() || (f.definicion||'').trim()); }
+function contarObs(){
+  const el = document.getElementById('obsContador');
+  if (!el) return;
+  const n = obsConDatos().length;
+  el.textContent = n === 0 ? 'Ninguna fila completa todavía.'
+    : n === 1 ? '1 fila con contenido.' : `${n} filas con contenido.`;
+}
+document.getElementById('btnAgregarObs').addEventListener('click', () => {
+  datos.m_obs.push(OBS_VACIA());
+  guardar(); pintarObs(); pintarAvance();
+  const ultimo = document.getElementById(`obs_${datos.m_obs.length - 1}_nombre`);
+  if (ultimo) ultimo.focus();
+});
+
+
+/* ===================== POBLACIÓN, MUESTRA Y ACCESO ===================== */
+tarjetas('#poblacionWrap', [
+  { t:'Población o universo', ico:'poblacion', color:'var(--azul)', d:'El grupo completo sobre el que quieres saber algo. Se delimita por institución, nivel o cargo, y periodo. Si tu conclusión va a hablar de "los estudiantes del liceo", tu población son todos ellos, aunque le preguntes solo a algunos.' },
+  { t:'Muestra', ico:'contexto', color:'var(--morado)', d:'El subgrupo al que efectivamente le aplicas el instrumento. Lo que puedas afirmar sobre la población depende por completo de cómo elegiste esta muestra.' },
+], 'var(--azul)');
+
+tarjetas('#muestreoWrap', [
+  { t:'Probabilístico', ico:'evidencia', color:'var(--azul)', d:'Todos los miembros de la población tienen la misma posibilidad de salir elegidos, porque hay un sorteo desde un listado completo. Permite estimar cuánto se parecen tus resultados a la población entera. Exige tener el listado y poder acceder a cualquiera de los sorteados.' },
+  { t:'No probabilístico', ico:'metodo', color:'var(--verde-texto)', d:'Eliges según criterios o según a quién puedes llegar. No permite generalizar estadísticamente, y sí permite responder muy bien la pregunta en ese contexto. Es lo que corresponde en la mayoría de los proyectos de un semestre.' },
+], 'var(--azul)');
+
+const SUBTIPOS = [
+  ['Probabilístico','Aleatorio simple','Se sortea desde el listado completo.','Sortear 80 estudiantes del registro oficial de matrícula.'],
+  ['Probabilístico','Sistemático','Se elige cada k-ésimo elemento tras un inicio al azar.','Tomar 1 de cada 5 del listado de matrícula.'],
+  ['Probabilístico','Estratificado','Se divide la población en grupos y se sortea dentro de cada uno, en proporción.','Sortear por nivel, según cuántos hay en 7°, 8° y I° medio.'],
+  ['Probabilístico','Por conglomerados','Se sortean grupos completos en vez de individuos.','Elegir al azar 4 cursos completos de una comuna.'],
+  ['No probabilístico','Por conveniencia','Se trabaja con quienes están accesibles.','Encuestar al curso donde se hace la práctica. Es el caso más frecuente aquí.'],
+  ['No probabilístico','Intencional o por criterio','Se eligen casos que cumplen condiciones relevantes para el objetivo.','Entrevistar a docentes con más de cinco años de experiencia en inclusión.'],
+  ['No probabilístico','Bola de nieve','Los participantes recomiendan a otros con el perfil buscado.','Contactar apoderados de educación domiciliaria por referencia mutua.'],
+  ['No probabilístico','Por cuotas','Se fijan cupos por característica y se completan.','Encuestar 20 hombres y 20 mujeres de cada nivel.'],
+];
+{
+  const el = document.getElementById('subtiposWrap');
+  if (el) el.innerHTML = `<div class="scroll-x" style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px;min-width:620px">
+    <caption class="visually-hidden">Subtipos de muestreo con ejemplos escolares</caption>
+    <thead><tr>
+      <th scope="col" style="background:var(--tinta);color:#fff;text-align:left;padding:8px 11px;font:700 11.5px 'Open Sans',sans-serif">Tipo</th>
+      <th scope="col" style="background:var(--tinta);color:#fff;text-align:left;padding:8px 11px;font:700 11.5px 'Open Sans',sans-serif">Subtipo</th>
+      <th scope="col" style="background:var(--tinta);color:#fff;text-align:left;padding:8px 11px;font:700 11.5px 'Open Sans',sans-serif">En qué consiste</th>
+      <th scope="col" style="background:var(--tinta);color:#fff;text-align:left;padding:8px 11px;font:700 11.5px 'Open Sans',sans-serif">Ejemplo</th>
+    </tr></thead><tbody>`
+    + SUBTIPOS.map(f => `<tr>` + f.map(c => `<td style="padding:8px 11px;border-top:1px solid #eef1f4">${esc(c)}</td>`).join('') + `</tr>`).join('')
+    + `</tbody></table></div>`;
+}
+
+construirQuiz('muestreoQuiz', [
+  { pregunta:'Vas a encuestar a los dos cursos donde haces tu práctica, porque son los que tienes disponibles. ¿Qué muestreo es, y qué puedes afirmar?',
+    opciones:[
+      'Probabilístico, y los resultados se generalizan al liceo',
+      'No probabilístico por conveniencia, y los resultados describen a esos dos cursos',
+      'Probabilístico estratificado, porque hay dos niveles distintos',
+      'No probabilístico, y por eso el estudio no sirve'], correcta:1,
+    pista:'No hubo sorteo. Y la última opción es tan falsa como la primera.',
+    explicacion:'Es por conveniencia, y eso está bien. Lo que cambia es el alcance de tus conclusiones, que valen para esos dos cursos en ese contexto. Un estudio así es válido y se publica todo el tiempo, siempre que no prometa lo que no puede dar.' },
+  { pregunta:'Un grupo cualitativo va a entrevistar a seis docentes elegidos por su experiencia en el programa. ¿Qué muestreo es?',
+    opciones:['Probabilístico aleatorio','No probabilístico intencional o por criterio','Por cuotas','Por conglomerados'], correcta:1,
+    pista:'Se eligieron por una característica que interesa al objetivo.',
+    explicacion:'Intencional o por criterio. En cualitativo esto no es una limitación, es lo correcto, porque se busca a quien tiene algo que decir sobre el fenómeno y no a cualquiera.' },
+  { pregunta:'En el informe escribes "se aplicó a una muestra representativa de 62 estudiantes del liceo", y los 62 son los dos cursos donde hacías práctica. ¿Qué está mal?',
+    opciones:[
+      'Nada, 62 es un número suficiente',
+      'La palabra representativa, porque no hubo selección aleatoria desde la población completa',
+      'Que falta decir el promedio de edad',
+      'Que debería haber encuestado a todo el liceo'], correcta:1,
+    pista:'Una sola palabra sobra en esa frase.',
+    explicacion:'Representativa implica que la muestra refleja a la población, y eso solo lo garantiza la selección aleatoria. Basta con quitar esa palabra y escribir "se aplicó a 62 estudiantes, correspondientes a los dos cursos a los que se tuvo acceso". La misma frase, ahora verdadera.' },
+], 'muestreo', 'muestreoAviso');
+
+tarjetas('#tamanoWrap', [
+  { t:'Cuantitativo con muestra no probabilística', ico:'cuanti', color:'var(--azul)', d:'El criterio es cubrir toda la población accesible, no una parte de ella. Si tienes acceso a dos cursos, aplica a los dos completos. Sacar 30 de 62 sin sorteo no mejora nada y solo pierde información. Lo que se informa es cuántos son y por qué son esos.' },
+  { t:'Cuantitativo con muestra probabilística', ico:'evidencia', color:'#1C6AA0', d:'Aquí sí se calcula, a partir del tamaño de la población, un nivel de confianza y un margen de error. Requiere el listado completo y poder acceder a cualquiera de los sorteados, condiciones que pocas veces se dan en un semestre. Si las tienes, declara los tres valores que usaste.' },
+  { t:'Cualitativo', ico:'cuali', color:'var(--morado)', d:'No se calcula con una fórmula, se argumenta con un criterio. Como referencia para un proyecto de licenciatura, con entrevistas en profundidad suelen bastar entre 5 y 8 informantes, y con grupos focales, entre 2 y 3 grupos. Lo que se evalúa es que declares el número previsto y expliques por qué esos y no más, según a quiénes tienes acceso y el tiempo del semestre.' },
+], 'var(--azul)');
+
+tarjetas('#accesoWrap', [
+  { t:'Con quién hay que hablar', ico:'normativa', color:'var(--azul)', d:'La dirección autoriza y la Unidad Técnico Pedagógica coordina los horarios. Conviene partir por quien ya te conoce de la práctica, y pedir la autorización por escrito aunque te digan que sí de palabra.' },
+  { t:'Qué te van a preguntar', ico:'estadoarte', color:'var(--morado)', d:'Cuánto tiempo de clases vas a ocupar, qué se va a preguntar exactamente, qué pasa con los datos y si el establecimiento va a quedar identificado. Ten las respuestas antes de pedir la reunión.' },
+  { t:'El plan B', ico:'metodo', color:'#BA7517', d:'Ya lo declaraste en la viabilidad de tu planteamiento, y aquí se concreta. Ten un segundo establecimiento conversado, con nombre. El acceso se cae por cosas que no dependen de ti, un cambio de director, una semana de evaluaciones, un paro.' },
+], 'var(--azul)');
+
+
+/* ===================== PROCEDIMIENTO Y ÉTICA ===================== */
+const PASOS_CAMPO = [
+  { t:'1. Permisos institucionales', mal:'Se da por hecho el acceso porque ahí se hace la práctica.', bien:'Carta a la dirección con el propósito del estudio, qué se va a aplicar, cuánto tiempo de clases ocupa y qué se hará con la información. Pídela por escrito aunque te hayan dicho que sí.' },
+  { t:'2. Coordinación', mal:'Se fija la fecha sin consultar el calendario del establecimiento.', bien:'Acordar fecha y horario con la Unidad Técnico Pedagógica, evitando semanas de evaluaciones. Dejar por escrito el día y la hora.' },
+  { t:'3. Consentimiento y asentimiento', mal:'Se reparte el cuestionario y se explica al pasar que es anónimo.', bien:'Consentimiento firmado por el apoderado y asentimiento firmado por el estudiante, entregados con anticipación. Con adultos, consentimiento del propio participante.' },
+  { t:'4. Aplicación', mal:'Se aplica y se responden dudas dando ejemplos de respuesta.', bien:'Leer las instrucciones en voz alta, recordar el resguardo de identidad y aclarar solo el sentido de las palabras, nunca sugerir respuestas. En entrevista, no valorar lo que el informante dice.' },
+  { t:'5. Registro y resguardo', mal:'Se guardan las respuestas en el celular de alguien del grupo.', bien:'Digitalizar con códigos en vez de nombres, guardar en un lugar al que solo acceda el equipo, y decir en el informe qué se hará con el material al terminar el estudio.' },
+];
+{
+  const el = document.getElementById('pasosCampo');
+  if (el) {
+    el.innerHTML = PASOS_CAMPO.map((p, i) => `
+      <div class="card">
+        <h3 class="card-t">${esc(p.t)}</h3>
+        <p style="font-size:13.5px;line-height:1.6;color:var(--rojo);margin:8px 0 12px"><strong>El error de siempre.</strong> ${esc(p.mal)}</p>
+        <button type="button" class="btn btn-sec" data-paso="${i}" aria-expanded="false" aria-controls="pc-${i}" style="min-height:40px;padding:9px 14px;font-size:12.5px">Ver qué corresponde hacer</button>
+        <div id="pc-${i}" style="display:none;margin-top:12px;background:var(--verde-claro);border-left:4px solid var(--verde-texto);border-radius:0 8px 8px 0;padding:12px 14px">
+          <p style="font-size:13.5px;line-height:1.6;color:var(--texto-2);margin:0">${esc(p.bien)}</p>
+        </div>
+      </div>`).join('');
+    el.querySelectorAll('[data-paso]').forEach(b => b.addEventListener('click', () => {
+      const caja = document.getElementById('pc-' + b.dataset.paso);
+      const abierto = caja.style.display !== 'none';
+      caja.style.display = abierto ? 'none' : 'block';
+      b.setAttribute('aria-expanded', abierto ? 'false' : 'true');
+      b.textContent = abierto ? 'Ver qué corresponde hacer' : 'Ocultar';
+    }));
+  }
+}
+
+tarjetas('#eticaWrap', [
+  { t:'Consentimiento y asentimiento', ico:'normativa', color:'var(--azul)', d:'Con adultos, consentimiento informado del propio participante. Con menores de edad, consentimiento del apoderado más asentimiento del estudiante, en lenguaje que él entienda. Son dos documentos, no uno.' },
+  { t:'Voluntariedad y retiro', ico:'poblacion', color:'var(--verde-texto)', d:'Participar es voluntario y se puede dejar de participar en cualquier momento, sin explicar por qué y sin consecuencias. Hay que decirlo al inicio, no solo escribirlo en el documento.' },
+  { t:'Anonimato o confidencialidad', ico:'cuali', color:'var(--morado)', d:'En encuesta, anonimato, porque no pides datos identificatorios. En entrevista, confidencialidad con códigos, porque sabes quién es. No prometas anonimato en una entrevista.' },
+  { t:'Resguardo de los datos', ico:'metodo', color:'#BA7517', d:'Dónde se guarda el material, quién puede acceder y qué pasa con él al terminar. Las grabaciones y los cuestionarios en papel son datos de personas, no apuntes del grupo.' },
+  { t:'Devolución de resultados', ico:'evidencia', color:'#1C6AA0', d:'Comprometer una forma de devolver lo encontrado al establecimiento, aunque sea breve. Es lo que hace que la próxima vez te abran la puerta.' },
+], 'var(--azul)');
+
+construirQuiz('eticaQuiz', [
+  { pregunta:'Vas a entrevistar a estudiantes de 2° medio. El apoderado firma la autorización, pero el estudiante dice que prefiere no participar. ¿Qué corresponde?',
+    opciones:[
+      'Entrevistarlo, porque el apoderado ya autorizó',
+      'No entrevistarlo, porque el asentimiento del estudiante también es necesario',
+      'Consultar a la dirección para que decida',
+      'Entrevistarlo pero no usar sus respuestas'], correcta:1,
+    pista:'Piensa para qué existe el asentimiento, si el apoderado ya firmó.',
+    explicacion:'El consentimiento del apoderado habilita legalmente, pero no obliga al estudiante. Si no da su asentimiento, no participa, y eso no hay que justificarlo ante nadie. Para eso existen los dos documentos.' },
+  { pregunta:'En una entrevista grabada le dices al informante que sus respuestas serán anónimas. ¿Es correcto?',
+    opciones:[
+      'Sí, porque no vas a poner su nombre en el informe',
+      'No, porque tú sabes quién es. Lo que corresponde prometer es confidencialidad',
+      'Sí, si borras la grabación después',
+      'Da lo mismo, son sinónimos'], correcta:1,
+    pista:'Anónimo significa que nadie, ni tú, puede saber quién respondió qué.',
+    explicacion:'En una entrevista no hay anonimato posible, porque lo estás viendo. Lo que puedes prometer y cumplir es confidencialidad, o sea que nadie más podrá identificarlo, con códigos como E1PH y cambiando nombres de personas y lugares en las citas.' },
+], 'etica', 'eticaAviso');
+
+
+/* ===================== SEÑALES DE COHERENCIA =====================
+   Son revisiones de forma sobre lo que se declaró. No reemplazan la
+   lectura de la profesora y así se le dice al estudiante.           */
+function senales(){
+  const s = [];
+  const par = datos.m_paradigma, enf = datos.m_enfoque, alc = datos.m_alcance, dis = datos.m_diseno;
+  const add = (donde, nivel, texto) => s.push({ donde, nivel, texto });
+
+  if (par === 'Positivista' && enf === 'Cualitativo')
+    add('mirada','alerta','Declaraste paradigma positivista y enfoque cualitativo. Esas dos decisiones no se sostienen juntas. El positivista busca medir y generalizar, el cualitativo busca comprender en contexto. Revisa cuál de las dos corresponde a tu pregunta y cambia la otra.');
+  if (par === 'Interpretativo' && enf === 'Cuantitativo')
+    add('mirada','alerta','Declaraste paradigma interpretativo y enfoque cuantitativo. Si vas a medir y comparar, el paradigma es positivista. Si vas a comprender significados, el enfoque es cualitativo.');
+  if (enf === 'Cualitativo' && (alc === 'Correlacional' || alc === 'Explicativo'))
+    add('mirada','alerta',`El alcance ${alc.toLowerCase()} supone medir variables, así que no se puede sostener con enfoque cualitativo. Con cualitativo el alcance suele ser exploratorio o descriptivo.`);
+  if (alc === 'Explicativo' && dis && dis.indexOf('No experimental') === 0)
+    add('mirada','alerta','Un alcance explicativo exige manipular una variable y comparar con otro grupo, o sea un diseño cuasiexperimental o experimental. Con un diseño no experimental el alcance máximo es correlacional.');
+  if (alc === 'Descriptivo' && (dis === 'Cuasiexperimental' || dis === 'Experimental'))
+    add('mirada','aviso','Declaraste un diseño con intervención pero un alcance descriptivo. Si vas a aplicar algo y medir su efecto, el alcance es explicativo. Si solo vas a describir, no hace falta intervenir.');
+  if (enf === 'Mixto' && obsConDatos().length && !obsConDatos().some(f => !esVariableObs(f)))
+    add('mirada','aviso','Declaraste enfoque mixto, pero en tu tabla de lo observable no aparece ningún concepto cualitativo, solo variables. Un estudio mixto necesita las dos cosas y dos instrumentos distintos.');
+  const og = objetivoPrevio('og').toLowerCase();
+  if (og && enf === 'Cuantitativo' && /^(comprender|interpretar|explorar)/.test(og))
+    add('mirada','aviso',`Tu objetivo general empieza con "${og.split(' ')[0]}", que apunta a comprender, y declaraste enfoque cuantitativo. Revisa si el objetivo o el enfoque es el que hay que ajustar.`);
+
+  const tipo = datos.q_tipo, sub = datos.q_subtipo;
+  const subProb = ['Aleatorio simple','Sistemático','Estratificado','Por conglomerados'];
+  if (tipo && sub) {
+    const esProb = subProb.indexOf(sub) >= 0;
+    if (tipo === 'Probabilístico' && !esProb)
+      add('quienes','alerta',`Declaraste muestreo probabilístico, pero "${sub}" es un subtipo no probabilístico. Cambia una de las dos.`);
+    if (tipo === 'No probabilístico' && esProb)
+      add('quienes','alerta',`Declaraste muestreo no probabilístico, pero "${sub}" supone sorteo desde un listado completo, o sea que es probabilístico.`);
+  }
+  const just = (datos.q_just||'').toLowerCase();
+  if (tipo === 'No probabilístico' && /representativ|generaliz|extrapol/.test(just))
+    add('quienes','alerta','En la justificación aparecen palabras como representativa o generalizar, y declaraste muestreo no probabilístico. Con ese muestreo los resultados describen a tu grupo y no se extienden a la población. Basta con reescribir esa frase, el estudio sigue siendo válido.');
+  if (enf === 'Cualitativo' && /^\s*\d{3,}/.test((datos.q_tamano||'').trim()))
+    add('quienes','aviso','Declaraste enfoque cualitativo y un número alto de participantes. En cualitativo se trabaja con pocos casos en profundidad. Si de verdad vas a aplicar a tantas personas, probablemente el enfoque sea cuantitativo o mixto.');
+
+  const etica = (datos.c_etica||'') + ' ' + (datos.c_pasos||'');
+  const sujetos = ((previo && previo.d_sujetos) || '') + ' ' + (datos.q_poblacion||'');
+  const conMenores = /estudiante|alumn|niñ|adolescen|párvul/i.test(sujetos);
+  if (conMenores && datos.c_etica && !/asentimiento/i.test(etica))
+    add('campo','aviso','Tus participantes parecen ser estudiantes de edad escolar y no aparece la palabra asentimiento. Con menores de edad hacen falta dos documentos, el consentimiento del apoderado y el asentimiento del estudiante.');
+  if (enf === 'Cualitativo' && /anonimato|anónim/i.test(etica) && !/confidencial/i.test(etica))
+    add('campo','aviso','Hablas de anonimato en un estudio cualitativo. En una entrevista no hay anonimato posible, porque sabes quién es. Lo que corresponde prometer es confidencialidad.');
+
+  const vars = datos.m_obs.filter(f => (f.nombre||'').trim() && esVariableObs(f));
+  const indep = vars.filter(f => f.rol === 'Independiente').length;
+  const dep = vars.filter(f => f.rol === 'Dependiente').length;
+  if (indep && !dep)
+    add('observable','aviso','Marcaste una variable independiente y ninguna dependiente. Si una influye, tiene que haber otra que reciba esa influencia y se mida. Revisa si falta agregarla, o si en realidad tu estudio describe y ninguna de las dos corresponde.');
+  if (dep && !indep)
+    add('observable','aviso','Marcaste una variable dependiente y ninguna independiente. Falta declarar cuál es la que se supone que influye sobre ella.');
+  if (indep && dep && alc === 'Descriptivo')
+    add('observable','alerta','Declaraste alcance descriptivo y marcaste una variable independiente y una dependiente. Relacionar dos variables es un alcance correlacional, y establecer el efecto de una sobre otra es explicativo. Cambia el alcance o el papel de las variables.');
+  if (!indep && !dep && (alc === 'Correlacional' || alc === 'Explicativo') && vars.length >= 2)
+    add('observable','aviso',`Declaraste alcance ${alc.toLowerCase()} y ninguna de tus variables tiene su papel marcado. En un estudio que relaciona dos variables conviene dejar claro cuál se supone que influye y cuál se mide.`);
+  return s;
+}
+
+function pintarSenales(){
+  const grupos = { mirada:'revisionMirada', observable:'revisionObservable', quienes:'revisionQuienes', campo:'revisionCampo' };
+  const todas = senales();
+  Object.entries(grupos).forEach(([donde, id]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const lista = todas.filter(x => x.donde === donde);
+    if (!lista.length) { el.innerHTML = ''; return; }
+    el.innerHTML = lista.map(x => {
+      const alerta = x.nivel === 'alerta';
+      return `<div class="aviso ${alerta ? 'aviso-ambar' : ''}" style="${alerta ? 'border-color:#e0b4ab;background:#fdeeee;color:#5c2b24' : ''}">
+        <span class="ico">${ICO_OK}</span><p>${esc(x.texto)}</p></div>`;
+    }).join('')
+    + `<p style="font-size:12.5px;color:var(--texto-3);margin:0">Estas son señales automáticas sobre lo que declaraste. Revisan coherencia entre decisiones, no la calidad de tu argumento, y no reemplazan la lectura de la profesora.</p>`;
+  });
+}
+
+/* ===================== MATRIZ DEL TALLER ===================== */
+const MATRIZ = [
+  { rot:'Paradigma', k:'m_paradigma', just:'m_paradigma_just', vista:'mirada' },
+  { rot:'Enfoque', k:'m_enfoque', just:'m_enfoque_just', vista:'mirada' },
+  { rot:'Alcance', k:'m_alcance', just:'m_alcance_just', vista:'mirada' },
+  { rot:'Diseño', k:'m_diseno', just:'m_diseno_just', vista:'mirada' },
+  { rot:'Población', k:'q_poblacion', just:'', vista:'quienes' },
+  { rot:'Muestra', k:'q_tamano', just:'q_just', vista:'quienes', extra:['q_tipo','q_subtipo'] },
+  { rot:'Instrumento', k:'o_cierre', just:'', vista:'observable' },
+  { rot:'Procedimiento', k:'c_pasos', just:'', vista:'campo' },
+  { rot:'Resguardos éticos', k:'c_etica', just:'', vista:'campo' },
+];
+
+function pintarMatriz(){
+  const el = document.getElementById('matrizWrap');
+  if (!el) return;
+  el.innerHTML = MATRIZ.map(m => {
+    let dec = (datos[m.k]||'').trim();
+    if (m.extra) {
+      const ex = m.extra.map(k => (datos[k]||'').trim()).filter(Boolean).join(', ');
+      dec = [ex, dec].filter(Boolean).join('. ');
+    }
+    const jus = m.just ? (datos[m.just]||'').trim() : '';
+    const vacio = !dec && !jus;
+    return `<div class="card" style="margin-bottom:10px;border-left:4px solid ${vacio ? '#d7dee5' : 'var(--verde-texto)'}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+        <p style="font:700 13px 'Roboto Condensed',sans-serif;text-transform:uppercase;letter-spacing:.05em;color:var(--tinta);margin:0">${esc(m.rot)}</p>
+        <button type="button" class="btn btn-ghost" data-ir-matriz="${m.vista}" style="min-height:34px;padding:6px 11px;font-size:12px">${vacio ? 'Completar' : 'Editar'}</button>
+      </div>
+      <p style="font-size:14.5px;line-height:1.6;color:${dec ? 'var(--texto-2)' : '#6b7682'};margin:8px 0 0">${dec ? esc(dec) : 'Sin completar todavía.'}</p>
+      ${jus ? `<p style="font-size:13.5px;line-height:1.6;color:var(--texto-3);margin:8px 0 0"><strong>Justificación.</strong> ${esc(jus)}</p>` : ''}
+    </div>`;
+  }).join('');
+  el.querySelectorAll('[data-ir-matriz]').forEach(b => b.addEventListener('click', () => irA(b.dataset.irMatriz, true)));
+
+  const coh = document.getElementById('coherenciaWrap');
+  if (coh) {
+    const todas = senales();
+    const alertas = todas.filter(x => x.nivel === 'alerta');
+    const faltan = MATRIZ.filter(m => !(datos[m.k]||'').trim()).length;
+    if (alertas.length) {
+      coh.innerHTML = `<div class="aviso aviso-ambar" style="border-color:#e0b4ab;background:#fdeeee;color:#5c2b24"><span class="ico">${ICO_OK}</span>
+        <p><strong>${alertas.length === 1 ? 'Hay una incoherencia entre tus decisiones.' : `Hay ${alertas.length} incoherencias entre tus decisiones.`}</strong> Está detallada en la sección donde se declara. Conviene resolverla antes de escribir, porque es lo primero que se revisa en el informe.</p></div>`;
+    } else if (faltan) {
+      coh.innerHTML = `<div class="aviso"><span class="ico">${ICO_OK}</span><p>Te ${faltan === 1 ? 'falta una decisión' : `faltan ${faltan} decisiones`} por completar. Lo que ya declaraste no presenta incoherencias.</p></div>`;
+    } else {
+      coh.innerHTML = `<div class="aviso" style="background:var(--verde-claro);color:#1d4a15"><span class="ico">${ICO_OK}</span><p><strong>Tus nueve decisiones están declaradas y son coherentes entre sí.</strong> Eso no garantiza que los argumentos sean buenos, eso lo lee la profesora, pero sí que el diseño se sostiene.</p></div>`;
+    }
+  }
+}
+
+
+/* ===================== CRONOGRAMA ===================== */
+const FASES_CRONO = [
+  { t:'Fase 1 · Planteamiento', nombre:'Planteamiento', e:'Realizada', d:'Delimitación del tema, pregunta, objetivos y fundamentación.' },
+  { t:'Fase 2 · Marco teórico', nombre:'Marco teórico', e:'Realizada o en curso', d:'Revisión de fuentes y construcción del marco.' },
+  { t:'Fase 3 · Diseño metodológico', nombre:'Diseño metodológico', e:'En curso', d:'Decisiones metodológicas, operacionalización, diseño y validación del instrumento.' },
+  { t:'Fase 4 · Trabajo de campo', nombre:'Trabajo de campo', e:'Pendiente', d:'Permisos, consentimientos y aplicación.' },
+  { t:'Fase 5 · Análisis', nombre:'Análisis de datos', e:'Pendiente', d:'Procesamiento e interpretación de los datos.' },
+  { t:'Fase 6 · Cierre', nombre:'Redacción y cierre', e:'Pendiente', d:'Redacción final, conclusiones y formato APA 7.' },
+];
+function pintarCrono(){
+  const el = document.getElementById('cronoWrap');
+  if (!el) return;
+  el.innerHTML = FASES_CRONO.map((f, i) => `
+    <div class="card" style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px">
+        <p style="font:700 14px 'Roboto Condensed',sans-serif;color:var(--tinta);margin:0">${esc(f.t)}</p>
+        <span style="font:700 10.5px 'Open Sans',sans-serif;text-transform:uppercase;letter-spacing:.05em;color:var(--texto-3)">${esc(f.e)}</span>
+      </div>
+      <p style="font-size:13px;color:var(--texto-3);margin:0 0 8px">${esc(f.d)}</p>
+      <div class="campo" style="margin:0">
+        <label class="visually-hidden" for="cr_${i}">Actividades y fechas de ${esc(f.t)}</label>
+        <textarea id="cr_${i}" data-ficha="cr_${i}" placeholder="Qué harás y entre qué fechas. Por ejemplo, del 6 al 24 de octubre." style="min-height:64px">${esc(datos['cr_'+i]||'')}</textarea>
+      </div>
+    </div>`).join('');
+}
+
+
+/* ===================== CARTA GANTT, MESES Y SEMANAS ===================== */
+const GANTT_PALETA = ['#0055B7','#2E7D1F','#BA7517','#A32D2D','#6A4C93','#1C6AA0'];
+const SEMANAS_POR_DEFECTO = 4;
+
+function ganttPorDefecto(){
+  const periodos = ['Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+    .map(n => ({ nombre:n, semanas:SEMANAS_POR_DEFECTO }));
+  const total = periodos.reduce((n,p) => n + p.semanas, 0);
+  return {
+    periodos,
+    filas: FASES_CRONO.map((f, i) => ({
+      nombre: f.nombre || f.t.replace(' · ', ' '),
+      color: GANTT_PALETA[i % GANTT_PALETA.length],
+      celdas: Array.from({ length: total }, (_, c) => Math.floor(c / SEMANAS_POR_DEFECTO) === Math.min(i, periodos.length - 1)),
+    })),
+  };
+}
+
+/* Los borradores anteriores guardaban los periodos como texto y una celda por
+   periodo. Se convierten a meses con semanas, marcando el mes completo.        */
+function normalizarGantt(g){
+  if (!g || !Array.isArray(g.periodos) || !Array.isArray(g.filas)) return null;
+  const eraPlano = typeof g.periodos[0] === 'string';
+  const periodos = g.periodos.map(p => typeof p === 'string'
+    ? { nombre:p, semanas:SEMANAS_POR_DEFECTO }
+    : { nombre: p.nombre || '', semanas: Math.max(1, Math.min(6, +p.semanas || SEMANAS_POR_DEFECTO)) });
+  const total = periodos.reduce((n,p) => n + p.semanas, 0);
+  const filas = g.filas.map(f => {
+    let celdas;
+    if (eraPlano) {
+      celdas = [];
+      periodos.forEach((p, j) => { for (let s = 0; s < p.semanas; s++) celdas.push(!!(f.celdas||[])[j]); });
+    } else {
+      celdas = Array.from({ length: total }, (_, c) => !!(f.celdas||[])[c]);
+    }
+    return { nombre: f.nombre || '', color: f.color || GANTT_PALETA[0], celdas };
+  });
+  return { periodos, filas };
+}
+
+const ganttTotalSemanas = () => datos.gantt.periodos.reduce((n,p) => n + p.semanas, 0);
+
+function ganttAjustarFilas(){
+  const total = ganttTotalSemanas();
+  datos.gantt.filas.forEach(f => {
+    while (f.celdas.length < total) f.celdas.push(false);
+    if (f.celdas.length > total) f.celdas.length = total;
+  });
+}
+
+function pintarGantt(){
+  const c = document.getElementById('ganttWrap');
+  if (!c) return;
+  datos.gantt = normalizarGantt(datos.gantt) || ganttPorDefecto();
+  ganttAjustarFilas();
+  const g = datos.gantt;
+  const total = ganttTotalSemanas();
+  const anchoSemana = 40;
+  const fijo = 'position:sticky;left:0;z-index:2';
+
+  let h = `<table class="gantt" style="width:100%;border-collapse:separate;border-spacing:0;font-size:13px;min-width:${190 + total*anchoSemana}px">
+    <caption class="visually-hidden">Carta Gantt editable, por meses y semanas</caption>
+    <thead>
+      <tr>
+        <th scope="col" rowspan="2" style="${fijo};background:var(--tinta);color:#fff;text-align:left;padding:8px 11px;font:700 11.5px 'Open Sans',sans-serif;min-width:190px">Actividad</th>`;
+  g.periodos.forEach((p, j) => {
+    h += `<th scope="colgroup" colspan="${p.semanas}" style="background:var(--tinta);color:#fff;padding:5px 6px;font:700 11.5px 'Open Sans',sans-serif;border-left:1px solid rgba(255,255,255,.28)">
+      <span style="display:flex;align-items:center;gap:4px;justify-content:center">
+        <label class="visually-hidden" for="gp_${j}">Nombre del periodo ${j+1}</label>
+        <input id="gp_${j}" type="text" data-gper="${j}" value="${esc(p.nombre)}" style="min-width:0;flex:1;max-width:120px;background:transparent;border:0;border-bottom:1px dashed rgba(255,255,255,.45);color:#fff;font:700 11.5px 'Open Sans',sans-serif;text-align:center;padding:3px 2px">
+        <button type="button" data-gsem="${j}--1" aria-label="Quitar una semana de ${esc(p.nombre)}" style="border:0;background:rgba(255,255,255,.16);color:#fff;border-radius:4px;cursor:pointer;width:24px;height:24px;line-height:1;font-size:13px;padding:0">−</button>
+        <button type="button" data-gsem="${j}-1" aria-label="Agregar una semana a ${esc(p.nombre)}" style="border:0;background:rgba(255,255,255,.16);color:#fff;border-radius:4px;cursor:pointer;width:24px;height:24px;line-height:1;font-size:13px;padding:0">+</button>
+      </span></th>`;
+  });
+  h += `</tr><tr>`;
+  g.periodos.forEach((p, j) => {
+    for (let s = 0; s < p.semanas; s++) {
+      h += `<th scope="col" style="background:#16314a;color:#e9f2fb;padding:4px 2px;font:700 10px 'Open Sans',sans-serif;min-width:${anchoSemana}px${s === 0 ? ';border-left:1px solid rgba(255,255,255,.28)' : ''}">S${s+1}</th>`;
+    }
+  });
+  h += `</tr></thead><tbody>`;
+
+  g.filas.forEach((f, i) => {
+    h += `<tr><td style="${fijo};background:#fff;border-top:1px solid #eef1f4;border-right:1px solid #eef1f4;padding:6px 8px">
+      <span style="display:flex;align-items:center;gap:7px">
+        <label class="visually-hidden" for="gc_${i}">Color de ${esc(f.nombre)}</label>
+        <input id="gc_${i}" type="color" data-gcolor="${i}" value="${esc(f.color)}" style="width:24px;height:24px;border:0;padding:0;background:none;flex:0 0 auto;cursor:pointer">
+        <label class="visually-hidden" for="gn_${i}">Nombre de la actividad ${i+1}</label>
+        <input id="gn_${i}" type="text" data-gnombre="${i}" value="${esc(f.nombre)}" style="flex:1;min-width:0;border:0;border-bottom:1px dashed #cfd6dd;font-size:13px;font-family:'Open Sans',sans-serif;padding:3px 2px;color:var(--texto-2)">
+        <button type="button" data-gquitar="${i}" aria-label="Quitar ${esc(f.nombre)}" style="border:0;background:none;color:#6b7682;cursor:pointer;font-size:15px;line-height:1;padding:2px 4px">×</button>
+      </span></td>`;
+    let col = 0;
+    g.periodos.forEach((p, j) => {
+      for (let s = 0; s < p.semanas; s++) {
+        const on = !!f.celdas[col];
+        h += `<td style="border-top:1px solid #eef1f4;padding:2px${s === 0 ? ';border-left:1px solid #dde3e9' : ''}"><button type="button" data-gcelda="${i}-${col}"
+          aria-pressed="${on}" aria-label="${esc(f.nombre)}, ${esc(p.nombre)} semana ${s+1}"
+          style="width:100%;height:28px;border:1px solid ${on ? f.color : '#e2e6ea'};border-radius:4px;background:${on ? f.color : '#fff'};cursor:pointer"></button></td>`;
+        col++;
+      }
+    });
+    h += `</tr>`;
+  });
+  h += `</tbody></table>`;
+  c.innerHTML = h;
+
+  c.querySelectorAll('[data-gcelda]').forEach(b => b.addEventListener('click', () => {
+    const [i, col] = b.dataset.gcelda.split('-').map(Number);
+    const fila = datos.gantt.filas[i];
+    fila.celdas[col] = !fila.celdas[col];
+    guardar();
+    const on = fila.celdas[col];
+    b.setAttribute('aria-pressed', String(on));
+    b.style.background = on ? fila.color : '#fff';
+    b.style.borderColor = on ? fila.color : '#e2e6ea';
+  }));
+  c.querySelectorAll('[data-gnombre]').forEach(el => el.addEventListener('input', () => {
+    datos.gantt.filas[+el.dataset.gnombre].nombre = el.value; guardar();
+  }));
+  c.querySelectorAll('[data-gper]').forEach(el => el.addEventListener('input', () => {
+    datos.gantt.periodos[+el.dataset.gper].nombre = el.value; guardar();
+  }));
+  c.querySelectorAll('[data-gcolor]').forEach(el => el.addEventListener('input', () => {
+    datos.gantt.filas[+el.dataset.gcolor].color = el.value; guardar(); pintarGantt();
+  }));
+  c.querySelectorAll('[data-gquitar]').forEach(b => b.addEventListener('click', () => {
+    if (datos.gantt.filas.length <= 1) return;
+    datos.gantt.filas.splice(+b.dataset.gquitar, 1); guardar(); pintarGantt();
+  }));
+  c.querySelectorAll('[data-gsem]').forEach(b => b.addEventListener('click', () => {
+    const partes = b.dataset.gsem.split('-');
+    const j = +partes[0];
+    const delta = b.dataset.gsem.endsWith('--1') ? -1 : 1;
+    const p = datos.gantt.periodos[j];
+    const nueva = p.semanas + delta;
+    if (nueva < 1 || nueva > 6) return;
+    // insertar o quitar la columna en el punto exacto de ese mes
+    const inicio = datos.gantt.periodos.slice(0, j).reduce((n,x) => n + x.semanas, 0);
+    datos.gantt.filas.forEach(f => {
+      if (delta > 0) f.celdas.splice(inicio + p.semanas, 0, false);
+      else f.celdas.splice(inicio + p.semanas - 1, 1);
+    });
+    p.semanas = nueva;
+    guardar(); pintarGantt();
+    const foco = document.getElementById(`gp_${j}`);
+    if (foco) foco.focus();
+  }));
+}
+
+function conectarGantt(){
+  const bf = document.getElementById('ganttFila');
+  if (bf) bf.addEventListener('click', () => {
+    datos.gantt.filas.push({ nombre:'Nueva actividad', color: GANTT_PALETA[datos.gantt.filas.length % GANTT_PALETA.length], celdas: Array.from({ length: ganttTotalSemanas() }, () => false) });
+    guardar(); pintarGantt();
+    const el = document.getElementById(`gn_${datos.gantt.filas.length - 1}`);
+    if (el) { el.focus(); el.select(); }
+  });
+  const bp = document.getElementById('ganttPer');
+  if (bp) bp.addEventListener('click', () => {
+    datos.gantt.periodos.push({ nombre:'Mes ' + (datos.gantt.periodos.length + 1), semanas:SEMANAS_POR_DEFECTO });
+    ganttAjustarFilas(); guardar(); pintarGantt();
+    const el = document.getElementById(`gp_${datos.gantt.periodos.length - 1}`);
+    if (el) { el.focus(); el.select(); }
+  });
+  const bm = document.getElementById('ganttPerMenos');
+  if (bm) bm.addEventListener('click', () => {
+    if (datos.gantt.periodos.length <= 2) return;
+    const p = datos.gantt.periodos.pop();
+    const inicio = ganttTotalSemanas();
+    datos.gantt.filas.forEach(f => f.celdas.splice(inicio, p.semanas));
+    guardar(); pintarGantt();
+  });
+  const br = document.getElementById('ganttReset');
+  if (br) br.addEventListener('click', () => {
+    if (!window.confirm('¿Restaurar la carta Gantt a los valores iniciales? Se pierde lo que hayas pintado.')) return;
+    datos.gantt = ganttPorDefecto(); guardar(); pintarGantt();
+  });
+}
+
+/* Para las descargas: dos filas de encabezado, meses y semanas */
+function ganttMeses(){ return (datos.gantt && datos.gantt.periodos) || []; }
+function ganttSemanas(){
+  const out = [];
+  ganttMeses().forEach(p => { for (let s = 0; s < p.semanas; s++) out.push('S' + (s+1)); });
+  return out;
+}
+function ganttFilas(){
+  const g = datos.gantt;
+  if (!g || !g.filas) return [];
+  return g.filas.map(f => [f.nombre].concat(ganttSemanas().map((s, c) => f.celdas[c] ? '■' : '')));
+}
+
+/* ===================== ERRORES, REPARTIDOS Y CLICABLES ===================== */
+const ERRORES = {
+  errMet: [
+    { t:'Declarar el paradigma y después hacer otra cosa', mal:'"El estudio se enmarca en el paradigma positivista." Y el procedimiento son seis entrevistas con categorías preestablecidas.', bien:'Las cuatro decisiones y el procedimiento tienen que contar la misma historia. Si vas a entrevistar a seis personas para comprender su experiencia, el paradigma es interpretativo. Esto es lo primero que se revisa.' },
+    { t:'Llamar representativa a una muestra por conveniencia', mal:'"Se aplicó a una muestra representativa de 62 estudiantes", que son los dos cursos donde el grupo hacía su práctica.', bien:'Quita la palabra representativa. "Se aplicó a 62 estudiantes, correspondientes a los dos cursos a los que se tuvo acceso." La misma frase, ahora verdadera, y el estudio sigue siendo válido.' },
+    { t:'Definir el alcance por el tamaño y no por el objetivo', mal:'"El estudio es correlacional porque se aplicará a muchos estudiantes."', bien:'El alcance lo define el verbo del objetivo, no cuántas personas participan. Un estudio con 300 encuestados puede ser perfectamente descriptivo.' },
+    { t:'Confundir alcance con diseño, o declarar solo uno', mal:'"El diseño de la investigación es descriptivo."', bien:'Descriptivo es el alcance. El diseño es no experimental transversal. Van las dos cosas declaradas, porque responden preguntas distintas, hasta dónde llegas y cómo recoges los datos.' },
+    { t:'Saltarse la operacionalización', mal:'El objetivo habla de motivación escolar y el cuestionario pregunta directamente "¿te sientes motivado?".', bien:'Entre el concepto y la pregunta falta definir qué se entiende por motivación en este estudio y bajarla a indicadores. Sin ese paso, el instrumento mide otra cosa o no mide nada.' },
+    { t:'Poner un número de participantes sin criterio', mal:'"La muestra será de 30 estudiantes."', bien:'Di de dónde salen los 30 y por qué 30. Si tienes acceso a 62, aplica a los 62. Lo que se evalúa es el criterio, no la cifra.' },
+    { t:'Dejar la ética como un párrafo de relleno al final', mal:'"Se respetarán los principios éticos de la investigación."', bien:'Di qué documentos vas a usar, quién los firma, cómo vas a identificar a los participantes y qué harás con el material al terminar. Con menores de edad, consentimiento del apoderado y asentimiento del estudiante. Una frase general no resguarda a nadie.' },
+  ],
+};
+
+function pintarErrores(){
+  Object.entries(ERRORES).forEach(([contId, lista]) => {
+    const cont = document.getElementById(contId);
+    if (!cont) return;
+    cont.innerHTML = lista.map((e, i) => `
+      <div class="card">
+        <h3 class="card-t">${esc(e.t)}</h3>
+        <p style="font-size:13.5px;line-height:1.6;color:var(--rojo);margin:8px 0 12px"><strong>Así no.</strong> ${esc(e.mal)}</p>
+        <button type="button" class="btn btn-sec" data-err="${contId}-${i}" aria-expanded="false" aria-controls="sol-${contId}-${i}" style="min-height:40px;padding:9px 14px;font-size:12.5px">Ver cómo se arregla</button>
+        <div id="sol-${contId}-${i}" style="display:none;margin-top:12px;background:var(--verde-claro);border-left:4px solid var(--verde-texto);border-radius:0 8px 8px 0;padding:12px 14px">
+          <p style="font-size:13.5px;line-height:1.6;color:var(--texto-2);margin:0"><strong style="color:var(--verde-texto)">Así sí.</strong> ${esc(e.bien)}</p>
+        </div>
+      </div>`).join('');
+    cont.querySelectorAll('[data-err]').forEach(b => {
+      b.addEventListener('click', () => {
+        const caja = document.getElementById('sol-' + b.dataset.err);
+        const abierto = caja.style.display !== 'none';
+        caja.style.display = abierto ? 'none' : 'block';
+        b.setAttribute('aria-expanded', abierto ? 'false' : 'true');
+        b.textContent = abierto ? 'Ver cómo se arregla' : 'Ocultar';
+      });
+    });
+  });
+}
+
+/* ===================== CHECKLIST ===================== */
+const CHECKLIST = [
+  { g:'Metodología, las cuatro decisiones', items:[
+    'Declaramos paradigma, enfoque, alcance y diseño, los cuatro.',
+    'Cada uno está justificado desde nuestra pregunta y nuestros objetivos, no solo definido.',
+    'Las cuatro decisiones son coherentes entre sí y con el procedimiento que describimos.',
+    'Citamos al menos un autor para respaldar la elección de paradigma y enfoque.'] },
+  { g:'De los objetivos a lo observable', items:[
+    'Identificamos las variables o los conceptos clave de nuestro objetivo general.',
+    'Definimos cada uno diciendo qué se entenderá por eso en este estudio, con un autor.',
+    'Bajamos cada uno a indicadores medibles, o a categorías tentativas si es cualitativo.',
+    'Explicamos cómo el o los instrumentos, en conjunto, responden el objetivo general y la pregunta de investigación.'] },
+  { g:'Sujetos', items:[
+    'La población está delimitada por institución, nivel o cargo, y periodo.',
+    'Declaramos el tipo de muestreo y su subtipo con el nombre correcto.',
+    'El número de participantes viene con su criterio, no solo con la cifra.',
+    'Si la muestra es no probabilística, decimos explícitamente hasta dónde llegan nuestras conclusiones.',
+    'Conversamos el acceso con alguien del establecimiento y tenemos una alternativa.'] },
+  { g:'Procedimiento y ética', items:[
+    'El procedimiento está en párrafo, en futuro, y cada etapa dice quién hace qué y dónde.',
+    'Declaramos qué documentos de consentimiento usaremos y quién los firma.',
+    'Si trabajamos con menores de edad, tenemos consentimiento del apoderado y asentimiento del estudiante.',
+    'Decimos cómo identificaremos a los participantes y qué haremos con el material al terminar.'] },
+  { g:'Plan de trabajo', items:[
+    'El cronograma ordena lo ya realizado y proyecta hasta el cierre del estudio.',
+    'Cada fase tiene fechas, no solo nombres.',
+    'La carta Gantt coincide con lo que dice el cronograma escrito.'] },
+  { g:'Aspectos formales, antes de entregar', items:[
+    'Respetamos formato, extensión por sección y tono académico.',
+    'Todas las citas están en la bibliografía, en APA 7.',
+    'Incluimos la declaración de uso de IA.'] },
+];
+
+function pintarChecklist(){
+  const wrap = document.getElementById('checklistWrap');
+  if (!wrap) return;
+  wrap.innerHTML = CHECKLIST.map((grupo, gi) => `
+    <div>
+      <h3 class="h3" style="margin:0 0 10px">${esc(grupo.g)}</h3>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        ${grupo.items.map((t, ii) => {
+          const k = `${gi}-${ii}`, marcado = !!datos.check[k];
+          return `<label class="check" data-lbl="${k}" style="display:flex;gap:12px;align-items:flex-start;background:${marcado ? '#f4faf2' : '#fff'};border:1px solid ${marcado ? 'var(--verde-borde)' : 'var(--borde)'};border-radius:10px;padding:14px 16px;cursor:pointer;min-height:44px">
+            <input type="checkbox" data-k="${k}" ${marcado ? 'checked' : ''} style="width:19px;height:19px;flex:none;margin-top:3px;accent-color:var(--verde-texto)">
+            <span data-txt="${k}" style="font-size:14.5px;line-height:1.5;color:${marcado ? 'var(--verde-texto)' : 'var(--texto)'}">${esc(t)}</span>
+          </label>`;
+        }).join('')}
+      </div>
+    </div>`).join('');
+  wrap.querySelectorAll('input[type=checkbox]').forEach(inp => {
+    inp.addEventListener('change', () => {
+      const k = inp.dataset.k;
+      datos.check[k] = inp.checked;
+      guardar();
+      const lbl = wrap.querySelector(`label[data-lbl="${k}"]`), span = wrap.querySelector(`span[data-txt="${k}"]`);
+      if (lbl) { lbl.style.background = inp.checked ? '#f4faf2' : '#fff'; lbl.style.borderColor = inp.checked ? 'var(--verde-borde)' : 'var(--borde)'; }
+      if (span) span.style.color = inp.checked ? 'var(--verde-texto)' : 'var(--texto)';
+      pintarCheckAvance();
+    });
+  });
+  pintarCheckAvance();
+}
+function pintarCheckAvance(){
+  const total = CHECKLIST.reduce((n,g) => n + g.items.length, 0);
+  const hechos = Object.values(datos.check).filter(Boolean).length;
+  const barra = document.getElementById('checkBarra'), texto = document.getElementById('checkTexto'), av = document.getElementById('checkAviso');
+  if (barra) barra.style.width = Math.round(hechos/total*100) + '%';
+  if (texto) texto.textContent = `${hechos} de ${total} revisados`;
+  if (av) av.textContent = `${hechos} de ${total} ítems revisados.`;
+}
+document.getElementById('btnDesmarcar').addEventListener('click', () => { datos.check = {}; guardar(); pintarChecklist(); });
+
+
+/* ===================== ENCABEZADO INSTITUCIONAL PARA LAS DESCARGAS =====================
+   Franja superior de la plantilla de hoja institucional. Para usar otro encabezado,
+   reemplaza ENCABEZADO_B64 por la imagen en base64, o déjalo vacío para quitarlo. */
+const ENCABEZADO_B64 = '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';
+const ENCABEZADO_ANCHO = 794;  // ancho de página A4 en píxeles (21 cm a 96 ppp)
+const ENCABEZADO_ALTO = 93;    // alto de la franja, proporcional a la imagen
+const PAGINA_A4 = { width: 11906, height: 16838 };
+const MARGENES = { top: 1417, bottom: 1417, left: 1701, right: 1701, header: 708, footer: 708 };
+
+function bytesDesdeBase64(b64){
+  const bin = atob(b64);
+  const arr = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+  return arr;
+}
+
+/* Estilos del documento: Arial 12, todo en negro, justificado, interlineado 1,5 */
+function opcionesDocumento(){
+  const { AlignmentType, Header, Paragraph, ImageRun, HorizontalPositionRelativeFrom, VerticalPositionRelativeFrom, TextWrappingType } = docx;
+  const estilos = {
+    default: {
+      document: { run:{ font:'Arial', size:24, color:'000000' }, paragraph:{ alignment: AlignmentType.JUSTIFIED, spacing:{ line:360, after:160 } } },
+      heading1: { run:{ font:'Arial', size:30, bold:true, color:'000000' }, paragraph:{ alignment: AlignmentType.CENTER, spacing:{ after:240, line:360 } } },
+      heading2: { run:{ font:'Arial', size:26, bold:true, color:'000000' }, paragraph:{ alignment: AlignmentType.LEFT, spacing:{ before:300, after:120, line:360 } } },
+    },
+  };
+  let encabezado = {};
+  if (ENCABEZADO_B64) {
+    try {
+      const flotante = (HorizontalPositionRelativeFrom && VerticalPositionRelativeFrom && TextWrappingType) ? {
+        horizontalPosition: { relative: HorizontalPositionRelativeFrom.PAGE, offset: 0 },
+        verticalPosition: { relative: VerticalPositionRelativeFrom.PAGE, offset: 95250 },
+        behindDocument: true, allowOverlap: true, wrap: { type: TextWrappingType.NONE },
+      } : undefined;
+      const imagen = new ImageRun(Object.assign(
+        { data: bytesDesdeBase64(ENCABEZADO_B64), transformation: { width: ENCABEZADO_ANCHO, height: ENCABEZADO_ALTO } },
+        flotante ? { floating: flotante } : {}
+      ));
+      encabezado = { default: new Header({ children: [ new Paragraph({ children: [ imagen ] }) ] }) };
+    } catch(e) { encabezado = {}; }
+  }
+  return { estilos, encabezado, margenes: MARGENES, pagina: PAGINA_A4 };
+}
+
+/* Bloque de título centrado: línea institucional en cursiva y título en negrita */
+function tituloCentrado(linea, titulo){
+  const { Paragraph, TextRun, AlignmentType } = docx;
+  return new Paragraph({ alignment: AlignmentType.CENTER, spacing:{ after:240, line:360 }, children:[
+    new TextRun({ text: linea, italics:true, size:20, color:'000000' }),
+    new TextRun({ text: titulo, bold:true, size:30, color:'000000', break:1 }),
+  ] });
+}
+
+const ENCABEZADO_IMG = ENCABEZADO_B64 ? `<img src="data:image/png;base64,${ENCABEZADO_B64}" alt="" style="width:100%;display:block;margin:0 0 14px">` : '';
+
+/* ===================== BORRADOR, RESUMEN Y DESCARGAS ===================== */
+const BLOQUES = [
+  { t:'Metodología', partes:[
+      ['Paradigma','m_paradigma'], ['Justificación del paradigma','m_paradigma_just'],
+      ['Enfoque','m_enfoque'], ['Justificación del enfoque','m_enfoque_just'],
+      ['Alcance','m_alcance'], ['Justificación del alcance','m_alcance_just'],
+      ['Diseño','m_diseno'], ['Justificación del diseño','m_diseno_just']] },
+  { t:'Propuesta de instrumento', partes:[['','o_cierre']], tablaObs:true },
+  { t:'Caracterización de los sujetos', partes:[
+      ['Población','q_poblacion'], ['Tipo de muestreo','q_tipo'], ['Subtipo','q_subtipo'],
+      ['Tamaño y procedencia','q_tamano'], ['Justificación de la selección','q_just'],
+      ['Acceso a los participantes','q_acceso']] },
+  { t:'Descripción del procedimiento', partes:[['','c_pasos'], ['Resguardos éticos','c_etica']] },
+  { t:'Plan y cronograma de trabajo', partes:'cronograma', tablaGantt:true },
+];
+const objetivoTexto = (v, r) => (v && (r||'').trim()) ? `${v} ${(r||'').trim()}` : '';
+const OBS_COLS = ['Variable o concepto','Nombre','Qué implica / qué se entiende','Cómo se mide u observa','Instrumento'];
+function obsOrdenadas(){ return obsConDatos().slice(); }
+function filaObs(f){
+  return [f.clase||'', f.nombre||'', f.definicion||'', f.indicadores||'', f.instrumento||''];
+}
+
+function contenido(){
+  return BLOQUES.map(b => {
+    const bloque = { t: b.t, lineas: [] };
+    if (b.partes === 'cronograma') {
+      FASES_CRONO.forEach((f, i) => bloque.lineas.push([f.t, (datos['cr_'+i]||'').trim()]));
+    } else {
+      bloque.lineas = b.partes.map(([rot, k]) => [rot, (datos[k]||'').trim()]);
+    }
+    if (b.tablaObs) bloque.obs = obsOrdenadas();
+    if (b.tablaGantt) bloque.gantt = ganttFilas();
+    return bloque;
+  });
+}
+
+function extras(b){ return (b.obs ? b.obs.length : 0) + (b.gantt ? b.gantt.length : 0); }
+
+function pintarResumen(){
+  const el = document.getElementById('resumenBorrador');
+  if (!el) return;
+  el.innerHTML = contenido().map(b => {
+    const nEx = extras(b);
+    const conTexto = b.lineas.filter(l => l[1]);
+    const escritas = conTexto.length + nEx;
+    const texto = conTexto.map(l => (l[0] ? l[0] + ', ' : '') + l[1]).join(' · ');
+    const cola = b.obs ? (b.obs.length + (b.obs.length === 1 ? ' fila en la tabla' : ' filas en la tabla'))
+      : (b.gantt && b.gantt.length ? b.gantt.length + ' actividades en la carta Gantt' : '');
+    return `<div style="padding:12px 0;border-bottom:1px solid #eef1f4">
+      <p style="font:700 11.5px 'Open Sans',sans-serif;text-transform:uppercase;letter-spacing:.05em;color:#6b7682;margin:0 0 4px">${esc(b.t)}</p>
+      <p style="font-size:14px;line-height:1.6;margin:0;color:${escritas ? 'var(--texto-2)' : '#6b7682'}">${
+        escritas ? esc(texto.slice(0,220)) + (texto.length > 220 ? '…' : '') + (cola ? (texto ? ' · ' : '') + cola : '') : 'Sin contenido todavía.'
+      }</p></div>`;
+  }).join('') + `<div style="padding:12px 0 0"><p style="font-size:12.5px;color:#6b7682;margin:0">${
+    almacenamientoOk ? 'Guardado automáticamente en este navegador' + (datos.actualizado ? ', última vez a las ' + new Date(datos.actualizado).toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'}) + '.' : '.')
+    : 'Este navegador no permite guardar. Descarga tu borrador antes de cerrar la página.'}</p></div>`;
+}
+
+function pintarAvance(){
+  const bloques = contenido();
+  const conContenido = bloques.filter(b => b.lineas.some(l => l[1]) || (b.obs && b.obs.length)).length;
+  const barra = document.getElementById('avanceBarra'), texto = document.getElementById('avanceTexto');
+  if (barra) barra.style.width = Math.round(conContenido/bloques.length*100) + '%';
+  if (texto) texto.textContent = `${conContenido} de ${bloques.length} partes con contenido`;
+  pintarMatriz(); pintarSenales();
+}
+
+function aviso(t){ const el = document.getElementById('avisoDescarga'); if (el) el.textContent = t; }
+
+const TITULO_DOC = 'Diseño metodológico';
+
+document.getElementById('btnWord').addEventListener('click', async () => {
+  if (typeof docx === 'undefined') { aviso('No se pudo cargar la herramienta de Word. Usa la opción de PDF.'); return; }
+  const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType } = docx;
+  const celda = (txt, encabezado, n) => new TableCell({
+    width: { size: 100 / n, type: WidthType.PERCENTAGE },
+    shading: encabezado ? { fill: 'E8EDF2' } : undefined,
+    children: [ new Paragraph({ alignment: AlignmentType.LEFT, spacing:{ before:40, after:40, line:276 },
+      children:[ new TextRun({ text: String(txt || ''), bold: !!encabezado, size:18, color:'000000' }) ] }) ],
+  });
+  function tablaDocx(cols, filas){
+    if (!Table || !TableRow || !TableCell) return null;
+    const n = cols.length;
+    return new Table({
+      width: { size: 100, type: WidthType.PERCENTAGE },
+      rows: [ new TableRow({ tableHeader:true, children: cols.map(c => celda(c, true, n)) }) ]
+        .concat(filas.map(f => new TableRow({ children: f.map(v => celda(v, false, n)) }))),
+    });
+  }
+  const doc = opcionesDocumento();
+  const hijos = [
+    tituloCentrado(`${CONFIG.unidad} · Investigación Educativa · ${new Date().toLocaleDateString('es-CL')}`, TITULO_DOC),
+  ];
+  contenido().forEach(b => {
+    hijos.push(new Paragraph({ text:b.t, heading: HeadingLevel.HEADING_2, spacing:{ before:280, after:120 } }));
+    const conTexto = b.lineas.filter(l => l[1]);
+    if (!conTexto.length && !extras(b)) hijos.push(new Paragraph({ spacing:{ after:160 }, children:[ new TextRun({ text:'(sin completar)', italics:true }) ] }));
+    conTexto.forEach(([rot, val]) => hijos.push(new Paragraph({ spacing:{ after:160 }, alignment: AlignmentType.JUSTIFIED,
+      children: rot ? [ new TextRun({ text: rot + '. ', bold:true }), new TextRun({ text: val }) ] : [ new TextRun({ text: val }) ] })));
+    if (b.obs) {
+      hijos.push(new Paragraph({ spacing:{ before:120, after:80 }, children:[ new TextRun({ text:'Operacionalización', bold:true }) ] }));
+      if (!b.obs.length) hijos.push(new Paragraph({ spacing:{ after:160 }, children:[ new TextRun({ text:'(sin filas registradas)', italics:true }) ] }));
+      else {
+        const t = tablaDocx(OBS_COLS, b.obs.map(filaObs));
+        if (t) { hijos.push(t); hijos.push(new Paragraph({ text:'', spacing:{ after:160 } })); }
+        else b.obs.forEach(f => hijos.push(new Paragraph({ spacing:{ after:120 }, children:[ new TextRun({ text: filaObs(f).filter(Boolean).join(' · ') }) ] })));
+      }
+    }
+    if (b.gantt) {
+      hijos.push(new Paragraph({ spacing:{ before:120, after:80 }, children:[ new TextRun({ text:'Carta Gantt', bold:true }) ] }));
+      if (!b.gantt.length) hijos.push(new Paragraph({ spacing:{ after:160 }, children:[ new TextRun({ text:'(sin actividades)', italics:true }) ] }));
+      else {
+        const semanas = ganttSemanas(), meses = ganttMeses();
+        const n = semanas.length + 1;
+        let t = null;
+        if (Table && TableRow && TableCell) {
+          const fila1 = [ new TableCell({ rowSpan:2, width:{ size:100/n, type:WidthType.PERCENTAGE }, shading:{ fill:'E8EDF2' },
+            children:[ new Paragraph({ spacing:{ before:40, after:40 }, children:[ new TextRun({ text:'Actividad', bold:true, size:18, color:'000000' }) ] }) ] }) ]
+            .concat(meses.map(m => new TableCell({ columnSpan:m.semanas, shading:{ fill:'E8EDF2' },
+              children:[ new Paragraph({ alignment:AlignmentType.CENTER, spacing:{ before:40, after:40 }, children:[ new TextRun({ text:String(m.nombre||''), bold:true, size:18, color:'000000' }) ] }) ] })));
+          const fila2 = semanas.map(sx => new TableCell({ shading:{ fill:'F2F5F8' },
+            children:[ new Paragraph({ alignment:AlignmentType.CENTER, spacing:{ before:40, after:40 }, children:[ new TextRun({ text:sx, bold:true, size:16, color:'000000' }) ] }) ] }));
+          t = new Table({ width:{ size:100, type:WidthType.PERCENTAGE },
+            rows: [ new TableRow({ tableHeader:true, children: fila1 }), new TableRow({ tableHeader:true, children: fila2 }) ]
+              .concat(b.gantt.map(f => new TableRow({ children: f.map((v, k) => new TableCell({
+                children:[ new Paragraph({ alignment: k ? AlignmentType.CENTER : AlignmentType.LEFT, spacing:{ before:40, after:40 },
+                  children:[ new TextRun({ text:String(v||''), size:16, color:'000000' }) ] }) ] })) }))),
+          });
+        }
+        if (t) { hijos.push(t); hijos.push(new Paragraph({ text:'', spacing:{ after:160 } })); }
+      }
+    }
+  });
+  try {
+    const blob = await Packer.toBlob(new Document({
+      styles: doc.estilos,
+      sections: [{ properties: { page: { size: doc.pagina, margin: doc.margenes } }, headers: doc.encabezado, children: hijos }],
+    }));
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'Diseno_metodologico.docx';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+    aviso('Borrador descargado en Word.');
+  } catch(e) { aviso('No se pudo generar el archivo de Word. Prueba con la opción de PDF.'); }
+});
+
+document.getElementById('btnPDF').addEventListener('click', () => {
+  const tablaHTML = (cols, filas) => `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:10px;color:#000;margin-bottom:12px"><thead><tr>`
+    + cols.map(c => `<th style="border:1px solid #000;background:#e8edf2;padding:4px 6px;text-align:left">${esc(c)}</th>`).join('')
+    + `</tr></thead><tbody>`
+    + filas.map(f => `<tr>` + f.map(v => `<td style="border:1px solid #000;padding:4px 6px;vertical-align:top">${esc(v)}</td>`).join('') + `</tr>`).join('')
+    + `</tbody></table>`;
+  let html = `${ENCABEZADO_IMG}
+    <p style="font-family:Arial,sans-serif;font-size:11px;color:#000;text-align:center;font-style:italic;margin:0 0 4px">${esc(CONFIG.unidad)} · Investigación Educativa · ${new Date().toLocaleDateString('es-CL')}</p>
+    <h1 style="font-family:Arial,sans-serif;font-size:19px;color:#000;text-align:center;margin:0 0 22px">${esc(TITULO_DOC)}</h1>`;
+  contenido().forEach(b => {
+    html += `<h2 style="font-family:Arial,sans-serif;font-size:15px;color:#000;margin:20px 0 8px">${esc(b.t)}</h2>`;
+    const conTexto = b.lineas.filter(l => l[1]);
+    if (!conTexto.length && !extras(b)) html += `<p style="font-family:Arial,sans-serif;font-size:12px;color:#000">(sin completar)</p>`;
+    conTexto.forEach(([rot,val]) => { html += `<p style="font-family:Arial,sans-serif;font-size:12px;color:#000;line-height:1.5;text-align:justify;margin-bottom:10px">${rot ? '<strong>' + esc(rot) + '.</strong> ' : ''}${esc(val)}</p>`; });
+    if (b.obs) {
+      html += `<p style="font-family:Arial,sans-serif;font-size:12px;color:#000;margin:14px 0 6px"><strong>Operacionalización</strong></p>`;
+      html += b.obs.length ? tablaHTML(OBS_COLS, b.obs.map(filaObs)) : `<p style="font-family:Arial,sans-serif;font-size:12px;color:#000">(sin filas registradas)</p>`;
+    }
+    if (b.gantt) {
+      html += `<p style="font-family:Arial,sans-serif;font-size:12px;color:#000;margin:14px 0 6px"><strong>Carta Gantt</strong></p>`;
+      if (!b.gantt.length) html += `<p style="font-family:Arial,sans-serif;font-size:12px;color:#000">(sin actividades)</p>`;
+      else {
+        const borde = 'border:1px solid #000;padding:3px 4px';
+        html += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:9px;color:#000;margin-bottom:12px">
+          <thead>
+            <tr><th rowspan="2" style="${borde};background:#e8edf2;text-align:left">Actividad</th>`
+          + ganttMeses().map(m => `<th colspan="${m.semanas}" style="${borde};background:#e8edf2">${esc(m.nombre)}</th>`).join('')
+          + `</tr><tr>`
+          + ganttSemanas().map(sx => `<th style="${borde};background:#f2f5f8">${esc(sx)}</th>`).join('')
+          + `</tr></thead><tbody>`
+          + b.gantt.map(f => `<tr>` + f.map((v, k) => `<td style="${borde};text-align:${k ? 'center' : 'left'}">${esc(v)}</td>`).join('') + `</tr>`).join('')
+          + `</tbody></table>`;
+      }
+    }
+  });
+  document.getElementById('areaImpresion').innerHTML = html;
+  aviso('Se abrió el cuadro de impresión. Elige "Guardar como PDF".');
+  window.print();
+});
+
+document.getElementById('btnBorrar').addEventListener('click', () => {
+  if (!window.confirm('¿Seguro que quieres borrar tu borrador? Se pierde todo lo que escribiste en este navegador y no se puede deshacer.')) return;
+  datos = Object.assign({}, VACIO, { check:{}, entrada:{}, diag:{}, m_obs:[], gantt:null });
+  CAMPOS.forEach(k => VACIO[k] !== undefined && (datos[k] = ''));
+  try { localStorage.removeItem(CONFIG.clave); } catch(e) {}
+  CAMPOS.forEach(k => { const el = document.getElementById(k); if (el) el.value = ''; });
+  pintarTodo();
+  aviso('Borrador borrado.');
+});
+
+/* ===================== CONEXIÓN DE CAMPOS ===================== */
+function conectar(id){
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (el.value !== undefined && datos[id] !== undefined && el.tagName !== 'SELECT') el.value = datos[id] || '';
+  if (el.tagName === 'SELECT') el.value = datos[id] || '';
+  if (el.dataset.conectado === '1') return;   // no duplicar escuchas al repintar
+  el.dataset.conectado = '1';
+  const ev = el.tagName === 'SELECT' ? 'change' : 'input';
+  el.addEventListener(ev, () => {
+    datos[id] = el.value;
+    guardar();
+    pintarSenales();
+    pintarMatriz();
+    pintarResumen();
+    pintarAvance();
+    pintarEsquema();
+  });
+}
+
+/* ===================== ARRANQUE ===================== */
+function pintarTodo(){
+  pintarEntrada();
+  pintarEcoPrevio();
+  pintarEcoEnfoques();
+  pintarEcoObjetivos();
+  pintarEcoViabilidad();
+  pintarEcoMarco();
+  pintarEnlacesConfig();
+  pintarCampos('decisionesWrap', DECISIONES);
+  pintarCampos('quienesWrap', QUIENES);
+  pintarObs();
+  pintarCrono();
+  CAMPOS.forEach(conectar);   // todos los que tengan elemento en el DOM
+  pintarGantt();
+  pintarChecklist();
+  pintarErrores();
+  pintarMatriz();
+  pintarSenales();
+  pintarAvance();
+  pintarResumen();
+}
+
+cargar();
+if (!Array.isArray(datos.m_obs)) datos.m_obs = [];
+datos.m_obs = datos.m_obs.map(f => Object.assign(OBS_VACIA(), f || {}));
+if (!datos.entrada || typeof datos.entrada !== 'object') datos.entrada = {};
+if (!datos.diag || typeof datos.diag !== 'object') datos.diag = {};
+pintarTodo();
+pintarDiagnostico();
+conectarGantt();
+irA(location.hash.slice(1) || 'inicio', false);
+
+/* ===================== BURBUJA DE REFERENCIAS ===================== */
+/* Enlace permanente al recurso de Referencias, con la cuenta de lo guardado.
+   Si CONFIG.enlaceReferencias queda vacío, la burbuja no aparece. */
+{
+  const burbuja = document.getElementById('burbujaRef');
+  if (burbuja) {
+    if (!CONFIG.enlaceReferencias) burbuja.remove();
+    else {
+      burbuja.href = CONFIG.enlaceReferencias;
+      const pintarBurbuja = () => {
+        let n = 0;
+        try {
+          const raw = localStorage.getItem(CONFIG.claveReferencias);
+          const d = raw ? JSON.parse(raw) : null;
+          n = (d && Array.isArray(d.refs) ? d.refs : []).filter(r => (r.texto||'').trim()).length;
+        } catch(e) { n = 0; }
+        const marca = document.getElementById('burbujaRefN');
+        if (marca) { marca.textContent = n; marca.className = 'burbuja-n' + (n ? '' : ' cero'); }
+        burbuja.setAttribute('aria-label', n
+          ? `Abrir mis referencias, tienes ${n} guardada${n === 1 ? '' : 's'}. Se abre en una pestaña nueva.`
+          : 'Abrir mis referencias. Todavía no tienes ninguna guardada. Se abre en una pestaña nueva.');
+      };
+      pintarBurbuja();
+      window.addEventListener('focus', pintarBurbuja);
+      document.addEventListener('visibilitychange', () => { if (!document.hidden) pintarBurbuja(); });
+    }
+  }
+}
+</script>
+
+<!-- Cierre de etapa y enlaces entre etapas (compartido, ver comun/cierre.js) -->
+<script src="../comun/cierre.js" defer data-recurso="metodologico" data-ancla="#btnWord"></script>
+</body>
+</html>
